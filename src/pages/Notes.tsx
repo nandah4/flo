@@ -6,6 +6,7 @@ import NoteCard from '../components/notes/NoteCard';
 import FloatingAIButton from '../components/common/FloatingAIButton';
 import AddNoteModal from '../components/notes/AddNoteModal';
 import AIChatPanel from '../components/common/AIChatPanel';
+import FlashcardModal from '../components/notes/FlashcardModal';
 
 interface Note {
     id: number;
@@ -47,6 +48,10 @@ const Notes = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+
+    // Flashcard state
+    const [isFlashcardOpen, setIsFlashcardOpen] = useState(false);
+    const [flashcardNoteId, setFlashcardNoteId] = useState<number | null>(null);
 
     // Upload & Summary Preview State
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'generating' | 'preview'>('idle');
@@ -371,6 +376,10 @@ const Notes = () => {
                                             category={note.category}
                                             onClick={() => handleOpenEditNote(note.id)}
                                             onDragStart={handleDragStart}
+                                            onGenerateFlashcard={(id) => {
+                                                setFlashcardNoteId(id);
+                                                setIsFlashcardOpen(true);
+                                            }}
                                         />
                                     </div>
                                 ))}
@@ -402,6 +411,19 @@ const Notes = () => {
                 isOpen={isChatOpen}
                 onClose={() => setIsChatOpen(false)}
             />
+
+            {/* Flashcard Modal */}
+            {flashcardNoteId !== null && (() => {
+                const note = notes.find(n => n.id === flashcardNoteId);
+                return note ? (
+                    <FlashcardModal
+                        isOpen={isFlashcardOpen}
+                        onClose={() => { setIsFlashcardOpen(false); setFlashcardNoteId(null); }}
+                        noteTitle={note.title}
+                        noteContent={note.preview}
+                    />
+                ) : null;
+            })()}
         </DashboardLayout>
     );
 };
