@@ -2,14 +2,24 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const navLinks = [
-    { label: 'Beranda', href: '/' },
-    { label: 'How it works', href: '/' },
-    { label: 'How to Start', href: '/' },
-    { label: 'Testimonials', href: '/' },
+    { label: 'Home', href: '#hero' },
+    { label: 'Features', href: '#features' },
+    { label: 'How to Use', href: '#how-to-use' },
+    { label: 'Testimonials', href: '#testimonials' },
 ]
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false)
+    const [isScrolled, setIsScrolled] = useState(false)
+
+    // Detect scroll to show/hide border
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 10)
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
 
     // Lock body scroll when menu is open
     useEffect(() => {
@@ -23,87 +33,114 @@ function Header() {
         }
     }, [menuOpen])
 
+    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        if (href.startsWith('#')) {
+            e.preventDefault()
+            const targetId = href.replace('#', '')
+            const targetElement = document.getElementById(targetId)
+
+            if (targetElement) {
+                // Offset for fixed header
+                const headerOffset = 80
+                const elementPosition = targetElement.getBoundingClientRect().top
+                const offsetPosition = elementPosition + window.scrollY - headerOffset
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                })
+                setMenuOpen(false) // Close mobile menu if open
+            }
+        }
+    }
+
     return (
         <>
-            {/* Header Bar - always above overlay */}
+            {/* Header Bar - always above overlay, sticky at top */}
             <motion.header
-                className="2xl:max-w-7xl mx-auto w-full flex justify-between items-center px-6 md:px-10 py-5 relative z-50 bg-background"
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-br-md rounded-bl-md
+                    ${isScrolled
+                        ? "bg-background border-b border-gray-200"
+                        : "bg-background border-b border-transparent"
+                    }`}
                 initial={{ y: -40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
             >
-                {/* Logo */}
-                {/* <div className="flex items-center gap-12"> */}
-                <div className="logo">
-                    <h2 className="text-3xl font-medium text-black">Flo.</h2>
-                </div>
+                <div className="2xl:max-w-7xl mx-auto w-full flex justify-between items-center px-6 md:px-10 py-4">
+                    {/* Logo */}
+                    <div className="logo">
+                        <h2 className="text-3xl font-medium text-black">Flo.</h2>
+                    </div>
 
-                {/* Desktop Nav */}
-                <nav className="hidden md:block">
-                    <ul className="flex gap-x-10">
-                        {navLinks.map((link, i) => (
-                            <motion.li
-                                key={link.label}
-                                initial={{ y: -10, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 0.15 + i * 0.07, duration: 0.35 }}
-                            >
-                                <a
-                                    href={link.href}
-                                    className="text-sm! font-normal! text-black! transition-colors duration-200"
+                    {/* Desktop Nav */}
+                    <nav className="hidden md:block">
+                        <ul className="flex gap-x-12">
+                            {navLinks.map((link, i) => (
+                                <motion.li
+                                    key={link.label}
+                                    initial={{ y: -10, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ delay: 0.15 + i * 0.07, duration: 0.35 }}
                                 >
-                                    {link.label}
-                                </a>
-                            </motion.li>
-                        ))}
-                    </ul>
-                </nav>
-                {/* </div> */}
+                                    <a
+                                        href={link.href}
+                                        onClick={(e) => handleNavClick(e, link.href)}
+                                        className="text-sm! font-medium! text-secondary! transition-colors duration-200"
+                                    >
+                                        {link.label}
+                                    </a>
+                                </motion.li>
+                            ))}
+                        </ul>
+                    </nav>
+                    {/* </div> */}
 
-                {/* Desktop CTA */}
-                <motion.div
-                    className="hidden md:block"
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.4, duration: 0.35 }}
-                >
-                    <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-black px-4! py-2! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg">
-                        Get Started
-                    </button>
-                </motion.div>
-
-                {/* Mobile Hamburger */}
-                <div className="flex items-center gap-4 md:hidden">
+                    {/* Desktop CTA */}
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.25, duration: 0.3 }}
+                        className="hidden md:block"
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.4, duration: 0.35 }}
                     >
-                        <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-black px-4! py-2.5! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
+                        <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-black px-4! py-2! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg">
                             Get Started
                         </button>
                     </motion.div>
-                    <button
-                        className="md:hidden flex flex-col gap-[5px] bg-transparent! border-none! cursor-pointer! p-2!"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        aria-label="Toggle menu"
-                    >
-                        <motion.span
-                            className="block w-5 h-[2px] bg-black rounded-full"
-                            animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                            transition={{ duration: 0.3 }}
-                        />
-                        <motion.span
-                            className="block w-5 h-[2px] bg-black rounded-full"
-                            animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-                            transition={{ duration: 0.2 }}
-                        />
-                        <motion.span
-                            className="block w-5 h-[2px] bg-black rounded-full"
-                            animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                            transition={{ duration: 0.3 }}
-                        />
-                    </button>
+
+                    {/* Mobile Hamburger */}
+                    <div className="flex items-center gap-4 md:hidden">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.25, duration: 0.3 }}
+                        >
+                            <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-black px-4! py-2.5! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
+                                Get Started
+                            </button>
+                        </motion.div>
+                        <button
+                            className="md:hidden flex flex-col gap-[5px] bg-transparent! border-none! cursor-pointer! p-2!"
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            aria-label="Toggle menu"
+                        >
+                            <motion.span
+                                className="block w-5 h-[2px] bg-black rounded-full"
+                                animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                                transition={{ duration: 0.3 }}
+                            />
+                            <motion.span
+                                className="block w-5 h-[2px] bg-black rounded-full"
+                                animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
+                                transition={{ duration: 0.2 }}
+                            />
+                            <motion.span
+                                className="block w-5 h-[2px] bg-black rounded-full"
+                                animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+                                transition={{ duration: 0.3 }}
+                            />
+                        </button>
+                    </div>
                 </div>
             </motion.header>
 
@@ -140,6 +177,7 @@ function Header() {
                                         >
                                             <a
                                                 href={link.href}
+                                                onClick={(e) => handleNavClick(e, link.href)}
                                                 className="text-lg! font-semibold! text-black! transition-colors duration-200"
                                             >
                                                 {link.label}
