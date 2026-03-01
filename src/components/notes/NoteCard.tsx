@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileText } from 'lucide-react';
+import { FileText, Layers } from 'lucide-react';
 
 interface NoteCardProps {
     id: number;
@@ -9,6 +9,7 @@ interface NoteCardProps {
     category?: string;
     onClick?: () => void;
     onDragStart?: (e: React.DragEvent<HTMLDivElement>, id: number) => void;
+    onGenerateFlashcard?: (id: number) => void;
 }
 
 const NoteCard: React.FC<NoteCardProps> = ({
@@ -18,7 +19,8 @@ const NoteCard: React.FC<NoteCardProps> = ({
     timestamp,
     category,
     onClick,
-    onDragStart
+    onDragStart,
+    onGenerateFlashcard,
 }) => {
     const [isDragging, setIsDragging] = useState(false);
 
@@ -72,6 +74,22 @@ const NoteCard: React.FC<NoteCardProps> = ({
                 <div className="bg-slate-50 p-3 rounded-2xl text-slate-400 group-hover:bg-primary/10 group-hover:text-secondary transition-colors duration-500">
                     <FileText size={22} strokeWidth={2} />
                 </div>
+                {onGenerateFlashcard && (
+                    <div className="relative">
+                        <button
+                            onClick={(e) => { e.stopPropagation(); onGenerateFlashcard(id); }}
+                            className="opacity-0 group-hover:opacity-100 bg-slate-50 hover:bg-primary/10 text-slate-400 hover:text-secondary p-2.5 rounded-2xl transition-all duration-300 peer"
+                        >
+                            <Layers size={16} strokeWidth={2} />
+                        </button>
+                        {/* Tooltip */}
+                        <div className="absolute bottom-full right-0 mb-2 pointer-events-none opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10">
+                            <div className="bg-slate-800 text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap shadow-lg">
+                                Generate Flashcard
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className="mt-2 flex-1 relative overflow-hidden flex flex-col">
