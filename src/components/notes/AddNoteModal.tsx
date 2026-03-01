@@ -157,7 +157,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                                     className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm text-text-primary hover:bg-slate-50 transition-colors text-left"
                                                 >
                                                     <span className="truncate flex-1 font-medium">{cat}</span>
-                                                    {category === cat && <Check size={14} className="text-primary flex-shrink-0" />}
+                                                    {category === cat && <Check size={14} className="text-primary shrink-0" />}
                                                 </button>
                                             ))}
                                         </div>
