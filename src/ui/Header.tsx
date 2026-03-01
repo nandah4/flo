@@ -37,20 +37,22 @@ function Header() {
         if (href.startsWith('#')) {
             e.preventDefault()
             const targetId = href.replace('#', '')
-            const targetElement = document.getElementById(targetId)
 
-            if (targetElement) {
-                // Offset for fixed header
-                const headerOffset = 80
-                const elementPosition = targetElement.getBoundingClientRect().top
-                const offsetPosition = elementPosition + window.scrollY - headerOffset
+            setMenuOpen(false)
 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                })
-                setMenuOpen(false) // Close mobile menu if open
-            }
+            setTimeout(() => {
+                const targetElement = document.getElementById(targetId)
+                if (targetElement) {
+                    const headerOffset = 80
+                    const elementPosition = targetElement.getBoundingClientRect().top
+                    const offsetPosition = elementPosition + window.scrollY - headerOffset
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    })
+                }
+            }, 50)
         }
     }
 
@@ -60,8 +62,8 @@ function Header() {
             <motion.header
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-br-md rounded-bl-md
                     ${isScrolled
-                        ? "bg-background border-b border-gray-200"
-                        : "bg-background border-b border-transparent"
+                        ? "bg-bg-app border-b border-gray-200"
+                        : "bg-bg-app border-b border-transparent"
                     }`}
                 initial={{ y: -40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -70,7 +72,7 @@ function Header() {
                 <div className="2xl:max-w-7xl mx-auto w-full flex justify-between items-center px-6 md:px-10 py-4">
                     {/* Logo */}
                     <div className="logo">
-                        <h2 className="text-3xl font-medium text-black">Flo.</h2>
+                        <h2 className="text-3xl font-medium text-text-primary">Flo.</h2>
                     </div>
 
                     {/* Desktop Nav */}
@@ -86,7 +88,7 @@ function Header() {
                                     <a
                                         href={link.href}
                                         onClick={(e) => handleNavClick(e, link.href)}
-                                        className="text-sm! font-medium! text-secondary! transition-colors duration-200"
+                                        className="text-sm! font-medium! text-text-secondary! transition-colors duration-200"
                                     >
                                         {link.label}
                                     </a>
@@ -103,7 +105,7 @@ function Header() {
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.4, duration: 0.35 }}
                     >
-                        <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-black px-4! py-2! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg">
+                        <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg">
                             Get Started
                         </button>
                     </motion.div>
@@ -115,7 +117,7 @@ function Header() {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.25, duration: 0.3 }}
                         >
-                            <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-black px-4! py-2.5! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
+                            <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
                                 Get Started
                             </button>
                         </motion.div>
@@ -160,7 +162,7 @@ function Header() {
 
                         {/* Menu panel */}
                         <motion.div
-                            className="fixed top-[70px] left-0 w-full bg-background shadow-md md:hidden z-50 rounded-br-md rounded-bl-md"
+                            className="fixed top-[70px] left-0 w-full bg-bg-app shadow-md md:hidden z-50 rounded-br-md rounded-bl-md"
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
@@ -178,7 +180,7 @@ function Header() {
                                             <a
                                                 href={link.href}
                                                 onClick={(e) => handleNavClick(e, link.href)}
-                                                className="text-lg! font-semibold! text-black! transition-colors duration-200"
+                                                className="text-lg! font-semibold! text-text-primary! transition-colors duration-200"
                                             >
                                                 {link.label}
                                             </a>

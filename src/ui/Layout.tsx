@@ -3,7 +3,7 @@ import Footer from './Footer'
 
 function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex flex-col min-h-screen bg-background">
+        <div className="flex flex-col min-h-screen bg-bg-app">
             <Header />
             <main className="pt-20">
                 {children}

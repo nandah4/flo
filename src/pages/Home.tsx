@@ -6,21 +6,21 @@ import { useEffect, useRef, useState } from "react";
 import { FaTrophy, FaBullseye, FaBrain, FaClock } from "react-icons/fa";
 
 
-import Layout from './ui/Layout'
-import bgHero from './assets/images/bg-hero.png'
+import Layout from '../ui/Layout'
+import bgHero from '../assets/images/bg-hero.png'
 // import aiAssistant from './assets/images/icon-ai-assistant.png'
-import fAIAssistant from './assets/images/assets-ai-assistant.png'
-import fNotesAi from './assets/images/f-notes-ai.png'
-import fNotesTask from './assets/images/assets-task-management.png'
-import fNotesFlashcard from './assets/images/assets-flashcards.png'
-import fPomodoro from './assets/images/assets-pomodoro.png'
+import fAIAssistant from '../assets/images/assets-ai-assistant.png'
+import fNotesAi from '../assets/images/f-notes-ai.png'
+import fNotesTask from '../assets/images/assets-task-management.png'
+import fNotesFlashcard from '../assets/images/assets-flashcards.png'
+import fPomodoro from '../assets/images/assets-pomodoro.png'
 
 
-import testimonial1 from './assets/images/testi-1.jpeg'
-import testimonial2 from './assets/images/testi-2.jpeg'
-import testimonial3 from './assets/images/testi-3.jpeg'
-import testimonial4 from './assets/images/testi-4.jpeg'
-import testimonial5 from './assets/images/testi-5.jpeg'
+import testimonial1 from '../assets/images/testi-1.jpeg'
+import testimonial2 from '../assets/images/testi-2.jpeg'
+import testimonial3 from '../assets/images/testi-3.jpeg'
+import testimonial4 from '../assets/images/testi-4.jpeg'
+import testimonial5 from '../assets/images/testi-5.jpeg'
 
 
 import {
@@ -31,7 +31,7 @@ import {
     FiEdit3
 } from "react-icons/fi";
 
-import whyChooseUsImage from './assets/images/why-choose-us.png'
+import whyChooseUsImage from '../assets/images/why-choose-us.png'
 
 const emojis = ["📚", "📝", "💻", "🎓", "✏️"];
 
@@ -101,8 +101,8 @@ function HowToUseSteps() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12" ref={containerRef}>
             {/* Title and description */}
             <div className="hidden md:flex md:col-span-2 flex-col justify-start pt-1">
-                <h2 className="text-3xl lg:text-4xl font-medium text-black mb-4 text-left">Get Started in Minutes.</h2>
-                <p className="text-sm sm:text-base w-[80%] text-secondary text-left">
+                <h2 className="text-3xl lg:text-4xl font-medium text-text-primary mb-4 text-left">Get Started in Minutes.</h2>
+                <p className="text-sm sm:text-base w-[80%] text-text-secondary text-left">
                     From sign-up to your first smart note — Flo makes it effortless. Here's how.
                 </p>
             </div>
@@ -142,7 +142,7 @@ function HowToUseSteps() {
                                     {step.icon}
                                 </div>
                                 <div className="flex flex-col gap-1.5">
-                                    <h4 className="text-base sm:text-lg font-medium text-black">{step.title}</h4>
+                                    <h4 className="text-base sm:text-lg font-medium text-text-primary">{step.title}</h4>
                                     <p className="text-sm text-gray-500 leading-relaxed">{step.description}</p>
                                 </div>
                             </motion.div>
@@ -215,7 +215,7 @@ function TestimonialsCarousel() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -16 }}
                         transition={{ duration: 0.4, ease: "easeInOut" }}
-                        className="text-center max-w-4xl text-xl sm:text-2xl md:text-3xl font-normal text-secondary leading-snug px-4"
+                        className="text-center max-w-4xl text-xl sm:text-2xl md:text-3xl font-normal text-text-secondary leading-snug px-4"
                     >
                         "{current.quote}"
                     </motion.p>
@@ -230,7 +230,7 @@ function TestimonialsCarousel() {
                         transition={{ duration: 0.3 }}
                         className="flex flex-col items-center gap-0.5 mt-14"
                     >
-                        <span className="text-sm sm:text-base lg:text-lg font-medium text-black">{current.name}</span>
+                        <span className="text-sm sm:text-base lg:text-lg font-medium text-text-primary">{current.name}</span>
                         <span className="text-xs sm:text-sm lg:text-base text-gray-400">{current.school}</span>
                     </motion.div>
                 </AnimatePresence>
@@ -287,7 +287,7 @@ function Home() {
             <section id="hero" className="relative px-6 md:px-10 w-full pt-14 min-h-[70vh] md:h-screen flex flex-col items-center">
                 {/* Hero Background Elements */}
                 <div className="absolute -bottom-25 left-0 right-0 w-full h-full z-0 pointer-events-none">
-                    <div className="absolute inset-0 bg-linear-to-t from-transparent to-background h-10 z-10"></div>
+                    <div className="absolute inset-0 bg-linear-to-t from-transparent to-bg-app h-10 z-10"></div>
                     <img
                         src={bgHero}
                         alt="Hero Background"
@@ -303,7 +303,7 @@ function Home() {
                 >
                     {/* Badge */}
                     <motion.div variants={fadeUp}>
-                        <span className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-gray-200 bg-white text-secondary-app  text-xs font-semibold tracking-wide uppercase text-center">
+                        <span className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-gray-200 bg-white text-secondary  text-xs font-medium tracking-wide uppercase text-center">
                             <FaTrophy className="md:text-md text-xs shrink-0" />
                             1st Student Productivity Tool
                         </span>
@@ -313,7 +313,7 @@ function Home() {
                         {/* Heading */}
                         <motion.h1
                             variants={fadeUp}
-                            className="font-medium text-center text-black text-4xl! sm:text-5xl! md:text-[3.5rem]! leading-[1.2] md:leading-[1.1] tracking-tight"
+                            className="font-medium text-center text-text-primary text-4xl! sm:text-5xl! md:text-[3.5rem]! leading-[1.2] md:leading-[1.1] tracking-tight"
                         >
                             Take C
                             <span className="relative inline-flex text-3xl sm:text-4xl items-center justify-center bg-linear-to-t from-primary to-primary/50 border border-primary text-white mx-1 sm:mx-1.5 h-12 w-12 sm:h-16 sm:w-16 rounded-xl sm:rounded-2xl rotate-4 overflow-hidden"
@@ -338,17 +338,17 @@ function Home() {
                         {/* Description */}
                         <motion.p
                             variants={fadeUp}
-                            className="text-center text-sm sm:text-base text-secondary px-4 md:px-0"
+                            className="text-center text-sm sm:text-base text-text-secondary px-4 md:px-0"
                         >
-                            Flow is your all-in-one productivity tool built for students. Plan
+                            Flo is your all-in-one productivity tool built for students. Plan
                             assignments, track deadlines, manage daily tasks, and never miss what
                             matters most.
                         </motion.p>
                     </div>
 
                     <motion.div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4 px-4 sm:px-0">
-                        <button className="w-full sm:w-auto bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-black px-6! py-3.5! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg!">Try Flow Now</button>
-                        <button className="w-full sm:w-auto bg-white border! border-gray-200! text-black px-6! py-3.5! text-sm! font-medium! cursor-pointer! hover:scale-105 transition-all duration-300 rounded-lg!">Watch Video</button>
+                        <button className="w-full sm:w-auto bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-6! py-3.5! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg!">Try Flo Now</button>
+                        <button className="w-full sm:w-auto bg-white border! border-gray-200! text-text-primary px-6! py-3.5! text-sm! font-medium! cursor-pointer! hover:scale-105 transition-all duration-300 rounded-lg!">Watch Video</button>
                     </motion.div>
                 </motion.div>
 
@@ -366,7 +366,7 @@ function Home() {
             {/* Section How We Help You */}
             <section id="features" className="mt-16 sm:mt-24 px-6 md:px-10 mx-auto">
                 <div className="2xl:max-w-7xl  mx-auto">
-                    <h2 className="text-3xl sm:text-4xl font-medium text-black mb-8 sm:mb-10 text-center md:text-left">How Flo Helps You Stay on Track.</h2>
+                    <h2 className="text-3xl sm:text-4xl font-medium text-text-primary mb-8 sm:mb-10 text-center md:text-left">How Flo Helps You Stay on Track.</h2>
 
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4">
@@ -381,7 +381,7 @@ function Home() {
                                     />
                                 </div>
                                 <div className="p-5 sm:p-6 lg:p-8">
-                                    <h4 className="text-lg sm:text-xl font-medium text-black mb-2 sm:mb-3 text-center lg:text-left">Your 24/7 Academic Assistant</h4>
+                                    <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Your 24/7 Academic Assistant</h4>
                                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-center lg:text-left">Stuck on an assignment? Need guidance? Flo's AI Assistant helps you brainstorm ideas, clarify tasks, and stay on track anytime you need support.</p>
                                 </div>
                             </div>
@@ -402,8 +402,8 @@ function Home() {
 
                                 </div>
                                 <div className="p-5 sm:p-6 lg:p-8">
-                                    <h4 className="text-lg sm:text-xl font-medium text-black mb-2 sm:mb-3 text-center lg:text-left">Smart Notes That Think With You</h4>
-                                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-center lg:text-left">Write notes manually or upload your PDF and Word files to instantly generate summaries and AI-powered reviews. Flow helps you understand faster, organize better, and study smarter.</p>
+                                    <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Smart Notes That Think With You</h4>
+                                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-center lg:text-left">Write notes manually or upload your PDF and Word files to instantly generate summaries and AI-powered reviews. Flo helps you understand faster, organize better, and study smarter.</p>
                                 </div>
                             </div>
                         </div>
@@ -422,8 +422,8 @@ function Home() {
 
                                 </div>
                                 <div className="p-5 sm:p-6 lg:p-8">
-                                    <h4 className="text-lg sm:text-xl font-medium text-black mb-2 sm:mb-3 text-center lg:text-left">Plan Every Task with Clarity</h4>
-                                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-center lg:text-left">Add tasks manually or describe what you need to do—Flow helps you break them down into clear steps.</p>
+                                    <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Plan Every Task with Clarity</h4>
+                                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-center lg:text-left">Add tasks manually or describe what you need to do—Flo helps you break them down into clear steps.</p>
                                 </div>
                             </div>
 
@@ -447,7 +447,7 @@ function Home() {
 
                                 </div>
                                 <div className="p-5 sm:p-6 lg:p-8">
-                                    <h4 className="text-lg sm:text-xl font-medium text-black mb-2 sm:mb-3 text-center lg:text-left">Focus Deep. Finish Faster.</h4>
+                                    <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Focus Deep. Finish Faster.</h4>
                                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-center lg:text-left">Use the built-in Pomodoro timer to stay focused and productive.</p>
                                 </div>
                             </div>
@@ -467,7 +467,7 @@ function Home() {
 
                                 </div>
                                 <div className="p-5 sm:p-6 lg:p-8">
-                                    <h4 className="text-lg sm:text-xl font-medium text-black mb-2 sm:mb-3 text-center lg:text-left">Turn Notes into Flashcards Instantly</h4>
+                                    <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Turn Notes into Flashcards Instantly</h4>
                                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-center lg:text-left">Transform your notes into ready-to-use flashcards with one click.</p>
                                 </div>
                             </div>
@@ -483,8 +483,8 @@ function Home() {
             <section className="mt-20 sm:mt-32 px-6 md:px-10">
                 <div className="2xl:max-w-7xl mx-auto">
                     <div className="flex flex-col items-center mb-12 md:mb-20">
-                        <h2 className="text-3xl sm:text-4xl font-medium text-black mb-4 text-center">Why Choose Flo?</h2>
-                        <p className="text-center max-w-2xl text-sm sm:text-base text-secondary px-4 md:px-0">
+                        <h2 className="text-3xl sm:text-4xl font-medium text-text-primary mb-4 text-center">Why Choose Flo?</h2>
+                        <p className="text-center max-w-2xl text-sm sm:text-base text-text-secondary px-4 md:px-0">
                             Experience a productivity tool designed specifically for students, bringing everything you need into one smart platform.
                         </p>
                     </div>
@@ -497,8 +497,8 @@ function Home() {
                         </div>
                         {/* Features */}
                         {[
-                            { Icon: FaBullseye, title: "Built for Students, Not Just Users", desc: "Flow is designed specifically for academic life—assignments, deadlines, exams, and daily campus routines. Everything fits the way students actually work." },
-                            { Icon: FaBrain, title: "Smarter Productivity with AI", desc: "Flow doesn't just store your tasks — it helps you prioritize, organize, and stay focused." },
+                            { Icon: FaBullseye, title: "Built for Students, Not Just Users", desc: "Flo is designed specifically for academic life—assignments, deadlines, exams, and daily campus routines. Everything fits the way students actually work." },
+                            { Icon: FaBrain, title: "Smarter Productivity with AI", desc: "Flo doesn't just store your tasks — it helps you prioritize, organize, and stay focused." },
                             { Icon: FaClock, title: "Simple, Clean, and Distraction-Free", desc: "Built-in Pomodoro timers and distraction-free modes to maximize your study sessions." },
                         ].map(({ Icon, title, desc }, i) => (
                             <motion.div
@@ -512,7 +512,7 @@ function Home() {
                                 <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center mb-3">
                                     <Icon className="text-primary text-xl" />
                                 </div>
-                                <h4 className="font-medium text-black text-base mb-2">{title}</h4>
+                                <h4 className="font-medium text-text-primary text-base mb-2">{title}</h4>
                                 <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
                             </motion.div>
                         ))}
@@ -561,8 +561,8 @@ function Home() {
                                 <div className="w-10 h-10 md:w-11 md:h-11 rounded-lg bg-primary/20 flex items-center justify-center mb-3">
                                     <FaBullseye className="text-primary text-lg md:text-xl" />
                                 </div>
-                                <h4 className="font-medium text-black mb-2 text-sm md:text-base lg:text-lg">Built for Students, Not Just Users</h4>
-                                <p className="text-xs md:text-sm text-gray-500 leading-relaxed">Flow is designed specifically for academic life—assignments, deadlines, exams, and daily campus routines. Everything fits the way students actually work.</p>
+                                <h4 className="font-medium text-text-primary mb-2 text-sm md:text-base lg:text-lg">Built for Students, Not Just Users</h4>
+                                <p className="text-xs md:text-sm text-gray-500 leading-relaxed">Flo is designed specifically for academic life—assignments, deadlines, exams, and daily campus routines. Everything fits the way students actually work.</p>
                             </motion.div>
 
                             {/* Feature 2: Top Center */}
@@ -583,8 +583,8 @@ function Home() {
                                 <div className="w-10 h-10 md:w-11 md:h-11 rounded-lg bg-primary/20 flex items-center justify-center mb-3">
                                     <FaBrain className="text-primary text-lg md:text-xl" />
                                 </div>
-                                <h4 className="font-medium text-black mb-2 text-sm md:text-base lg:text-lg">Smarter Productivity with AI</h4>
-                                <p className="text-xs md:text-sm text-gray-500 leading-relaxed">Flow doesn't just store your tasks — it helps you prioritize, organize, and stay focused.</p>
+                                <h4 className="font-medium text-text-primary mb-2 text-sm md:text-base lg:text-lg">Smarter Productivity with AI</h4>
+                                <p className="text-xs md:text-sm text-gray-500 leading-relaxed">Flo doesn't just store your tasks — it helps you prioritize, organize, and stay focused.</p>
                             </motion.div>
 
                             {/* Feature 3: Right */}
@@ -604,7 +604,7 @@ function Home() {
                                 <div className="w-10 h-10 md:w-11 md:h-11 rounded-lg bg-primary/20 flex items-center justify-center mb-3">
                                     <FaClock className="text-primary text-lg md:text-xl" />
                                 </div>
-                                <h4 className="font-medium text-black mb-2 text-sm md:text-base lg:text-lg">Simple, Clean, and Distraction-Free</h4>
+                                <h4 className="font-medium text-text-primary mb-2 text-sm md:text-base lg:text-lg">Simple, Clean, and Distraction-Free</h4>
                                 <p className="text-xs md:text-sm text-gray-500 leading-relaxed">Built-in Pomodoro timers and distraction-free modes to maximize your study sessions.</p>
                             </motion.div>
                         </div>
@@ -617,8 +617,8 @@ function Home() {
                 <div className="2xl:max-w-7xl mx-auto">
                     {/* Mobile-only header*/}
                     <div className="md:hidden flex flex-col items-center mb-10">
-                        <h2 className="text-3xl sm:text-4xl font-medium text-black mb-4 text-center">Get Started in Minutes.</h2>
-                        <p className="text-center max-w-2xl text-sm sm:text-base text-secondary">
+                        <h2 className="text-3xl sm:text-4xl font-medium text-text-primary mb-4 text-center">Get Started in Minutes.</h2>
+                        <p className="text-center max-w-2xl text-sm sm:text-base text-text-secondary">
                             From sign-up to your first smart note — Flo makes it effortless. Here's how.
                         </p>
                     </div>
@@ -632,7 +632,7 @@ function Home() {
             <section id="testimonials" className="mt-20 sm:mt-32 px-6 md:px-10">
                 <div className="2xl:max-w-7xl mx-auto">
                     <h2
-                        className="text-3xl sm:text-4xl font-medium text-black text-center"
+                        className="text-3xl sm:text-4xl font-medium text-text-primary text-center"
                     >
                         Loved by Students Everywhere
                     </h2>
