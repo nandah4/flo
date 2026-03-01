@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, Tag, Plus, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, AlignLeft, Tag, Plus, Check } from 'lucide-react';
 import RichTextEditor from './RichTextEditor';
 
 interface AddNoteModalProps {
@@ -28,12 +29,10 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
     const [preview, setPreview] = useState(initialPreview);
     const [category, setCategory] = useState(initialCategory);
 
-    // Dropdown state
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [categorySearch, setCategorySearch] = useState('');
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // Update state when modal opens with new initial values
     useEffect(() => {
         if (isOpen) {
             setTitle(initialTitle);
@@ -45,7 +44,6 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
         }
     }, [isOpen, initialTitle, initialDescription, initialPreview, initialCategory]);
 
-    // Close dropdown on outside click
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -56,10 +54,8 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const handleSaveAndClose = () => {
-        // Only save if there's actual content
+    const handleSave = () => {
         if (title.trim() || preview.trim()) {
-            // Provide default title if empty but has content
             const finalTitle = title.trim() || 'Untitled Note';
             onSave(finalTitle, preview, category.trim() || 'General', description.trim());
         }
@@ -69,7 +65,6 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
     const filteredCategories = availableCategories.filter(c =>
         c.toLowerCase().includes(categorySearch.toLowerCase())
     );
-
     const isExactMatch = availableCategories.some(c => c.toLowerCase() === categorySearch.trim().toLowerCase());
     const canCreateNew = categorySearch.trim().length > 0 && !isExactMatch;
 
@@ -79,115 +74,166 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
         setCategorySearch('');
     };
 
-    // We keep it mounted to allow the CSS transition to play out smoothly
-    // but disable pointer events and hide visually when closed
     return (
-        <div className={`fixed inset-0 z-50 ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-            {/* Backdrop */}
-            <div
-                className={`absolute inset-0 bg-black/20 backdrop-blur-[2px] transition-opacity duration-500 ease-out ${isOpen ? 'opacity-100' : 'opacity-0'}`}
-                onClick={handleSaveAndClose}
-            />
+        <AnimatePresence>
+            {isOpen && (
+                <>
+                    {/* Overlay */}
+                    <motion.div
+                        key="overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="fixed inset-0 bg-black/60 z-40"
+                        onClick={handleSave}
+                    />
 
-            {/* Slide-over panel */}
-            <div
-                className={`absolute inset-y-0 right-0 w-full md:w-[600px] bg-white shadow-2xl border-l border-slate-100 flex flex-col
-                transform transition-transform duration-500 ease-out will-change-transform
-                ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
-            >
-                <div className="flex justify-between items-center p-6 border-b border-slate-100">
-                    <div className="flex items-center space-x-2">
-                        <button
-                            onClick={handleSaveAndClose}
-                            className="text-text-secondary hover:bg-bg-app p-1.5 rounded-lg transition-colors flex items-center justify-center -ml-2"
-                        >
-                            <ChevronRight size={24} />
-                        </button>
-                        <h2 className="text-xl font-bold text-text-primary capitalize">
-                            {initialTitle ? 'Edit Note' : 'New Note'}
-                        </h2>
-                    </div>
-                    <span className="text-sm font-medium text-slate-400 flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
-                        <Check size={14} className="text-secondary" />
-                        <span>Auto-saved</span>
-                    </span>
-                </div>
+                    {/* Drawer — slides from right on md+, centered modal on mobile */}
+                    <motion.div
+                        key="drawer"
+                        initial={{ opacity: 0, x: '100%' }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: '100%' }}
+                        transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+                        className={[
+                            'fixed z-50 bg-bg-app shadow-2xl flex flex-col mr-2 my-2',
+                            'md:inset-y-0 md:right-0 md:w-[560px] md:rounded-xl',
+                            'max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[90vh]',
+                        ].join(' ')}
+                    >
+                        {/* Header */}
+                        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 shrink-0">
+                            <div>
+                                <h3 className="md:text-lg text-base font-medium text-gray-900">
+                                    {initialTitle ? 'Edit Note' : 'Add New Note'}
+                                </h3>
+                                <p className="text-sm text-text-secondary mt-0.5">
+                                    {initialTitle ? 'Make changes to your note below.' : 'Fill in the details below to create a note.'}
+                                </p>
+                            </div>
+                            <button
+                                onClick={onClose}
+                                className="w-8 h-8 rounded-lg flex items-center justify-center text-text-secondary hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                            >
+                                <X size={18} />
+                            </button>
+                        </div>
 
-                <div className="flex-none flex flex-col px-8 pt-8 pb-4 space-y-6 z-10">
-                    {/* Category Selector */}
-                    <div className="relative flex items-center" ref={dropdownRef}>
-                        <button
-                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                            className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 text-sm font-semibold text-text-secondary transition-colors"
-                        >
-                            <Tag size={14} className={category ? "text-primary" : ""} />
-                            <span>{category || 'Add Category...'}</span>
-                        </button>
+                        {/* Scrollable form body */}
+                        <div className="flex flex-col flex-1 overflow-y-auto">
+                            <div className="flex flex-col gap-5 px-6 py-4">
 
-                        {/* Animated Dropdown Menu */}
-                        {isDropdownOpen && (
-                            <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                                <div className="p-2 border-b border-slate-50 relative">
+                                {/* Title */}
+                                <div>
+                                    <label className="text-sm font-medium text-text-primary tracking-wider mb-2 flex items-center gap-2">
+                                        <AlignLeft size={12} /> Title <span className="text-red-500">*</span>
+                                    </label>
                                     <input
-                                        type="text"
-                                        placeholder="Search or create..."
-                                        value={categorySearch}
-                                        onChange={(e) => setCategorySearch(e.target.value)}
-                                        className="w-full bg-slate-50 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 text-text-primary placeholder:text-slate-400"
-                                        autoFocus
+                                        required
+                                        value={title}
+                                        onChange={e => setTitle(e.target.value)}
+                                        placeholder="e.g. Calculus III Notes"
+                                        className="w-full text-xs text-gray-700 font-normal placeholder:text-gray-300 bg-white border border-gray-200 rounded-lg px-4 py-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                                     />
                                 </div>
-                                <div className="max-h-[200px] overflow-y-auto p-2">
-                                    {canCreateNew && (
-                                        <button
-                                            onClick={() => handleSelectCategory(categorySearch.trim())}
-                                            className="w-full flex items-center space-x-2 px-3 py-2 rounded-xl text-sm text-text-primary hover:bg-primary/10 transition-colors text-left font-medium"
-                                        >
-                                            <Plus size={14} className="text-primary" />
-                                            <span className="truncate">Create "{categorySearch.trim()}"</span>
-                                        </button>
-                                    )}
 
-                                    {filteredCategories.length > 0 ? (
-                                        <div className="space-y-0.5 mt-1">
-                                            {filteredCategories.map(cat => (
-                                                <button
-                                                    key={cat}
-                                                    onClick={() => handleSelectCategory(cat)}
-                                                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm text-text-primary hover:bg-slate-50 transition-colors text-left"
-                                                >
-                                                    <span className="truncate flex-1 font-medium">{cat}</span>
-                                                    {category === cat && <Check size={14} className="text-primary shrink-0" />}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    ) : !canCreateNew && (
-                                        <div className="px-3 py-4 text-center text-sm text-slate-400">
-                                            No categories found
-                                        </div>
-                                    )}
+                                {/* Category */}
+                                <div>
+                                    <label className="text-sm font-medium text-text-primary tracking-wider mb-2 flex items-center gap-2">
+                                        <Tag size={12} /> Category
+                                    </label>
+                                    <div className="relative" ref={dropdownRef}>
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                            className={`w-full text-left text-xs font-normal bg-white border border-gray-200 rounded-lg px-4 py-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all flex items-center justify-between
+                                                ${category ? 'text-gray-700' : 'text-gray-300'}`}
+                                        >
+                                            <span>{category || 'Select or create a category...'}</span>
+                                            <svg className={`w-4 h-4 text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                                        </button>
+
+                                        {isDropdownOpen && (
+                                            <div className="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                                                <div className="p-2 border-b border-gray-50">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Search or create..."
+                                                        value={categorySearch}
+                                                        onChange={e => setCategorySearch(e.target.value)}
+                                                        className="w-full bg-gray-50 rounded-lg px-3 py-2 text-xs focus:outline-none text-gray-700 placeholder:text-gray-400"
+                                                        autoFocus
+                                                    />
+                                                </div>
+                                                <div className="max-h-[180px] overflow-y-auto p-1.5">
+                                                    {canCreateNew && (
+                                                        <button
+                                                            onClick={() => handleSelectCategory(categorySearch.trim())}
+                                                            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-gray-700 hover:bg-primary/5 transition-colors text-left font-medium"
+                                                        >
+                                                            <Plus size={13} className="text-primary" />
+                                                            <span>Create "{categorySearch.trim()}"</span>
+                                                        </button>
+                                                    )}
+                                                    {filteredCategories.map(cat => (
+                                                        <button
+                                                            key={cat}
+                                                            onClick={() => handleSelectCategory(cat)}
+                                                            className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs text-gray-700 hover:bg-gray-50 transition-colors text-left"
+                                                        >
+                                                            <span className="font-normal">{cat}</span>
+                                                            {category === cat && <Check size={13} className="text-primary shrink-0" />}
+                                                        </button>
+                                                    ))}
+                                                    {filteredCategories.length === 0 && !canCreateNew && (
+                                                        <p className="px-3 py-3 text-center text-xs text-gray-400">No categories found</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Content label */}
+                                <div>
+                                    <label className="text-sm font-medium text-text-primary tracking-wider mb-2 flex items-center gap-2">
+                                        <AlignLeft size={12} /> Content
+                                    </label>
                                 </div>
                             </div>
-                        )}
-                    </div>
 
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Note Title"
-                        className="w-full text-4xl font-bold text-text-primary placeholder:text-slate-300 bg-transparent focus:outline-none transition-all flex-none"
-                    />
-                </div>
-                <div className="flex-1 w-full min-h-[400px] px-8 pb-8 flex flex-col">
-                    <RichTextEditor
-                        content={preview}
-                        onChange={(newContent) => setPreview(newContent)}
-                        placeholder="Start writing..."
-                    />
-                </div>
-            </div>
-        </div>
+                            {/* Rich text editor fills remaining space */}
+                            <div className="flex-1 px-6 pb-4 min-h-[200px]">
+                                <RichTextEditor
+                                    content={preview}
+                                    onChange={newContent => setPreview(newContent)}
+                                    placeholder="Start writing your note..."
+                                />
+                            </div>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="mt-auto px-6 py-5 border-t border-gray-100 flex items-center gap-3 shrink-0">
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="flex-1 py-2.5 rounded-md border border-gray-200 text-sm font-normal text-gray-500 bg-white hover:bg-gray-50 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleSave}
+                                className="flex-1 py-2.5 rounded-md bg-linear-to-t from-primary to-primary/80 text-text-primary text-sm font-normal hover:opacity-90 transition-opacity"
+                            >
+                                {initialTitle ? 'Save Changes' : 'Add Note'}
+                            </button>
+                        </div>
+                    </motion.div>
+                </>
+            )}
+        </AnimatePresence>
     );
 };
 

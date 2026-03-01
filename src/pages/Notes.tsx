@@ -1,12 +1,14 @@
-import { useState, useMemo } from 'react';
-import { Trash2 } from 'lucide-react';
+import { useState, useMemo, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trash2, Plus, Search, Send, Loader2, X, CloudUpload, Sparkles } from 'lucide-react';
 import DashboardLayout from '../ui/DashboardLayout';
-import HeaderAction from '../components/notes/HeaderAction';
 import NoteCard from '../components/notes/NoteCard';
 import FloatingAIButton from '../components/common/FloatingAIButton';
 import AddNoteModal from '../components/notes/AddNoteModal';
 import AIChatPanel from '../components/common/AIChatPanel';
 import FlashcardModal from '../components/notes/FlashcardModal';
+
+import fAIAssistant from '../assets/images/icon-ai-assistant.png';
 
 interface Note {
     id: number;
@@ -47,7 +49,6 @@ const Notes = () => {
     const [isDragOverDropzone, setIsDragOverDropzone] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
     // Flashcard state
     const [isFlashcardOpen, setIsFlashcardOpen] = useState(false);
@@ -56,6 +57,10 @@ const Notes = () => {
     // Upload & Summary Preview State
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'generating' | 'preview'>('idle');
     const [summaryPreview, setSummaryPreview] = useState<{ fileName: string, title: string, preview: string, category: string } | null>(null);
+
+    // AI prompt state
+    const [prompt, setPrompt] = useState('');
+    const [promptLoading, setPromptLoading] = useState(false);
 
     // Compute unique categories
     const availableCategories = useMemo(() => {
@@ -102,15 +107,16 @@ const Notes = () => {
         }
     };
 
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [isDraggingFile, setIsDraggingFile] = useState(false);
+
     const handleUploadFile = (file: File) => {
         setUploadStatus('generating');
-
-        // Simulate AI generation delay
         setTimeout(() => {
             setSummaryPreview({
                 fileName: file.name,
-                title: `✨ Summary: ${file.name.replace(/\.[^/.]+$/, "")}`, // Remove extension
-                preview: `AI generated summary for the uploaded document. The document covers fundamental concepts and key takeaways about ${file.name}. It highlights the core ideas and provides a structured overview.`,
+                title: `Summary: ${file.name.replace(/\.[^/.]+$/, "")}`,
+                preview: `AI generated summary for the uploaded document. The document covers fundamental concepts and key takeaways about ${file.name}.`,
                 category: "AI Summary"
             });
             setUploadStatus('preview');
@@ -119,253 +125,240 @@ const Notes = () => {
 
     const handleAddSummaryToNotes = () => {
         if (summaryPreview) {
-            const newNote: Note = {
-                id: Date.now(),
-                title: summaryPreview.title,
-                preview: summaryPreview.preview,
-                timestamp: "Just now",
-                category: summaryPreview.category
-            };
-            setNotes([newNote, ...notes]);
+            setNotes([{ id: Date.now(), title: summaryPreview.title, preview: summaryPreview.preview, timestamp: "Just now", category: summaryPreview.category }, ...notes]);
             setUploadStatus('idle');
             setSummaryPreview(null);
         }
-    };
-
-    const handleCancelSummary = () => {
-        setUploadStatus('idle');
-        setSummaryPreview(null);
     };
 
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>, noteId: number) => {
         e.dataTransfer.setData('text/plain', noteId.toString());
     };
 
-    const handleDragEnd = () => {
-        setIsDragOverDropzone(false);
-    };
-
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault(); // Necessary to allow dropping
-        setIsDragOverDropzone(true);
-    };
-
-    const handleDragLeave = () => {
-        setIsDragOverDropzone(false);
-    };
+    const handleDragEnd = () => setIsDragOverDropzone(false);
 
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         const noteId = parseInt(e.dataTransfer.getData('text/plain'), 10);
-        if (!isNaN(noteId)) {
-            setNotes(notes.filter(n => n.id !== noteId));
-        }
+        if (!isNaN(noteId)) setNotes(notes.filter(n => n.id !== noteId));
         setIsDragOverDropzone(false);
+    };
+
+    const handleGenerateFromPrompt = async () => {
+        if (!prompt.trim() || promptLoading) return;
+        setPromptLoading(true);
+        await new Promise(r => setTimeout(r, 1200));
+        const newNote: Note = {
+            id: Date.now(),
+            title: prompt.trim(),
+            preview: `AI-generated note for: "${prompt.trim()}". Add your content here.`,
+            timestamp: "Just now",
+            category: "AI"
+        };
+        setNotes(prev => [newNote, ...prev]);
+        setPrompt('');
+        setPromptLoading(false);
     };
 
     const editingNote = editingNoteId ? notes.find(n => n.id === editingNoteId) : null;
 
     return (
         <DashboardLayout>
-            <div className="p-8 lg:p-12 animate-in fade-in duration-500">
-                <div className="max-w-[1400px] mx-auto pb-24">
+            <div className="min-h-screen bg-bg-app font-sans pb-5">
 
-                    {/* Header Action Section */}
-                    <HeaderAction
-                        onAddNote={handleOpenAddNote}
-                        onUploadFile={handleUploadFile}
-                    />
+                {/* Header */}
+                <header className="px-4 md:pr-10 md:pl-0 py-5 md:py-6 flex items-center justify-between gap-3">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-text-primary">
+                        Notes
+                    </h2>
+                    <div className="flex items-center gap-3">
+                        {/* Trash dropzone */}
+                        <div
+                            className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200
+                                ${isDragOverDropzone
+                                    ? 'bg-red-500 border-red-500 text-white scale-105 shadow-lg shadow-red-500/30'
+                                    : 'bg-white border-gray-200 text-gray-400 hover:border-red-200 hover:text-red-400'
+                                }`}
+                            onDragOver={(e) => { e.preventDefault(); setIsDragOverDropzone(true); }}
+                            onDragLeave={() => setIsDragOverDropzone(false)}
+                            onDrop={handleDrop}
+                        >
+                            <Trash2 size={14} className={isDragOverDropzone ? 'animate-bounce' : ''} />
+                            <span className="hidden sm:inline">Drop to Delete</span>
+                        </div>
 
-                    {/* AI Summary Processing & Preview Section */}
-                    <div className={`transition-all duration-700 ease-in-out overflow-hidden ${uploadStatus === 'idle' ? 'max-h-0 opacity-0 mb-0' : 'max-h-[800px] opacity-100 mb-10'}`}>
-                        {uploadStatus === 'generating' && (
-                            <div className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm flex items-center justify-center space-x-4">
-                                <div className="w-6 h-6 border-4 border-slate-200 border-t-secondary rounded-full animate-spin"></div>
-                                <span className="text-slate-600 font-bold tracking-wide animate-pulse">Running AI Magic Summary...</span>
-                            </div>
-                        )}
+                        <button
+                            onClick={handleOpenAddNote}
+                            className="flex items-center gap-2 sm:w-auto bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-3! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg!"
+                        >
+                            <Plus size={16} />
+                            <span className="hidden sm:inline">New Note</span>
+                        </button>
+                    </div>
+                </header>
 
-                        {uploadStatus === 'preview' && summaryPreview && (
-                            <div className="bg-gradient-to-br from-[#FFFDF5] to-white rounded-[2.5rem] p-8 md:p-10 border border-primary/20 shadow-[0_12px_40px_rgba(255,212,0,0.1)] relative overflow-hidden animate-in fade-in slide-in-from-top-4 duration-500">
-                                {/* Decorative elements */}
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
-
-                                <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start">
-                                    <div className="flex-1">
-                                        <div className="flex items-center space-x-3 mb-4">
-                                            <div className="bg-secondary/10 p-2.5 rounded-xl text-secondary">
-                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                            </div>
-                                            <span className="text-secondary font-extrabold text-sm uppercase tracking-wider">Magic Summary Ready</span>
-                                        </div>
-                                        <h3 className="text-3xl font-extrabold text-text-primary tracking-tight mb-4">{summaryPreview.title}</h3>
-                                        <p className="text-slate-600 text-lg leading-relaxed font-medium mb-6">
-                                            {summaryPreview.preview}
-                                        </p>
-
-                                        <div className="flex flex-wrap items-center gap-4">
-                                            <button
-                                                onClick={handleAddSummaryToNotes}
-                                                className="bg-primary text-text-primary px-8 py-3.5 rounded-full font-bold shadow-[0_4px_15px_rgba(255,212,0,0.3)] hover:shadow-[0_8px_25px_rgba(255,212,0,0.4)] hover:-translate-y-0.5 transition-all duration-300"
-                                            >
-                                                Add to Notes
-                                            </button>
-                                            <button
-                                                onClick={handleCancelSummary}
-                                                className="bg-white text-slate-500 border border-slate-200 px-8 py-3.5 rounded-full font-bold hover:bg-slate-50 transition-all duration-300"
-                                            >
-                                                Discard
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    {/* Document Info Card */}
-                                    <div className="w-full md:w-72 bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex-shrink-0">
-                                        <div className="flex items-center space-x-3 mb-4">
-                                            <div className="bg-slate-50 p-3 rounded-full text-slate-400">
-                                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                            </div>
-                                            <div className="overflow-hidden">
-                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Source File</p>
-                                                <p className="text-sm font-semibold text-text-primary truncate">{summaryPreview.fileName}</p>
-                                            </div>
-                                        </div>
-                                        <div className="pt-4 border-t border-slate-50">
-                                            <p className="text-xs text-slate-500">Category</p>
-                                            <p className="text-sm font-bold text-text-primary mt-0.5">{summaryPreview.category}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+                <div className="px-4 md:pr-10 md:pl-0 pb-2">
+                    {/* AI Generate bar */}
+                    <div className="mb-5">
+                        <p className="text-sm text-gray-500 mb-3 hidden sm:block">
+                            Describe what you want to write about, and let Flo's AI draft a note for you instantly.
+                        </p>
+                        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-4 py-3 focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/10 transition-all">
+                            <img src={fAIAssistant} alt="AI" className="w-7 h-7 shrink-0" />
+                            <input
+                                value={prompt}
+                                onChange={e => setPrompt(e.target.value)}
+                                onKeyDown={e => e.key === 'Enter' && handleGenerateFromPrompt()}
+                                placeholder="Generate a note with FloAI..."
+                                className="flex-1 h-10 sm:h-14 text-sm text-gray-700 placeholder:text-gray-400 outline-none bg-transparent"
+                            />
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={handleGenerateFromPrompt}
+                                disabled={!prompt.trim() || promptLoading}
+                                className="flex items-center gap-2.5 bg-primary disabled:bg-bg-app text-text-primary disabled:text-gray-400 px-3.5 py-3 rounded-xl text-xs font-medium transition-colors shrink-0"
+                            >
+                                {promptLoading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+                                <span className="hidden sm:inline">{promptLoading ? 'Generating...' : 'Generate'}</span>
+                            </motion.button>
+                        </div>
                     </div>
 
-                    {/* Search and Filter Section */}
-                    <div className="mb-8 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-                        {/* Search Bar */}
-                        <div className="relative w-full md:w-96">
+                    {/* Upload zone */}
+                    <div
+                        onClick={() => fileInputRef.current?.click()}
+                        onDragOver={(e) => { e.preventDefault(); if (e.dataTransfer.types.includes('Files')) setIsDraggingFile(true); }}
+                        onDragLeave={() => setIsDraggingFile(false)}
+                        onDrop={(e) => { e.preventDefault(); setIsDraggingFile(false); const f = e.dataTransfer.files?.[0]; if (f) handleUploadFile(f); }}
+                        className={`mb-5 flex items-center gap-3 bg-white border rounded-xl px-4 py-3 cursor-pointer transition-all duration-200
+                            ${isDraggingFile
+                                ? 'border-secondary bg-secondary/5 shadow-md scale-[1.01]'
+                                : uploadStatus === 'generating'
+                                    ? 'border-primary/30 bg-primary/5'
+                                    : 'border-dashed border-gray-200 hover:border-primary/40 hover:bg-gray-50/50'
+                            }`}
+                    >
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            className="hidden"
+                            onChange={(e) => { const f = e.target.files?.[0]; if (f) { handleUploadFile(f); if (fileInputRef.current) fileInputRef.current.value = ''; } }}
+                            accept=".pdf,.doc,.docx,.txt"
+                        />
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${isDraggingFile ? 'bg-secondary/10 text-secondary' : 'bg-gray-100 text-gray-400'
+                            }`}>
+                            {uploadStatus === 'generating'
+                                ? <Loader2 size={15} className="animate-spin text-secondary" />
+                                : <CloudUpload size={15} />
+                            }
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm text-gray-500 font-normal">
+                                {uploadStatus === 'generating'
+                                    ? 'Running AI Magic Summary...'
+                                    : isDraggingFile
+                                        ? 'Drop to generate summary!'
+                                        : 'Upload PDF, Word or Text file to generate a magic summary'}
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-secondary shrink-0">
+                            <Sparkles size={12} />
+                            <span className="hidden sm:inline">Magic Summary</span>
+                        </div>
+                    </div>
+
+                    {/* AI Summary preview banner */}
+                    <AnimatePresence>
+                        {uploadStatus === 'preview' && summaryPreview && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -12 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -12 }}
+                                className="mb-5 bg-white border border-primary/30 rounded-xl px-5 py-4 flex items-start gap-4"
+                            >
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-xs font-semibold text-secondary uppercase tracking-wider mb-1">✨ Magic Summary Ready</p>
+                                    <p className="text-sm font-medium text-gray-800 truncate">{summaryPreview.title}</p>
+                                    <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{summaryPreview.preview}</p>
+                                </div>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <button
+                                        onClick={handleAddSummaryToNotes}
+                                        className="px-3 py-1.5 rounded-lg bg-primary text-text-primary text-xs font-medium hover:opacity-90 transition-opacity"
+                                    >
+                                        Add to Notes
+                                    </button>
+                                    <button
+                                        onClick={() => { setUploadStatus('idle'); setSummaryPreview(null); }}
+                                        className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 transition-colors"
+                                    >
+                                        <X size={14} />
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* Filter row */}
+                    <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
+                        {/* Search */}
+                        <div className="relative">
+                            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                             <input
                                 type="text"
                                 placeholder="Search notes..."
                                 value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full bg-white border border-slate-200 text-text-primary text-sm rounded-2xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all shadow-sm placeholder:text-slate-400"
+                                onChange={e => setSearchQuery(e.target.value)}
+                                className="pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 placeholder:text-gray-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all w-52"
                             />
-                            <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </div>
                         </div>
 
-                        {/* Category Filters */}
-                        <div className="flex flex-wrap gap-2 relative">
+                        {/* Category chips */}
+                        <div className="flex items-center gap-1.5 flex-wrap">
                             <button
                                 onClick={() => setSelectedCategory(null)}
-                                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${selectedCategory === null
-                                    ? 'bg-primary text-text-primary shadow-sm'
-                                    : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'
-                                    }`}
+                                className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${selectedCategory === null
+                                    ? 'bg-primary/15 text-secondary'
+                                    : 'text-gray-500 hover:text-gray-700 hover:bg-white'}`}
                             >
-                                All Notes
+                                All
                             </button>
-                            {availableCategories.slice(0, 4).map(category => (
+                            {availableCategories.map(cat => (
                                 <button
-                                    key={category}
-                                    onClick={() => setSelectedCategory(category)}
-                                    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${selectedCategory === category
-                                        ? 'bg-text-primary text-white shadow-sm'
-                                        : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'
-                                        }`}
+                                    key={cat}
+                                    onClick={() => setSelectedCategory(cat === selectedCategory ? null : cat)}
+                                    className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${selectedCategory === cat
+                                        ? 'bg-primary/15 text-secondary'
+                                        : 'text-gray-500 hover:text-gray-700 hover:bg-white'}`}
                                 >
-                                    {category}
+                                    {cat}
                                 </button>
                             ))}
-
-                            {/* Overflow Categories */}
-                            {availableCategories.length > 4 && (
-                                <div className="relative">
-                                    <button
-                                        onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
-                                        className={`px-4 py-2 rounded-full text-sm font-semibold transition-all flex items-center space-x-1 ${selectedCategory && availableCategories.indexOf(selectedCategory) >= 4
-                                            ? 'bg-text-primary text-white shadow-sm'
-                                            : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'
-                                            }`}
-                                    >
-                                        <span>
-                                            {selectedCategory && availableCategories.indexOf(selectedCategory) >= 4
-                                                ? selectedCategory
-                                                : `+${availableCategories.length - 4} More`}
-                                        </span>
-                                        <svg className={`w-4 h-4 transition-transform ${isCategoryDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </button>
-
-                                    {/* Dropdown Menu */}
-                                    {isCategoryDropdownOpen && (
-                                        <>
-                                            <div
-                                                className="fixed inset-0 z-10"
-                                                onClick={() => setIsCategoryDropdownOpen(false)}
-                                            />
-                                            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-20 animate-in fade-in slide-in-from-top-2 duration-200">
-                                                {availableCategories.slice(4).map(category => (
-                                                    <button
-                                                        key={category}
-                                                        onClick={() => {
-                                                            setSelectedCategory(category);
-                                                            setIsCategoryDropdownOpen(false);
-                                                        }}
-                                                        className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors hover:bg-slate-50 ${selectedCategory === category ? 'text-primary bg-primary/5' : 'text-text-secondary'
-                                                            }`}
-                                                    >
-                                                        {category}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                            )}
+                            <span className="ml-2 text-xs text-gray-400 font-medium">{filteredNotes.length} note{filteredNotes.length !== 1 ? 's' : ''}</span>
                         </div>
                     </div>
 
-                    {/* History Notes Section */}
-                    <section>
-                        <div className="flex items-center justify-between mb-8">
-                            <h2 className="text-3xl font-extrabold text-text-primary tracking-tight">Recent Notes</h2>
-                            <div className="flex items-center space-x-3">
-                                {/* Trash Dropzone (Always visible) */}
-                                <div
-                                    className={`px-4 py-1.5 rounded-full flex items-center space-x-2 transition-all duration-300
-                                        ${isDragOverDropzone
-                                            ? 'bg-red-500 text-white shadow-lg shadow-red-500/30 scale-105'
-                                            : 'bg-white text-slate-400 border border-slate-200 hover:border-red-200 hover:text-red-400'
-                                        }
-                                    `}
-                                    onDragOver={handleDragOver}
-                                    onDragLeave={handleDragLeave}
-                                    onDrop={handleDrop}
-                                >
-                                    <Trash2 size={16} className={isDragOverDropzone ? 'animate-bounce' : ''} />
-                                    <span className="text-sm font-bold opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto overflow-hidden transition-all hidden md:block md:w-auto md:opacity-100">Drop to Delete</span>
-                                </div>
-                                <span className="text-sm font-bold text-slate-400 bg-white px-4 py-1.5 rounded-full shadow-sm border border-slate-100 transition-all duration-300">
-                                    {filteredNotes.length} items
-                                </span>
-                            </div>
-                        </div>
-
-                        {filteredNotes.length === 0 ? (
-                            <div className="text-center py-20 text-text-secondary bg-white rounded-[2rem] border border-slate-100 border-dashed animate-in zoom-in-95 duration-300">
-                                <p className="text-lg">No notes found matching your criteria.</p>
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
-                                {filteredNotes.map((note) => (
-                                    <div
+                    {/* Notes Grid */}
+                    {filteredNotes.length === 0 ? (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-center py-24 bg-white rounded-xl border border-dashed border-gray-200"
+                        >
+                            <p className="text-sm text-gray-400 font-medium">No notes found. Create one or adjust your filters.</p>
+                        </motion.div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 pb-8">
+                            <AnimatePresence>
+                                {filteredNotes.map((note, idx) => (
+                                    <motion.div
                                         key={note.id}
-                                        className="animate-in fade-in slide-in-from-bottom-4 duration-500 fill-mode-both"
-                                        style={{ animationDelay: `${notes.findIndex(n => n.id === note.id) * 50}ms` }}
+                                        layout
+                                        initial={{ opacity: 0, y: 12 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, scale: 0.95 }}
+                                        transition={{ delay: idx * 0.04 }}
                                         onDragEnd={handleDragEnd}
                                     >
                                         <NoteCard
@@ -381,19 +374,18 @@ const Notes = () => {
                                                 setIsFlashcardOpen(true);
                                             }}
                                         />
-                                    </div>
+                                    </motion.div>
                                 ))}
-                            </div>
-                        )}
-                    </section>
-
+                            </AnimatePresence>
+                        </div>
+                    )}
                 </div>
             </div>
 
-            {/* Floating AI Assistant */}
+            {/* Floating AI */}
             <FloatingAIButton onClick={() => setIsChatOpen(true)} />
 
-            {/* Modals & Panels */}
+            {/* Modals */}
             <AddNoteModal
                 isOpen={isAddNoteModalOpen}
                 onClose={() => {
@@ -412,7 +404,6 @@ const Notes = () => {
                 onClose={() => setIsChatOpen(false)}
             />
 
-            {/* Flashcard Modal */}
             {flashcardNoteId !== null && (() => {
                 const note = notes.find(n => n.id === flashcardNoteId);
                 return note ? (
@@ -429,3 +420,4 @@ const Notes = () => {
 };
 
 export default Notes;
+

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileText, Layers } from 'lucide-react';
+import { FileText, Layers, Clock } from 'lucide-react';
 
 interface NoteCardProps {
     id: number;
@@ -26,11 +26,9 @@ const NoteCard: React.FC<NoteCardProps> = ({
 
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
         setIsDragging(true);
-
-        // Create a custom drag image that is scaled down
         const target = e.currentTarget;
         const dragImage = target.cloneNode(true) as HTMLDivElement;
-        dragImage.style.transform = 'scale(0.85)';
+        dragImage.style.transform = 'scale(0.9)';
         dragImage.style.transformOrigin = 'center';
         dragImage.style.position = 'absolute';
         dragImage.style.top = '-1000px';
@@ -40,23 +38,15 @@ const NoteCard: React.FC<NoteCardProps> = ({
         dragImage.style.height = `${rect.height}px`;
         dragImage.style.zIndex = '-1';
         document.body.appendChild(dragImage);
-
-        // Set the custom drag image
         e.dataTransfer.setDragImage(dragImage, rect.width / 2, rect.height / 2);
-
-        // Clean up the temporary node
-        setTimeout(() => {
-            document.body.removeChild(dragImage);
-        }, 0);
-
-        if (onDragStart) {
-            onDragStart(e, id);
-        }
+        setTimeout(() => document.body.removeChild(dragImage), 0);
+        if (onDragStart) onDragStart(e, id);
     };
 
-    const handleDragEnd = () => {
-        setIsDragging(false);
-    };
+    const handleDragEnd = () => setIsDragging(false);
+
+    // Strip HTML tags for plain text preview
+    const plainPreview = preview.replace(/<[^>]+>/g, '');
 
     return (
         <div
@@ -64,27 +54,26 @@ const NoteCard: React.FC<NoteCardProps> = ({
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             onClick={onClick}
-            className={`bg-white rounded-[2.5rem] p-8 h-[280px] flex flex-col justify-between group transition-all duration-500 cursor-pointer border border-slate-100/60
-                ${isDragging
-                    ? 'opacity-40 shadow-none scale-[0.98]'
-                    : 'hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] hover:border-slate-200'
-                }`}
+            className={`bg-white rounded-xl p-4 border border-gray-200 cursor-pointer group transition-all duration-200
+                ${isDragging ? 'opacity-40 shadow-none scale-[0.98]' : 'hover:-translate-y-1 hover:shadow-md'}`}
         >
-            <div className="flex justify-between items-start mb-5">
-                <div className="bg-slate-50 p-3 rounded-2xl text-slate-400 group-hover:bg-primary/10 group-hover:text-secondary transition-colors duration-500">
-                    <FileText size={22} strokeWidth={2} />
+            {/* Header row */}
+            <div className="flex items-start justify-between mb-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-secondary shrink-0">
+                    <FileText size={15} strokeWidth={2} />
                 </div>
+
                 {onGenerateFlashcard && (
                     <div className="relative">
                         <button
                             onClick={(e) => { e.stopPropagation(); onGenerateFlashcard(id); }}
-                            className="opacity-0 group-hover:opacity-100 bg-slate-50 hover:bg-primary/10 text-slate-400 hover:text-secondary p-2.5 rounded-2xl transition-all duration-300 peer"
+                            className="opacity-0 group-hover:opacity-100 w-7 h-7 flex items-center justify-center rounded-md hover:bg-gray-100 text-gray-400 hover:text-secondary transition-all duration-200 peer"
                         >
-                            <Layers size={16} strokeWidth={2} />
+                            <Layers size={14} strokeWidth={2} />
                         </button>
                         {/* Tooltip */}
-                        <div className="absolute bottom-full right-0 mb-2 pointer-events-none opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10">
-                            <div className="bg-slate-800 text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-lg whitespace-nowrap shadow-lg">
+                        <div className="absolute bottom-full right-0 mb-1.5 pointer-events-none opacity-0 peer-hover:opacity-100 transition-opacity duration-150 z-10">
+                            <div className="bg-gray-800 text-white text-[10px] font-medium px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
                                 Generate Flashcard
                             </div>
                         </div>
@@ -92,25 +81,24 @@ const NoteCard: React.FC<NoteCardProps> = ({
                 )}
             </div>
 
-            <div className="mt-2 flex-1 relative overflow-hidden flex flex-col">
-                <h3 className="font-bold text-lg text-text-primary leading-tight mb-2 group-hover:text-secondary transition-colors duration-300 line-clamp-1 tracking-tight flex-shrink-0">
-                    {title}
-                </h3>
-                <div
-                    className="text-slate-500 text-[14px] leading-relaxed opacity-90 font-medium overflow-hidden
-                    [&>p]:mb-1 [&>p:last-child]:mb-0 [&>ul]:list-disc [&>ul]:pl-4 [&>ul]:mb-1 [&>ol]:list-decimal [&>ol]:pl-4 [&>ol]:mb-1"
-                    dangerouslySetInnerHTML={{ __html: preview }}
-                />
-                {/* Fade out gradient at the bottom to handle overflow gracefully */}
-                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent pointer-events-none" />
-            </div>
+            {/* Title */}
+            <p className="text-sm font-medium text-gray-800 leading-snug mb-2 line-clamp-2">
+                {title}
+            </p>
 
-            <div className="mt-auto pt-6 border-t border-slate-50/80 flex items-center justify-between flex-shrink-0">
-                <span className="text-[11px] font-extrabold tracking-widest uppercase text-slate-400">
-                    {timestamp}
-                </span>
+            {/* Preview */}
+            <p className="text-xs text-text-secondary leading-relaxed line-clamp-2 mb-4">
+                {plainPreview}
+            </p>
+
+            {/* Footer */}
+            <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div className="flex items-center gap-1.5">
+                    <Clock size={11} className="text-text-secondary" />
+                    <span className="text-[11px] text-text-secondary font-normal">{timestamp}</span>
+                </div>
                 {category && (
-                    <span className="text-[11px] font-bold px-3.5 py-1.5 bg-slate-50 text-slate-500 rounded-full border border-slate-100 max-w-[120px] truncate transition-colors duration-300 group-hover:bg-primary group-hover:text-text-primary group-hover:border-primary/20">
+                    <span className="px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-primary/10 text-secondary">
                         {category}
                     </span>
                 )}
@@ -120,3 +108,5 @@ const NoteCard: React.FC<NoteCardProps> = ({
 };
 
 export default NoteCard;
+
+
