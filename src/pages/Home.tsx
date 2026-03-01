@@ -3,12 +3,12 @@
 
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, type Variants } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { FaTrophy, FaBullseye, FaBrain, FaClock } from "react-icons/fa";
 
 
 import Layout from '../ui/Layout'
 import bgHero from '../assets/images/bg-hero.png'
-// import aiAssistant from './assets/images/icon-ai-assistant.png'
 import fAIAssistant from '../assets/images/assets-ai-assistant.png'
 import fNotesAi from '../assets/images/f-notes-ai.png'
 import fNotesTask from '../assets/images/assets-task-management.png'
@@ -347,7 +347,11 @@ function Home() {
                     </div>
 
                     <motion.div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4 px-4 sm:px-0">
-                        <button className="w-full sm:w-auto bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-6! py-3.5! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg!">Try Flo Now</button>
+                        <Link to="/tasks" target="_blank" className="w-full sm:w-auto">
+                            <button className="w-full h-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-6! py-3.5! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg!">
+                                Try Flo Now
+                            </button>
+                        </Link>
                         <button className="w-full sm:w-auto bg-white border! border-gray-200! text-text-primary px-6! py-3.5! text-sm! font-medium! cursor-pointer! hover:scale-105 transition-all duration-300 rounded-lg!">Watch Video</button>
                     </motion.div>
                 </motion.div>

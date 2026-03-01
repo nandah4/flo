@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const navLinks = [
     { label: 'Home', href: '#hero' },
@@ -62,7 +63,7 @@ function Header() {
             <motion.header
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-br-md rounded-bl-md
                     ${isScrolled
-                        ? "bg-bg-app border-b border-gray-200"
+                        ? "bg-white border-b border-gray-200"
                         : "bg-bg-app border-b border-transparent"
                     }`}
                 initial={{ y: -40, opacity: 0 }}
@@ -88,7 +89,7 @@ function Header() {
                                     <a
                                         href={link.href}
                                         onClick={(e) => handleNavClick(e, link.href)}
-                                        className="text-sm! font-medium! text-text-secondary! transition-colors duration-200"
+                                        className="text-sm! font-normal! text-text-secondary! transition-colors duration-200"
                                     >
                                         {link.label}
                                     </a>
@@ -105,9 +106,11 @@ function Header() {
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.4, duration: 0.35 }}
                     >
-                        <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg">
-                            Get Started
-                        </button>
+                        <Link to="/tasks" target="_blank">
+                            <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg">
+                                Get Started
+                            </button>
+                        </Link>
                     </motion.div>
 
                     {/* Mobile Hamburger */}
@@ -117,9 +120,11 @@ function Header() {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.25, duration: 0.3 }}
                         >
-                            <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
-                                Get Started
-                            </button>
+                            <Link to="/tasks" target="_blank">
+                                <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
+                                    Get Started
+                                </button>
+                            </Link>
                         </motion.div>
                         <button
                             className="md:hidden flex flex-col gap-[5px] bg-transparent! border-none! cursor-pointer! p-2!"
