@@ -27,10 +27,10 @@ function Footer() {
                     <div className="md:col-span-8 flex flex-col md:items-end justify-center gap-4 mt-6 md:mt-0">
                         <h4 className="font-semibold text-text-primary text-center md:text-right">Quick Links</h4>
                         <div className="flex flex-wrap gap-x-8 gap-y-4 justify-center md:justify-end">
-                            <a href="#hero" className="text-text-secondary! hover:text-primary! transition-colors text-sm font-medium">Home</a>
-                            <a href="#features" className="text-text-secondary! hover:text-primary! transition-colors text-sm font-medium">Features</a>
-                            <a href="#how-to-use" className="text-text-secondary! hover:text-primary! transition-colors text-sm font-medium">How to Use</a>
-                            <a href="#testimonials" className="text-text-secondary! hover:text-primary! transition-colors text-sm font-medium">Testimonials</a>
+                            <a href="#hero" className="text-text-secondary! hover:text-primary! transition-colors text-sm font-normal">Home</a>
+                            <a href="#features" className="text-text-secondary! hover:text-primary! transition-colors text-sm font-normal">Features</a>
+                            <a href="#how-to-use" className="text-text-secondary! hover:text-primary! transition-colors text-sm font-normal">How to Use</a>
+                            <a href="#testimonials" className="text-text-secondary! hover:text-primary! transition-colors text-sm font-normal">Testimonials</a>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Trash2 } from 'lucide-react';
-import Sidebar from '../components/layout/Sidebar';
+import DashboardLayout from '../ui/DashboardLayout';
 import HeaderAction from '../components/notes/HeaderAction';
 import NoteCard from '../components/notes/NoteCard';
 import FloatingAIButton from '../components/common/FloatingAIButton';
@@ -161,12 +161,8 @@ const Notes = () => {
     const editingNote = editingNoteId ? notes.find(n => n.id === editingNoteId) : null;
 
     return (
-        <div className="flex h-screen bg-bg-app overflow-hidden selection:bg-primary/30 relative">
-            {/* Sidebar - Fixed */}
-            <Sidebar />
-
-            {/* Main Content - Scrollable */}
-            <main className="flex-1 h-full overflow-y-auto w-full p-8 lg:p-12 animate-in fade-in duration-500">
+        <DashboardLayout>
+            <div className="p-8 lg:p-12 animate-in fade-in duration-500">
                 <div className="max-w-[1400px] mx-auto pb-24">
 
                     {/* Header Action Section */}
@@ -383,9 +379,7 @@ const Notes = () => {
                     </section>
 
                 </div>
-            </main>
-
-
+            </div>
 
             {/* Floating AI Assistant */}
             <FloatingAIButton onClick={() => setIsChatOpen(true)} />
@@ -408,7 +402,7 @@ const Notes = () => {
                 isOpen={isChatOpen}
                 onClose={() => setIsChatOpen(false)}
             />
-        </div>
+        </DashboardLayout>
     );
 };
 
