@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -36,6 +37,16 @@ const RichTextEditor = ({ content, onChange, placeholder }: RichTextEditorProps)
             },
         },
     });
+
+    // Sync content from parent when it changes (e.g. when opening a different note)
+    useEffect(() => {
+        if (!editor) return;
+        const currentHtml = editor.getHTML();
+        const incomingContent = content || '';
+        if (currentHtml !== incomingContent) {
+            editor.commands.setContent(incomingContent);
+        }
+    }, [content, editor]);
 
     if (!editor) {
         return null;
