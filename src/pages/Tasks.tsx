@@ -667,6 +667,7 @@ export default function Tasks() {
     const [activeView, setActiveView] = useState("Kanban");
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [calendarClickedDate, setCalendarClickedDate] = useState("");
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     // Interaction states
     const [drawerColumnId, setDrawerColumnId] = useState<string>("todo");
