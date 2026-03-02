@@ -713,7 +713,7 @@ export default function Tasks() {
                                 whileTap={{ scale: 0.95 }}
                                 onClick={handleGenerate}
                                 disabled={!prompt.trim() || loading}
-                                className="flex items-center gap-2.5 bg-primary disabled:bg-bg-app text-text-primary disabled:text-gray-400 px-3.5 py-3 rounded-xl text-xs font-medium transition-colors shrink-0"
+                                className="flex items-center gap-2.5 bg-primary disabled:bg-bg-app text-text-primary disabled:text-gray-400 px-3.5 py-3 rounded-xl text-xs font-normal transition-colors shrink-0"
                             >
                                 {loading ? (
                                     <Loader2 size={16} className="animate-spin" />

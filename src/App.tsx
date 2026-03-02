@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Notes from './pages/Notes';
 import Tasks from './pages/Tasks';
+import Timer from './pages/Timer';
 import Home from './pages/Home';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/notes" element={<Notes />} />
         <Route path="/tasks" element={<Tasks />} />
+        <Route path="/timer" element={<Timer />} />
       </Routes>
     </BrowserRouter>
   );
