@@ -87,6 +87,7 @@ function AddTaskDrawer({
     onAdd,
     defaultColumnId = "todo",
     editingCard = null,
+    defaultDate = "",
 }: {
     open: boolean;
     onClose: () => void;
@@ -94,6 +95,7 @@ function AddTaskDrawer({
     onAdd: (columnId: string, card: TaskCard, isEdit: boolean) => void;
     defaultColumnId?: string;
     editingCard?: TaskCard | null;
+    defaultDate?: string;
 }) {
     const [form, setForm] = useState<NewTaskForm>({
         title: "", description: "", priority: "", columnId: defaultColumnId, date: "", time: "",
@@ -120,13 +122,13 @@ function AddTaskDrawer({
                     time: editingCard.time || "",
                 });
             } else {
-                setForm({ title: "", description: "", priority: "", columnId: defaultColumnId, date: "", time: "" });
+                setForm({ title: "", description: "", priority: "", columnId: defaultColumnId, date: defaultDate, time: "" });
             }
         }
     }, [open, editingCard, defaultColumnId, columns]);
 
     function reset() {
-        setForm({ title: "", description: "", priority: "", columnId: defaultColumnId, date: "", time: "" });
+        setForm({ title: "", description: "", priority: "", columnId: defaultColumnId, date: defaultDate, time: "" });
     }
 
     function handleClose() { reset(); onClose(); }
@@ -164,7 +166,7 @@ function AddTaskDrawer({
                         onClick={handleClose}
                     />
 
-                    {/* Panel — slides from right on md+, centered modal on mobile */}
+                    {/* Panel */}
                     <motion.div
                         key="drawer"
                         initial={{ opacity: 0, x: "100%" }}
@@ -173,14 +175,12 @@ function AddTaskDrawer({
                         transition={{ type: "spring", stiffness: 320, damping: 32 }}
                         className={[
                             "fixed z-50 bg-bg-app shadow-2xl flex flex-col mr-2 my-2",
-                            // Desktop: right-side drawer
                             "md:inset-y-0 md:right-0 md:w-[520px] md:rounded-xl",
-                            // Mobile/tablet: centered modal
                             "max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[90vh]",
                         ].join(" ")}
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 shrink-0">
+                        <div className="flex items-center justify-between px-6 py-5 shrink-0">
                             <div>
                                 <h3 className="md:text-lg text-base font-medium text-gray-900">
                                     {editingCard ? "Edit Task" : "Add New Task"}
@@ -189,7 +189,7 @@ function AddTaskDrawer({
                             </div>
                             <button
                                 onClick={handleClose}
-                                className="w-8 h-8 rounded-lg flex items-center justify-center text-shadow-text-secondary hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                                className="w-8 h-8 rounded-lg flex items-center justify-center text-text-secondary hover:text-gray-700 hover:bg-gray-100 transition-colors"
                             >
                                 <X size={18} />
                             </button>
@@ -197,44 +197,44 @@ function AddTaskDrawer({
 
                         {/* Scrollable form body */}
                         <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-y-auto">
-                            <div className="flex flex-col gap-5 px-6 py-4">
+                            <div className="flex flex-col gap-4 px-6 py-4">
 
                                 {/* Title */}
                                 <div>
-                                    <label className=" text-sm font-medium text-text-primary tracking-wider mb-2 flex items-center gap-2"> <AlignLeft size={12} /> Title <span className="text-red-500">*</span></label>
+                                    <label className=" text-xs font-semibold text-text-primary tracking-wider mb-2 flex items-center uppercase gap-2"> <span className="h-1.5 w-1.5 rounded bg-red-500"></span> Title </label>
                                     <input
                                         required
                                         value={form.title}
                                         onChange={set("title")}
                                         placeholder="e.g. Design homepage hero section"
-                                        className="w-full text-xs text-gray-700 font-normal placeholder:text-gray-300 bg-white border border-gray-200 rounded-lg px-4 py-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
+                                        className="w-full text-xs text-gray-700 font-normal placeholder:text-text-secondary bg-white border border-gray-200 rounded-lg px-4 py-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
                                     />
                                 </div>
 
                                 {/* Description */}
                                 <div>
-                                    <label className=" text-sm font-medium text-text-primary tracking-wider mb-2 flex items-center gap-2"> <AlignLeft size={12} /> Description <span className="text-red-500">*</span></label>
+                                    <label className=" text-xs font-semibold text-text-primary tracking-wider mb-2 flex items-center gap-2 uppercase">  Description </label>
                                     <textarea
                                         rows={3}
                                         value={form.description}
                                         onChange={set("description")}
                                         placeholder="Add more context or details..."
-                                        className="w-full text-xs text-gray-700 font-normal placeholder:text-gray-300 bg-white border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"
+                                        className="w-full text-xs text-gray-700 font-normal placeholder:text-text-secondary bg-white border border-gray-200 rounded-lg px-4 py-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"
                                     />
                                 </div>
 
                                 {/* Priority */}
                                 <div>
-                                    <label className="text-sm font-medium text-text-primary tracking-wider mb-2 flex items-center gap-2"> <Target size={12} /> Priority <span className="text-red-500">*</span></label>
+                                    <label className="text-xs font-semibold text-text-primary tracking-wider mb-2 flex items-center uppercase gap-2"><span className="h-1.5 w-1.5 rounded bg-red-500"></span>  Priority</label>
                                     <div className="flex gap-2 flex-wrap">
                                         {PRIORITY_OPTIONS.map((opt) => (
                                             <button
                                                 key={opt.value}
                                                 type="button"
                                                 onClick={() => setForm((p) => ({ ...p, priority: p.priority === opt.value ? "" : opt.value }))}
-                                                className={`px-3 bg-white py-1.5 rounded-md text-xs font-normal uppercase tracking-wider border transition-all ${form.priority === opt.value
+                                                className={`px-3 bg-white py-1.5 rounded-md text-xs font-normal border transition-all ${form.priority === opt.value
                                                     ? `${opt.bg} ${opt.color} border-current`
-                                                    : "border-gray-200 text-gray-400 hover:border-gray-300"
+                                                    : "border-gray-200 text-text-secondary hover:border-gray-300"
                                                     }`}
                                             >
                                                 {opt.value}
@@ -245,16 +245,16 @@ function AddTaskDrawer({
 
                                 {/* Status / Column */}
                                 <div>
-                                    <label className=" text-sm font-medium text-text-primary tracking-wider mb-2 flex items-center gap-2"> Status <span className="text-red-500">*</span></label>
+                                    <label className=" text-xs font-semibold text-text-primary tracking-wider mb-2 flex items-center uppercase gap-2"><span className="h-1.5 w-1.5 rounded bg-red-500"></span> Status</label>
                                     <div className="flex gap-2 flex-wrap">
                                         {columns.map((col) => (
                                             <button
                                                 key={col.id}
                                                 type="button"
                                                 onClick={() => setForm((p) => ({ ...p, columnId: col.id }))}
-                                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded  bg-white text-xs font-medium border transition-all ${form.columnId === col.id
-                                                    ? "border-gray-300 text-gray-800"
-                                                    : "border-gray-200 text-gray-400 hover:border-gray-300"
+                                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded  bg-white text-xs font-normal border transition-all ${form.columnId === col.id
+                                                    ? `border-secondary text-gray-800`
+                                                    : "border-gray-200 text-text-secondary hover:border-gray-300"
                                                     }`}
                                             >
                                                 <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: col.color }} />
@@ -267,7 +267,7 @@ function AddTaskDrawer({
                                 {/* Date & Time */}
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label className=" text-sm font-medium text-text-primary tracking-wider mb-2 flex items-center gap-2"> <Flag size={12} /> Due Date </label>
+                                        <label className=" text-xs font-semibold text-text-primary tracking-wider mb-2 flex uppercase items-center gap-2"> Due Date </label>
                                         <input
                                             type="date"
                                             value={form.date}
@@ -284,7 +284,7 @@ function AddTaskDrawer({
                                         />
                                     </div>
                                     <div>
-                                        <label className=" text-sm font-medium text-text-primary tracking-wider mb-2 flex items-center gap-2"> <Clock size={12} /> Time </label>
+                                        <label className=" text-xs font-semibold text-text-primary tracking-wider mb-2 flex uppercase items-center gap-2"> Time </label>
                                         <input
                                             type="time"
                                             value={form.time}
@@ -300,7 +300,7 @@ function AddTaskDrawer({
                                 <button
                                     type="button"
                                     onClick={handleClose}
-                                    className="flex-1 py-2.5 rounded-md border border-gray-200 text-sm font-normal text-gray-500 bg-white hover:bg-gray-50 transition-colors"
+                                    className="flex-1 py-2.5 rounded-md border border-gray-200 text-sm font-normal text-gray-500 bg-white transition-colors"
                                 >
                                     Cancel
                                 </button>
@@ -451,7 +451,15 @@ function Column({
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-function CalendarView({ columns }: { columns: Column[] }) {
+function CalendarView({
+    columns,
+    onDayClick,
+    onCardClick,
+}: {
+    columns: Column[];
+    onDayClick: (dateStr: string) => void;
+    onCardClick: (card: TaskCard) => void;
+}) {
     const [currentMonth, setCurrentMonth] = useState(1);
     const [currentYear] = useState(2026);
 
@@ -482,71 +490,108 @@ function CalendarView({ columns }: { columns: Column[] }) {
     const prevMonth = () => setCurrentMonth((m) => (m === 0 ? 11 : m - 1));
     const nextMonth = () => setCurrentMonth((m) => (m === 11 ? 0 : m + 1));
 
+    const toDateStr = (day: number) => {
+        const mm = String(currentMonth + 1).padStart(2, "0");
+        const dd = String(day).padStart(2, "0");
+        return `${mm}/${dd}`;
+    };
+
     return (
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            {/* Month header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-800">
-                    {MONTH_NAMES[currentMonth]} {currentYear}
-                </h3>
-                <div className="flex items-center gap-1">
-                    <button onClick={prevMonth} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 transition-colors">
-                        <ChevronLeft size={18} />
+        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-5">
+                <div>
+                    <h3 className="text-lg font-semibold text-text-primary">
+                        {MONTH_NAMES[currentMonth]}
+                        <span className="text-text-secondary font-normal ml-1.5">{currentYear}</span>
+                    </h3>
+                </div>
+                <div className="flex items-center gap-1 bg-gray-100 rounded-xl p-1">
+                    <button
+                        onClick={prevMonth}
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-text-secondary hover:bg-white hover:text-text-primary transition-all"
+                    >
+                        <ChevronLeft size={16} />
                     </button>
-                    <button onClick={nextMonth} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 transition-colors">
-                        <ChevronRight size={18} />
+                    <button
+                        onClick={nextMonth}
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-text-secondary hover:bg-white hover:text-text-primary transition-all"
+                    >
+                        <ChevronRight size={16} />
                     </button>
                 </div>
             </div>
 
             {/* Day labels */}
-            <div className="grid grid-cols-7 border-b border-gray-100">
-                {DAY_LABELS.map((d) => (
-                    <div key={d} className="py-2.5 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <div className="grid grid-cols-7 border-t border-gray-100">
+                {DAY_LABELS.map((d, i) => (
+                    <div
+                        key={d}
+                        className={`py-2.5 text-center text-[11px] font-semibold uppercase tracking-widest ${i === 0 || i === 6 ? "text-gray-300" : "text-gray-400"
+                            }`}
+                    >
                         {d}
                     </div>
                 ))}
             </div>
 
             {/* Date grid */}
-            <div className="grid grid-cols-7">
+            <div className="grid grid-cols-7 border-t border-gray-100">
                 {Array.from({ length: totalCells }, (_, i) => {
                     const day = i - firstDayOfWeek + 1;
                     const isValid = day >= 1 && day <= daysInMonth;
                     const dayCards = isValid ? cardsByDay[day] : undefined;
-
+                    const isWeekend = i % 7 === 0 || i % 7 === 6;
                     const hasTasks = dayCards && dayCards.length > 0;
 
                     return (
                         <div
                             key={i}
-                            className={`min-h-[80px] sm:min-h-[100px] border-b border-r p-1 sm:p-1.5 transition-colors ${isValid
-                                ? hasTasks
-                                    ? "bg-primary/20 border-gray-100"
-                                    : "border-gray-100 hover:bg-gray-50"
-                                : "border-gray-100 bg-gray-50/40"
+                            onClick={() => isValid && onDayClick(toDateStr(day))}
+                            className={`min-h-[90px] sm:min-h-[110px] border-b border-r border-gray-100 p-1.5 transition-colors ${isValid
+                                ? `cursor-pointer ${isWeekend
+                                    ? "bg-gray-50/60 hover:bg-gray-100/60"
+                                    : "hover:bg-primary/3"
+                                }`
+                                : "bg-gray-50/30"
                                 }`}
                         >
                             {isValid && (
                                 <>
+                                    {/* Day number badge */}
                                     <span
-                                        className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-medium mb-1 ${isToday(day)
-                                            ? "bg-primary text-white"
-                                            : "text-gray-700"
+                                        className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-semibold mb-1.5 ${isToday(day)
+                                            ? "bg-secondary text-white shadow-sm shadow-secondary/30"
+                                            : isWeekend
+                                                ? "text-gray-400"
+                                                : "text-gray-700"
                                             }`}
                                     >
                                         {day}
                                     </span>
+
+                                    {/* Task pills */}
                                     {dayCards?.map((card) => (
                                         <div
                                             key={card.id}
-                                            className="mb-1 px-2 py-2 rounded-md text-[11px] font-medium leading-tight truncate cursor-pointer hover:opacity-80 transition-opacity bg-amber-300"
-
-                                            title={`${card.title}  |  ${card.columnLabel}`}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onCardClick(card);
+                                            }}
+                                            className="mb-1 px-2 py-1 rounded-md text-[11px] font-medium leading-tight truncate cursor-pointer hover:opacity-75 transition-opacity text-white"
+                                            style={{ backgroundColor: card.columnColor }}
+                                            title={`${card.title} · ${card.columnLabel}`}
                                         >
                                             {card.title}
                                         </div>
                                     ))}
+
+                                    {/* "+ N more" when more than 2 tasks */}
+                                    {hasTasks && dayCards!.length > 2 && (
+                                        <span className="text-[10px] text-text-secondary pl-1">
+                                            +{dayCards!.length - 2} more
+                                        </span>
+                                    )}
                                 </>
                             )}
                         </div>
@@ -619,6 +664,7 @@ export default function Tasks() {
     const [loading, setLoading] = useState(false);
     const [activeView, setActiveView] = useState("Kanban");
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [calendarClickedDate, setCalendarClickedDate] = useState("");
 
     // Interaction states
     const [drawerColumnId, setDrawerColumnId] = useState<string>("todo");
@@ -776,7 +822,23 @@ export default function Tasks() {
 
                     {activeView === "Calendar" && (
                         <div className="pb-8">
-                            <CalendarView columns={columns} />
+                            <CalendarView
+                                columns={columns}
+                                onDayClick={(dateStr) => {
+                                    setEditingCard(null);
+                                    setDrawerColumnId("todo");
+                                    setDrawerOpen(true);
+                                    // Pre-fill date via a small hack: set default form date
+                                    // The drawer picks up defaultColumnId; date will be set by user
+                                    // Store the clicked date so AddTaskDrawer can use it
+                                    setCalendarClickedDate(dateStr);
+                                }}
+                                onCardClick={(card) => {
+                                    setEditingCard(card);
+                                    setDrawerColumnId("todo");
+                                    setDrawerOpen(true);
+                                }}
+                            />
                         </div>
                     )}
                 </div>
@@ -787,12 +849,14 @@ export default function Tasks() {
                 open={drawerOpen}
                 onClose={() => {
                     setDrawerOpen(false);
+                    setCalendarClickedDate("");
                     setTimeout(() => setEditingCard(null), 300);
                 }}
                 columns={columns}
                 onAdd={handleAddCard}
                 defaultColumnId={drawerColumnId}
                 editingCard={editingCard}
+                defaultDate={calendarClickedDate}
             />
 
             {/* Delete Modal */}
