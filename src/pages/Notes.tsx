@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useQuest } from '../context/QuestContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, Plus, Search, Send, Loader2, X, CloudUpload, Sparkles, Pin, SortAsc, ChevronDown, Check } from 'lucide-react';
 import DashboardLayout from '../ui/DashboardLayout';
@@ -95,6 +96,7 @@ const initialNotes: Note[] = [
 ];
 
 const Notes = () => {
+    const { progressQuest } = useQuest();
     const [notes, setNotes] = useState<Note[]>(initialNotes);
     const [notebooks, setNotebooks] = useState<string[]>(DEFAULT_NOTEBOOKS);
     const [isAddingNotebook, setIsAddingNotebook] = useState(false);
@@ -159,6 +161,7 @@ const Notes = () => {
                 wordCount: countWords(summaryPreview.preview),
             };
             setNotes(prev => [newNote, ...prev]);
+            progressQuest('ai'); // auto-detect: AI note generated
             setUploadStatus('idle');
             setSummaryPreview(null);
         }
@@ -203,6 +206,7 @@ const Notes = () => {
             ));
         } else {
             setNotes(prev => [{ id: Date.now(), title, preview, timestamp: 'Just now', tags, color, pinned: false, notebook, wordCount: wc }, ...prev]);
+            progressQuest('note'); // auto-detect: note created
         }
     };
 
@@ -459,7 +463,7 @@ const Notes = () => {
                                                 onClick={() => handleOpenEditNote(note.id)}
                                                 onDragStart={handleDragStart} onPinToggle={handlePinToggle}
                                                 onDelete={handleRequestDelete}
-                                                onGenerateFlashcard={id => { setFlashcardNoteId(id); setIsFlashcardOpen(true); }}
+                                                onGenerateFlashcard={id => { setFlashcardNoteId(id); setIsFlashcardOpen(true); progressQuest('flashcard'); }}
                                             />
                                         </motion.div>
                                     ))}
@@ -491,7 +495,7 @@ const Notes = () => {
                                                 onClick={() => handleOpenEditNote(note.id)}
                                                 onDragStart={handleDragStart} onPinToggle={handlePinToggle}
                                                 onDelete={handleRequestDelete}
-                                                onGenerateFlashcard={id => { setFlashcardNoteId(id); setIsFlashcardOpen(true); }}
+                                                onGenerateFlashcard={id => { setFlashcardNoteId(id); setIsFlashcardOpen(true); progressQuest('flashcard'); }}
                                             />
                                         </motion.div>
                                     ))}

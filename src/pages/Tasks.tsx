@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useQuest } from '../context/QuestContext';
 import { motion, AnimatePresence } from "framer-motion";
 import DashboardLayout from "../ui/DashboardLayout";
 import {
@@ -661,6 +662,7 @@ function DeleteModal({
 
 // Main Page
 export default function Tasks() {
+    const { progressQuest } = useQuest();
     const [columns, setColumns] = useState<Column[]>(initialColumns);
     const [prompt, setPrompt] = useState("");
     const [loading, setLoading] = useState(false);
@@ -675,6 +677,7 @@ export default function Tasks() {
     const [deleteModalData, setDeleteModalData] = useState<{ colId: string, cardId: string } | null>(null);
 
     function handleAddCard(columnId: string, card: TaskCard, isEdit: boolean) {
+        if (columnId === 'done') progressQuest('task'); // auto-detect: task moved to Done
         setColumns((prev) =>
             prev.map((col) => {
                 if (isEdit) {
