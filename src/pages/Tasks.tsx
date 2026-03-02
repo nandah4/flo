@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 
 import fAIAssistant from '../assets/images/icon-ai-assistant.png'
+import FloatingAIButton from '../components/common/FloatingAIButton';
+import AIChatPanel from '../components/common/AIChatPanel';
 
 // Types
 interface TaskCard {
@@ -619,6 +621,7 @@ export default function Tasks() {
     const [loading, setLoading] = useState(false);
     const [activeView, setActiveView] = useState("Kanban");
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     // Interaction states
     const [drawerColumnId, setDrawerColumnId] = useState<string>("todo");
@@ -705,8 +708,8 @@ export default function Tasks() {
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
-                                placeholder="Generate a task with FloAI..."
-                                className="flex-1 h-10 sm:h-14 text-sm text-gray-700 placeholder:text-gray-400 outline-none bg-transparent"
+                                placeholder="Generate a task with FloAI e.g. write a report on weekly progress."
+                                className="flex-1 h-10 sm:h-12 text-sm text-gray-700 placeholder:text-gray-400 outline-none bg-transparent"
                             />
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
@@ -805,6 +808,9 @@ export default function Tasks() {
                     }
                 }}
             />
+
+            <FloatingAIButton onClick={() => setIsChatOpen(true)} />
+            <AIChatPanel isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
 
         </DashboardLayout>
     );

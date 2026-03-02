@@ -1,73 +1,41 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Send, Sparkles, Bot } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Search, Mic, FileText, ListTodo, Clock, Sparkles, ChevronRight } from 'lucide-react';
+import iconAIAssistant from '../../assets/images/icon-ai-assistant.png';
 
 interface AIChatPanelProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-interface Message {
-    id: number;
-    text: string;
-    isUser: boolean;
-    timestamp: string;
-}
+const SUGGESTIONS = [
+    { icon: <Sparkles size={14} />, label: 'Review Notes' },
+    { icon: <ListTodo size={14} />, label: 'Discuss Ideas' },
+    { icon: <Clock size={14} />, label: 'Workflow Feedback' },
+    { icon: <FileText size={14} />, label: 'Prioritize Tasks' },
+];
+
+const CONTEXT_SOURCES = [
+    { icon: <FileText size={14} />, label: 'Notes', count: 3 },
+    { icon: <ListTodo size={14} />, label: 'Tasks', count: 2 },
+    { icon: <Clock size={14} />, label: 'Timer', count: null },
+];
 
 const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
     const [input, setInput] = useState('');
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            id: 1,
-            text: "Hi there! I'm your Flo AI Assistant. I can help you summarize your notes, draft study materials, or answer questions about your documents.",
-            isUser: false,
-            timestamp: "Just now"
-        }
-    ]);
-    const [isTyping, setIsTyping] = useState(false);
-
-    const messagesEndRef = useRef<HTMLDivElement>(null);
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
-
-    useEffect(() => {
-        scrollToBottom();
-    }, [messages, isTyping]);
+    const [activeContext, setActiveContext] = useState<string[]>([]);
 
     if (!isOpen) return null;
 
-    const handleSend = () => {
-        if (!input.trim()) return;
-
-        const newUserMsg: Message = {
-            id: Date.now(),
-            text: input,
-            isUser: true,
-            timestamp: "Just now"
-        };
-
-        setMessages(prev => [...prev, newUserMsg]);
-        setInput('');
-        setIsTyping(true);
-
-        // Simulate AI response
-        setTimeout(() => {
-            const newAiMsg: Message = {
-                id: Date.now() + 1,
-                text: "That's an interesting point! I've noted that down. Do you need me to summarize any recent notes for you?",
-                isUser: false,
-                timestamp: "Just now"
-            };
-            setMessages(prev => [...prev, newAiMsg]);
-            setIsTyping(false);
-        }, 1500);
+    const toggleContext = (label: string) => {
+        setActiveContext(prev =>
+            prev.includes(label) ? prev.filter(c => c !== label) : [...prev, label]
+        );
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            handleSend();
+            // handle send
         }
     };
 
@@ -75,80 +43,111 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
         <>
             {/* Backdrop */}
             <div
-                className="fixed inset-0 z-40 bg-black/10 backdrop-blur-[1px] transition-opacity duration-300"
+                className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-300"
                 onClick={onClose}
             />
 
-            {/* Floating pop-up panel */}
-            <div className="fixed bottom-28 right-8 z-50 w-[360px] h-[550px] max-h-[70vh] bg-white shadow-2xl border border-slate-100 flex flex-col rounded-3xl animate-in zoom-in-95 slide-in-from-bottom-8 duration-300 overflow-hidden">
-                {/* Header */}
-                <div className="flex justify-between items-center p-5 border-b border-slate-100 bg-gradient-to-r from-primary/5 to-secondary/5">
-                    <div className="flex items-center space-x-3">
-                        <div className="bg-gradient-to-tr from-secondary to-primary p-2 rounded-xl text-white shadow-sm">
-                            <Bot size={20} />
-                        </div>
-                        <div>
-                            <h2 className="text-base font-bold text-text-primary leading-tight">Flo AI</h2>
-                            <span className="text-[11px] font-semibold text-secondary flex items-center space-x-1">
-                                <Sparkles size={10} />
-                                <span>Ready to assist</span>
-                            </span>
-                        </div>
-                    </div>
+            {/* Panel — same sizing as Add Task drawer: mr-2 my-2, right-side */}
+            <div className="fixed z-50 bg-bg-app shadow-2xl flex flex-col mr-2 my-2 md:top-0 md:bottom-0 md:right-0 md:left-auto md:w-[420px] md:rounded-xl max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[90vh] overflow-hidden">
+
+                {/* Close button */}
+                <div className="flex justify-end px-5 pt-5">
                     <button
                         onClick={onClose}
-                        className="text-slate-400 hover:text-text-primary hover:bg-slate-100 p-2 rounded-full transition-colors"
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-text-secondary hover:text-gray-700 hover:bg-gray-100 transition-colors"
                     >
-                        <ChevronDown size={20} />
+                        <X size={18} />
                     </button>
                 </div>
 
-                {/* Messages Area */}
-                <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/50">
-                    {messages.map((msg) => (
-                        <div key={msg.id} className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`max-w-[85%] rounded-2xl px-5 py-3.5 shadow-sm ${msg.isUser
-                                ? 'bg-text-primary text-white rounded-br-sm'
-                                : 'bg-white border border-slate-100 text-text-primary rounded-bl-sm'
-                                }`}>
-                                <p className="text-sm leading-relaxed">{msg.text}</p>
-                            </div>
-                        </div>
-                    ))}
+                {/* Scrollable body */}
+                <div className="flex-1 flex flex-col overflow-y-auto">
 
-                    {isTyping && (
-                        <div className="flex justify-start">
-                            <div className="max-w-[85%] bg-white border border-slate-100 text-text-primary rounded-2xl rounded-bl-sm px-5 py-4 shadow-sm flex items-center space-x-2">
-                                <div className="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce"></div>
-                                <div className="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
-                                <div className="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
-                            </div>
+                    {/* Hero section */}
+                    <div className="flex flex-col items-center gap-3 px-6 pt-2 pb-6">
+                        {/* Logo */}
+                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center">
+                            <img src={iconAIAssistant} alt="Flo AI" className="w-full h-full object-contain" />
                         </div>
-                    )}
-                    <div ref={messagesEndRef} />
+
+                        {/* Greeting */}
+                        <div className="text-center">
+                            <h2 className="text-xl font-semibold text-text-primary">Hi, Wandi Der 👋</h2>
+                            <p className="text-lg font-medium text-text-primary mt-0.5">How can I help you today?</p>
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-sm text-text-secondary text-center max-w-[300px] leading-relaxed">
+                            I’m here to help you think clearly, review your tasks, and improve your notes — so you can stay focused and organized.
+                        </p>
+                    </div>
+
+                    {/* What I can do */}
+                    <div className="px-5 pb-5">
+                        <p className="text-[11px] font-medium text-text-primary uppercase mb-3">What I can do</p>
+                        <div className="grid grid-cols-2 gap-2">
+                            {SUGGESTIONS.map((s, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setInput(s.label)}
+                                    className="flex items-center gap-2.5 px-3.5 py-3 rounded-lg bg-white border border-gray-200 text-left text-xs font-normal text-text-secondary hover:border-primary/40 hover:bg-primary/5 hover:text-text-primary transition-all group"
+                                >
+                                    <span className="text-secondary group-hover:scale-110 transition-transform">{s.icon}</span>
+                                    {s.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
-                {/* Input Area */}
-                <div className="p-4 bg-white border-t border-slate-100">
-                    <div className="relative flex items-end bg-slate-50 border border-slate-200 rounded-3xl p-1.5 shadow-sm focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/50 transition-all">
-                        <textarea
+                {/* Bottom section — fixed to bottom */}
+                <div className="px-5 pb-5 flex flex-col gap-3 border-t border-gray-100 pt-4 bg-bg-app">
+
+                    {/* Input */}
+                    <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3.5 py-3 focus-within:border-secondary/80 focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                        <Search size={16} className="text-gray-400 shrink-0" />
+                        <input
                             value={input}
-                            onChange={(e) => setInput(e.target.value)}
+                            onChange={e => setInput(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            placeholder="Ask AI a question..."
-                            className="w-full max-h-[120px] bg-transparent resize-none overflow-y-auto px-4 py-2.5 text-sm outline-none text-text-primary placeholder:text-slate-400"
-                            rows={1}
+                            placeholder="Ask Flo AI anything..."
+                            className="flex-1 text-sm text-text-primary placeholder:text-text-secondary outline-none bg-transparent"
                         />
-                        <button
-                            disabled={!input.trim()}
-                            onClick={handleSend}
-                            className="flex-shrink-0 bg-primary text-text-primary p-2.5 rounded-full hover:bg-secondary hover:text-white disabled:opacity-50 disabled:hover:bg-primary disabled:hover:text-text-primary transition-colors shadow-sm ml-2"
-                        >
-                            <Send size={18} />
+                        <button className="text-gray-400 hover:text-secondary transition-colors shrink-0">
+                            <Mic size={16} />
                         </button>
                     </div>
-                    <div className="text-center mt-3">
-                        <span className="text-[10px] text-slate-400 font-medium tracking-wide">AI CAN MAKE MISTAKES. VERIFY IMPORTANT INFO.</span>
+
+                    {/* Context sources */}
+                    <div>
+                        <p className="text-[11px] font-medium text-text-primary uppercase mb-2">Add context from</p>
+                        <div className="flex items-center gap-2 flex-wrap">
+                            {CONTEXT_SOURCES.map(src => {
+                                const isActive = activeContext.includes(src.label);
+                                return (
+                                    <button
+                                        key={src.label}
+                                        onClick={() => toggleContext(src.label)}
+                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${isActive
+                                            ? 'bg-primary/10 border-primary/30 text-secondary'
+                                            : 'bg-white border-gray-200 text-text-secondary hover:border-gray-300'
+                                            }`}
+                                    >
+                                        <span>{src.icon}</span>
+                                        {src.label}
+                                        {src.count !== null && (
+                                            <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${isActive ? 'bg-primary/20 text-secondary' : 'bg-gray-100 text-gray-400'}`}>
+                                                {src.count}
+                                            </span>
+                                        )}
+                                    </button>
+                                );
+                            })}
+
+                            <button className="flex items-center gap-1 text-xs text-text-primary hover:text-text-secondary transition-colors ml-auto">
+                                More <ChevronRight size={12} />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
