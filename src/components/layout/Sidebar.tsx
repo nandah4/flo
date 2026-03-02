@@ -41,7 +41,7 @@ const navItems: NavItem[] = [
   { icon: <LayoutDashboard size={18} />, label: "Dashboard", path: "/dashboard" },
   { icon: <FileText size={18} />, label: "Notes", badge: true, path: "/notes" },
   { icon: <CheckSquare size={18} />, label: "Tasks", path: "/tasks" },
-  { icon: <Timer size={18} />, label: "Timer", path: "/timer" },
+  { icon: <Timer size={18} />, label: "Focus Timer", path: "/timer" },
   { icon: <Settings size={18} />, label: "Settings", path: "/settings" },
 ];
 
