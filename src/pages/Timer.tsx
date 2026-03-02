@@ -11,8 +11,9 @@ import {
 } from "lucide-react";
 
 import patternZenMode from "../assets/images/pattern-zen-mode.png";
+import FloatingAIButton from "../components/common/FloatingAIButton";
+import AIChatPanel from "../components/common/AIChatPanel";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
 type Mode = "focus" | "short" | "long";
 
 interface PomodoroTask {
@@ -23,7 +24,7 @@ interface PomodoroTask {
     completedPomodoros: number;
 }
 
-// ─── Seed data ────────────────────────────────────────────────────────────────
+// Seed data
 const INITIAL_TASKS: PomodoroTask[] = [
     { id: "pt1", title: "Design homepage hero section", done: false, pomodoros: 3, completedPomodoros: 1 },
     { id: "pt2", title: "Write weekly report", done: false, pomodoros: 2, completedPomodoros: 0 },
@@ -47,13 +48,13 @@ function CircularProgress({ progress, accent, size = 280 }: { progress: number; 
     return (
         <svg width={size} height={size} className="absolute" style={{ top: "50%", left: "50%", transform: "translate(-50%,-50%) rotate(-90deg)" }}>
             {/* Track */}
-            <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#f1f5f9" strokeWidth={15} />
+            <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#f1f5f9" strokeWidth={14} />
             {/* Progress */}
             <circle
                 cx={size / 2} cy={size / 2} r={radius}
                 fill="none"
                 stroke={accent}
-                strokeWidth={12}
+                strokeWidth={11}
                 strokeLinecap="round"
                 strokeDasharray={circumference}
                 strokeDashoffset={offset}
@@ -63,22 +64,16 @@ function CircularProgress({ progress, accent, size = 280 }: { progress: number; 
     );
 }
 
-// ─── Pomodoro Dots ────────────────────────────────────────────────────────────
-function PomodoroDots({ total, completed }: { total: number; completed: number }) {
-    return (
-        <div className="flex items-center gap-1">
-            {Array.from({ length: total }).map((_, i) => (
-                <div
-                    key={i}
-                    className={`w-2 h-2 rounded-full transition-colors ${i < completed ? "bg-primary" : "bg-gray-200"}`}
-                />
-            ))}
-        </div>
-    );
-}
-
-// ─── Main Page ────────────────────────────────────────────────────────────────
+// Main Page
 export default function Timer() {
+    // Responsive circle size
+    const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640);
+    useEffect(() => {
+        const onResize = () => setIsMobile(window.innerWidth < 640);
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
+    }, []);
+
     // Timer state
     const [mode, setMode] = useState<Mode>("focus");
     const [settings, setSettings] = useState({ focus: 25, short: 5, long: 15 });
@@ -88,6 +83,7 @@ export default function Timer() {
 
     // Zen mode
     const [zenMode, setZenMode] = useState(false);
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     // Tasks
     const [tasks, setTasks] = useState<PomodoroTask[]>(INITIAL_TASKS);
@@ -102,7 +98,7 @@ export default function Timer() {
     const activeTask = tasks.find((t) => t.id === activeTaskId);
     const totalSeconds = settings[mode] * 60;
     const progress = timeLeft / totalSeconds;
-    const { accent, color } = MODE_CONFIG[mode];
+    const { accent } = MODE_CONFIG[mode];
 
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -196,17 +192,22 @@ export default function Timer() {
                 </div>
 
                 {/* Clock */}
-                <div className="relative flex items-center justify-center" style={{ width: zen ? 340 : 280, height: zen ? 340 : 280 }}>
-                    <CircularProgress progress={progress} accent={accent} size={zen ? 340 : 280} />
-                    <div className="flex flex-col items-center gap-1 z-10">
-                        <span className={`text-5xl ${zen ? "text-6xl" : ""} font-semibold tracking-tight tabular-nums text-text-primary`}>
-                            {formatTime(timeLeft)}
-                        </span>
-                        <span className="text-xs text-text-secondary font-normal">
-                            {MODE_CONFIG[mode].label}
-                        </span>
-                    </div>
-                </div>
+                {(() => {
+                    const circleSize = zen ? 340 : isMobile ? 220 : 280;
+                    return (
+                        <div className="relative flex items-center justify-center" style={{ width: circleSize, height: circleSize }}>
+                            <CircularProgress progress={progress} accent={accent} size={circleSize} />
+                            <div className="flex flex-col items-center gap-1 z-10">
+                                <span className={`font-semibold tracking-tight tabular-nums text-text-primary ${zen ? "text-6xl" : isMobile ? "text-4xl" : "text-5xl"}`}>
+                                    {formatTime(timeLeft)}
+                                </span>
+                                <span className="text-xs text-text-secondary font-normal">
+                                    {MODE_CONFIG[mode].label}
+                                </span>
+                            </div>
+                        </div>
+                    );
+                })()}
 
                 {/* Controls */}
                 <div className="flex items-center gap-3">
@@ -413,14 +414,11 @@ export default function Timer() {
                                                     : <CircleDashed size={17} />}
                                             </button>
 
-                                            {/* Title + dots */}
+                                            {/* Title */}
                                             <div className="flex-1 min-w-0">
                                                 <p className={`text-xs font-normal leading-snug ${task.done ? "line-through text-gray-500" : "text-text-secondary"}`}>
                                                     {task.title}
                                                 </p>
-                                                {/* <div className="mt-1">
-                                                    <PomodoroDots total={task.pomodoros} completed={task.completedPomodoros} />
-                                                </div> */}
                                             </div>
 
                                             {/* Active indicator */}
@@ -458,6 +456,14 @@ export default function Timer() {
                 </div>
             </div>
 
+            {/* AI Bubble — hidden in zen mode */}
+            {!zenMode && (
+                <>
+                    <FloatingAIButton onClick={() => setIsChatOpen(true)} />
+                    <AIChatPanel isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+                </>
+            )}
+
             {/* ── Zen Mode Overlay ── */}
             <AnimatePresence>
                 {zenMode && (
@@ -480,7 +486,7 @@ export default function Timer() {
                         {/* Exit button */}
                         <button
                             onClick={() => setZenMode(false)}
-                            className="absolute top-6 right-6 w-9 h-9 rounded-lg flex items-center justify-center text-text-secondary transition-colors hover:bg-gray-200 z-10"
+                            className="absolute sm:top-6 sm:right-6 top-2 right-2 w-9 h-9 rounded-lg flex items-center justify-center text-text-secondary transition-colors hover:bg-gray-200 z-10"
                         >
                             <X size={20} />
                         </button>
