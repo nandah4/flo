@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { X, ChevronLeft, ChevronRight, Sparkles, RotateCcw, Layers, CheckCircle2, XCircle, Trophy } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Sparkles, RotateCcw, CheckCircle2, XCircle, Trophy } from 'lucide-react';
 
 interface Flashcard {
     question: string;
@@ -63,7 +63,7 @@ const generateFlashcards = (title: string, content: string, count: number): Flas
     return sampleCards.slice(0, Math.min(count, sampleCards.length)).map(c => ({ ...c, status: null }));
 };
 
-const CARD_COUNT_OPTIONS = [3, 5, 8, 10, 15, 20];
+const CARD_COUNT_OPTIONS = [3, 4, 5, 6, 7, 8];
 
 const FlashcardModal: React.FC<FlashcardModalProps> = ({ isOpen, onClose, noteTitle, noteContent }) => {
     const [cardCount, setCardCount] = useState(5);
@@ -106,7 +106,7 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ isOpen, onClose, noteTi
                 setCurrentIndex(i => i + 1);
                 setSlideDir(null);
                 setIsAnimating(false);
-            }, 300);
+            }, 270);
         }
     }, [currentIndex, flashcards.length, isAnimating]);
 
@@ -120,23 +120,18 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ isOpen, onClose, noteTi
                 setCurrentIndex(i => i - 1);
                 setSlideDir(null);
                 setIsAnimating(false);
-            }, 300);
+            }, 270);
         }
     }, [currentIndex, isAnimating]);
 
     const markCard = (rating: 'known' | 'learning') => {
         const updated = flashcards.map((c, i) => i === currentIndex ? { ...c, status: rating } : c);
         setFlashcards(updated);
-
         const allAnswered = updated.every(c => c.status !== null);
-        if (allAnswered) {
-            setTimeout(() => setStatus('done'), 400);
-        } else {
-            goToNext();
-        }
+        if (allAnswered) setTimeout(() => setStatus('done'), 400);
+        else goToNext();
     };
 
-    // Keyboard navigation
     useEffect(() => {
         if (status !== 'viewing') return;
         const handleKey = (e: KeyboardEvent) => {
@@ -148,124 +143,103 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ isOpen, onClose, noteTi
         return () => window.removeEventListener('keydown', handleKey);
     }, [status, goToNext, goToPrev]);
 
-    const progress = flashcards.length > 0 ? ((currentIndex + 1) / flashcards.length) * 100 : 0;
+
 
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={handleClose} />
+            <div className="absolute inset-0 bg-black/50" onClick={handleClose} />
 
-            <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
+            <div className="relative bg-bg-app rounded-lg shadow-xl w-full max-w-xl overflow-hidden border border-gray-100">
 
                 {/* Header */}
-                <div className="flex items-center justify-between px-7 pt-7 pb-4">
-                    <div className="flex items-center space-x-3">
-                        <div className="bg-primary/10 p-2.5 rounded-xl">
-                            <Layers size={20} className="text-secondary" />
-                        </div>
-                        <div>
-                            <h2 className="text-lg font-extrabold text-text-primary tracking-tight">Flashcards</h2>
-                            <p className="text-xs text-slate-400 font-medium mt-0.5 max-w-[220px] truncate">{noteTitle}</p>
-                        </div>
+                <div className="flex items-center justify-between px-6 py-4">
+                    <div>
+                        <h2 className="text-base font-semibold text-text-primary">Flashcards</h2>
+                        <p className="text-sm text-text-secondary truncate max-w-[280px]">{noteTitle}</p>
                     </div>
-                    <button onClick={handleClose} className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 p-2 rounded-xl transition-all duration-200">
-                        <X size={18} />
+                    <button onClick={handleClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-text-secondary hover:bg-gray-100 transition-colors">
+                        <X size={16} />
                     </button>
                 </div>
 
                 {/* ── CONFIG ── */}
                 {status === 'config' && (
-                    <div className="px-7 pb-8">
-                        <p className="text-sm text-slate-500 font-medium mb-6">
-                            AI akan membuat flashcard berdasarkan isi catatan Anda. Pilih jumlah kartu yang ingin dibuat.
+                    <div className="px-6 pb-6 pt-4">
+                        <p className="text-sm text-text-secondary mb-5">
+                            Turn your notes into smart, bite-sized flashcards — powered by FloAI. Choose how many cards to generate.
                         </p>
-                        <label className="block text-sm font-bold text-text-primary mb-3">Jumlah Flashcard</label>
-                        <div className="grid grid-cols-6 gap-2 mb-2">
+
+                        <label className="block text-sm font-medium text-text-primary mb-2">Number of Cards</label>
+                        <div className="grid grid-cols-6 gap-2 mb-3">
                             {CARD_COUNT_OPTIONS.map(n => (
                                 <button
                                     key={n}
                                     onClick={() => setCardCount(n)}
-                                    className={`py-2.5 rounded-xl text-sm font-bold transition-all duration-200
+                                    className={`py-2.5 rounded-md text-sm font-medium transition-all duration-150
                                         ${cardCount === n
-                                            ? 'bg-primary text-text-primary shadow-[0_4px_12px_rgba(255,212,0,0.3)] scale-105'
-                                            : 'bg-slate-50 text-slate-500 hover:bg-slate-100 border border-slate-100'
+                                            ? 'bg-primary text-text-primary'
+                                            : 'bg-white text-text-secondary border border-gray-100 hover:border-gray-200'
                                         }`}
                                 >
                                     {n}
                                 </button>
                             ))}
                         </div>
-                        <p className="text-xs text-slate-400 mb-6 font-medium">
-                            Dipilih: <span className="text-secondary font-bold">{cardCount} kartu</span>
+                        <p className="text-sm text-text-secondary mb-5">
+                            Selected: <span className="text-text-primary font-semibold">{cardCount} cards</span>
                         </p>
 
                         {/* Hint */}
-                        <div className="bg-slate-50 rounded-2xl p-4 mb-5 text-xs text-slate-400 font-medium space-y-1">
-                            <p>💡 <span className="font-semibold text-slate-500">Tips navigasi:</span></p>
-                            <p>• Klik kartu untuk membaliknya</p>
-                            <p>• Tekan <kbd className="bg-white border border-slate-200 px-1.5 py-0.5 rounded-md text-[10px] font-semibold">Space</kbd> untuk flip, <kbd className="bg-white border border-slate-200 px-1.5 py-0.5 rounded-md text-[10px] font-semibold">←</kbd><kbd className="bg-white border border-slate-200 px-1.5 py-0.5 rounded-md text-[10px] font-semibold">→</kbd> untuk navigasi</p>
-                            <p>• Tandai "<span className="text-emerald-500 font-bold">Paham</span>" atau "<span className="text-orange-400 font-bold">Perlu Belajar</span>" di setiap kartu</p>
+                        <div className="mb-5 text-sm text-text-secondary space-y-2">
+                            <p className="font-medium text-text-primary mb-1">How to study</p>
+                            <p>• Click a card to reveal the answer</p>
+                            <p>• <kbd className="bg-white border border-gray-200 px-1.5 py-0.5 rounded text-xs">Space</kbd> to flip · <kbd className="bg-white border border-gray-200 px-1.5 py-0.5 rounded text-xs">←</kbd><kbd className="bg-white border border-gray-200 px-1.5 py-0.5 rounded text-xs">→</kbd> to navigate</p>
+                            <p>• Rate each card as <span className="text-emerald-500 font-medium">Got it</span> or <span className="text-orange-400 font-medium">Still learning</span></p>
                         </div>
 
                         <button
                             onClick={handleGenerate}
-                            className="w-full bg-primary text-text-primary font-bold py-4 rounded-2xl flex items-center justify-center space-x-2 hover:shadow-[0_8px_25px_rgba(255,212,0,0.4)] hover:-translate-y-0.5 transition-all duration-300"
+                            className="w-full bg-linear-to-t from-primary to-primary/80 cursor-pointer text-text-primary text-sm font-normal py-3 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
                         >
-                            <Sparkles size={18} className="text-secondary" />
-                            <span>Generate Flashcard</span>
+                            Generate Flashcards
                         </button>
                     </div>
                 )}
 
                 {/* ── GENERATING ── */}
                 {status === 'generating' && (
-                    <div className="px-7 pb-14 flex flex-col items-center justify-center text-center space-y-4 min-h-[240px]">
+                    <div className="px-6 py-14 flex flex-col items-center justify-center text-center gap-3">
                         <div className="relative">
-                            <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-                            <Sparkles size={20} className="absolute inset-0 m-auto text-secondary" />
+                            <div className="w-14 h-14 border-[3px] border-primary/20 border-t-primary rounded-full animate-spin" />
+                            <Sparkles size={18} className="absolute inset-0 m-auto text-secondary" />
                         </div>
-                        <p className="text-slate-700 font-bold text-lg">Membuat {cardCount} flashcard...</p>
-                        <p className="text-slate-400 text-sm font-medium">AI sedang menganalisis catatan Anda ✨</p>
+                        <p className="text-base font-medium text-text-primary">Creating {cardCount} flashcards...</p>
+                        <p className="text-sm text-text-secondary">AI is analyzing your note.</p>
                     </div>
                 )}
 
                 {/* ── VIEWING ── */}
                 {status === 'viewing' && flashcards.length > 0 && (
-                    <div className="px-7 pb-7">
-                        {/* Progress bar */}
+                    <div className="px-6 pb-5 pt-4">
+                        {/* Status row + dots (no progress bar) */}
                         <div className="mb-4">
-                            <div className="flex justify-between items-center mb-1.5">
-                                <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">
-                                    {currentIndex + 1} / {flashcards.length}
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-sm text-text-primary font-medium">
+                                    {currentIndex + 1} of {flashcards.length}
                                 </span>
-                                <div className="flex items-center space-x-3 text-[11px] font-bold">
-                                    <span className="text-emerald-500 flex items-center space-x-1">
-                                        <CheckCircle2 size={12} />
-                                        <span>{knownCount} Paham</span>
-                                    </span>
-                                    <span className="text-orange-400 flex items-center space-x-1">
-                                        <XCircle size={12} />
-                                        <span>{learningCount} Belajar</span>
-                                    </span>
-                                </div>
                             </div>
-                            <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                                <div
-                                    className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-500 ease-out"
-                                    style={{ width: `${progress}%` }}
-                                />
-                            </div>
-                            {/* Per-card status dots */}
-                            <div className="flex space-x-1 mt-2">
+                            {/* Status dots */}
+                            <div className="flex gap-1">
                                 {flashcards.map((c, i) => (
                                     <button
                                         key={i}
                                         onClick={() => { setIsFlipped(false); setCurrentIndex(i); }}
-                                        className={`h-1.5 flex-1 rounded-full transition-all duration-300
-                                            ${i === currentIndex ? 'bg-secondary scale-y-150' :
+                                        className={`h-1.5 flex-1 rounded-full transition-all duration-200
+                                            ${i === currentIndex ? 'bg-secondary' :
                                                 c.status === 'known' ? 'bg-emerald-400' :
-                                                    c.status === 'learning' ? 'bg-orange-400' : 'bg-slate-200'}`}
+                                                    c.status === 'learning' ? 'bg-orange-400' : 'bg-gray-200'}`}
                                     />
                                 ))}
                             </div>
@@ -273,15 +247,15 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ isOpen, onClose, noteTi
 
                         {/* Flip Card */}
                         <div
-                            className={`relative h-56 cursor-pointer mb-4 transition-transform duration-300
-                                ${slideDir === 'left' ? '-translate-x-8 opacity-0' : ''}
-                                ${slideDir === 'right' ? 'translate-x-8 opacity-0' : ''}
+                            className={`relative h-60 cursor-pointer mb-4 transition-all duration-250
+                                ${slideDir === 'left' ? '-translate-x-6 opacity-0' : ''}
+                                ${slideDir === 'right' ? 'translate-x-6 opacity-0' : ''}
                                 ${slideDir === null ? 'translate-x-0 opacity-100' : ''}`}
                             style={{ perspective: '1000px' }}
                             onClick={() => setIsFlipped(f => !f)}
                         >
                             <div
-                                className="relative w-full h-full transition-transform duration-500"
+                                className="relative w-full h-full transition-transform duration-450"
                                 style={{
                                     transformStyle: 'preserve-3d',
                                     transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
@@ -289,52 +263,50 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ isOpen, onClose, noteTi
                             >
                                 {/* Front */}
                                 <div
-                                    className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white border border-slate-100 rounded-2xl flex flex-col items-center justify-center p-6 text-center select-none"
+                                    className="absolute inset-0 bg-white border border-gray-100 rounded-xl flex flex-col items-center justify-center px-6 py-5 text-center select-none"
                                     style={{ backfaceVisibility: 'hidden' }}
                                 >
-                                    <div className="bg-primary/10 text-secondary text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
-                                        Pertanyaan
-                                    </div>
-                                    <p className="text-text-primary font-semibold text-[15px] leading-relaxed line-clamp-4">
+                                    <span className="text-sm font-medium text-text-primary mb-3">
+                                        Question
+                                    </span>
+                                    <p className="text-text-primary font-medium text-base leading-relaxed line-clamp-4">
                                         {flashcards[currentIndex].question}
                                     </p>
-                                    <p className="text-slate-300 text-[11px] font-semibold mt-4 flex items-center space-x-1">
-                                        <span>Klik atau tekan</span>
-                                        <kbd className="bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded-md">Space</kbd>
-                                        <span>untuk lihat jawaban</span>
+                                    <p className="text-text-secondary text-xs mt-5">
+                                        Click to reveal the answer
                                     </p>
                                 </div>
 
                                 {/* Back */}
                                 <div
-                                    className="absolute inset-0 bg-gradient-to-br from-primary/5 via-white to-white border border-primary/20 rounded-2xl flex flex-col items-center justify-center p-6 text-center select-none"
+                                    className="absolute inset-0 bg-primary/5 border border-primary/15 rounded-xl flex flex-col items-center justify-center px-6 py-5 text-center select-none"
                                     style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                                 >
-                                    <div className="bg-secondary/10 text-secondary text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
-                                        Jawaban ✓
-                                    </div>
-                                    <p className="text-text-primary font-medium text-[14px] leading-relaxed line-clamp-5">
+                                    <span className="text-xs font-medium text-secondary bg-primary/10 px-2.5 py-0.5 rounded-full mb-3">
+                                        Answer
+                                    </span>
+                                    <p className="text-text-primary font-normal text-base leading-relaxed line-clamp-5">
                                         {flashcards[currentIndex].answer}
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Self-eval buttons (visible only when card is flipped) */}
-                        <div className={`flex space-x-3 mb-4 transition-all duration-300 ${isFlipped ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}>
+                        {/* Self-eval buttons */}
+                        <div className={`flex gap-2 mb-4 transition-all duration-250 ${isFlipped ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1.5 pointer-events-none'}`}>
                             <button
                                 onClick={() => markCard('learning')}
-                                className="flex-1 flex items-center justify-center space-x-2 py-2.5 rounded-xl border-2 border-orange-200 bg-orange-50 text-orange-500 font-bold text-sm hover:bg-orange-100 transition-all duration-200 active:scale-95"
+                                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg border border-orange-200 bg-orange-50 text-orange-500 text-sm font-medium hover:bg-orange-100 transition-colors"
                             >
-                                <XCircle size={16} />
-                                <span>Perlu Belajar</span>
+                                <XCircle size={15} />
+                                Still Learning
                             </button>
                             <button
                                 onClick={() => markCard('known')}
-                                className="flex-1 flex items-center justify-center space-x-2 py-2.5 rounded-xl border-2 border-emerald-200 bg-emerald-50 text-emerald-600 font-bold text-sm hover:bg-emerald-100 transition-all duration-200 active:scale-95"
+                                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-600 text-sm font-medium hover:bg-emerald-100 transition-colors"
                             >
-                                <CheckCircle2 size={16} />
-                                <span>Paham!</span>
+                                <CheckCircle2 size={15} />
+                                Got It!
                             </button>
                         </div>
 
@@ -343,26 +315,26 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ isOpen, onClose, noteTi
                             <button
                                 onClick={goToPrev}
                                 disabled={currentIndex === 0}
-                                className="flex items-center space-x-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed font-semibold text-sm"
+                                className="flex items-center cursor-pointer gap-1 px-4 py-2.5 rounded-lg border border-gray-200 text-text-secondary text-sm font-medium bg-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                             >
                                 <ChevronLeft size={16} />
-                                <span>Prev</span>
+                                Prev
                             </button>
 
                             <button
                                 onClick={() => { setStatus('config'); setFlashcards([]); setCurrentIndex(0); setIsFlipped(false); }}
-                                className="flex items-center space-x-1.5 text-slate-400 hover:text-slate-600 text-xs font-semibold transition-colors"
+                                className="flex items-center gap-1 cursor-pointer  text-text-secondary hover:text-text-primary text-sm transition-colors"
                             >
                                 <RotateCcw size={13} />
-                                <span>Buat Ulang</span>
+                                Regenerate
                             </button>
 
                             <button
                                 onClick={goToNext}
                                 disabled={currentIndex === flashcards.length - 1}
-                                className="flex items-center space-x-1.5 px-4 py-2.5 rounded-xl bg-primary text-text-primary font-semibold text-sm hover:shadow-md transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
+                                className="flex items-center cursor-pointer gap-1 px-4 py-2.5 rounded-lg bg-primary text-text-primary text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed"
                             >
-                                <span>Next</span>
+                                Next
                                 <ChevronRight size={16} />
                             </button>
                         </div>
@@ -371,50 +343,49 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ isOpen, onClose, noteTi
 
                 {/* ── DONE ── */}
                 {status === 'done' && (
-                    <div className="px-7 pb-10 flex flex-col items-center text-center">
-                        <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-5">
-                            <Trophy size={36} className="text-secondary" />
+                    <div className="px-5 py-8 flex flex-col  items-center text-center">
+                        <div className="w-14 h-14 flex items-center justify-center mb-4">
+                            <Trophy size={40} className="text-secondary" />
                         </div>
-                        <h3 className="text-2xl font-extrabold text-text-primary mb-1">Sesi Selesai! 🎉</h3>
-                        <p className="text-slate-400 text-sm font-medium mb-8">
-                            Kamu telah menyelesaikan semua {flashcards.length} kartu
+                        <h3 className="text-base font-medium text-text-primary mb-1">All done, Wandi Der!</h3>
+                        <p className="text-sm text-text-secondary mb-6">
+                            You reviewed all {flashcards.length} cards. Great session!
                         </p>
 
                         {/* Score cards */}
-                        <div className="w-full grid grid-cols-2 gap-4 mb-8">
-                            <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 text-center">
-                                <p className="text-4xl font-extrabold text-emerald-500 mb-1">{knownCount}</p>
-                                <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Paham</p>
+                        <div className="w-full grid grid-cols-2 gap-3 mb-6">
+                            <div className="bg-white rounded-lg border border-gray-200 p-4 text-center">
+                                <p className="text-3xl font-bold text-emerald-500 mb-0.5">{knownCount}</p>
+                                <p className="text-[11px] font-medium text-emerald-600">Got It</p>
                             </div>
-                            <div className="bg-orange-50 border border-orange-100 rounded-2xl p-5 text-center">
-                                <p className="text-4xl font-extrabold text-orange-400 mb-1">{learningCount}</p>
-                                <p className="text-xs font-bold text-orange-500 uppercase tracking-wider">Perlu Belajar</p>
+                            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                                <p className="text-3xl font-bold text-orange-400 mb-0.5">{learningCount}</p>
+                                <p className="text-[11px] font-medium text-orange-500">Still Learning</p>
                             </div>
                         </div>
 
-                        {/* Mastery indicator */}
-                        <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden mb-2">
+                        {/* Mastery bar */}
+                        <div className="w-full bg-white rounded h-2 overflow-hidden mb-1.5">
                             <div
-                                className="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full transition-all duration-700"
+                                className="h-full bg-emerald-400 rounded transition-all duration-700"
                                 style={{ width: `${flashcards.length > 0 ? (knownCount / flashcards.length) * 100 : 0}%` }}
                             />
                         </div>
-                        <p className="text-xs text-slate-400 font-semibold mb-8">
-                            Tingkat pemahaman: <span className="text-emerald-500 font-bold">
+                        <p className="text-xs text-text-primary mb-6 mt-2">
+                            Mastery score: <span className="text-emerald-500 font-semibold">
                                 {Math.round(flashcards.length > 0 ? (knownCount / flashcards.length) * 100 : 0)}%
                             </span>
                         </p>
 
-                        <div className="flex space-x-3 w-full">
+                        <div className="flex gap-2.5 w-full">
                             <button
                                 onClick={() => { setStatus('config'); setFlashcards([]); setCurrentIndex(0); }}
-                                className="flex-1 py-3 rounded-2xl border border-slate-200 text-slate-500 font-bold text-sm hover:bg-slate-50 transition-all"
+                                className="flex-1 py-3 cursor-pointer rounded-lg border border-gray-200 text-text-secondary text-xs font-normal bg-white transition-colors"
                             >
-                                Buat Baru
+                                New Session
                             </button>
                             <button
                                 onClick={() => {
-                                    // Retry only "learning" cards
                                     const retryCards = flashcards.filter(c => c.status === 'learning').map(c => ({ ...c, status: null as null }));
                                     if (retryCards.length > 0) {
                                         setFlashcards(retryCards);
@@ -424,9 +395,9 @@ const FlashcardModal: React.FC<FlashcardModalProps> = ({ isOpen, onClose, noteTi
                                     }
                                 }}
                                 disabled={learningCount === 0}
-                                className="flex-1 py-3 rounded-2xl bg-primary text-text-primary font-bold text-sm hover:shadow-[0_4px_15px_rgba(255,212,0,0.3)] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                                className="flex-1 py-3 cursor-pointer rounded-lg bg-primary text-text-primary text-xs font-normal hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
                             >
-                                Ulangi yang Salah ({learningCount})
+                                Retry Missed ({learningCount})
                             </button>
                         </div>
                     </div>
