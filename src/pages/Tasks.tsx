@@ -6,7 +6,7 @@ import DashboardLayout from "../ui/DashboardLayout";
 import {
     Plus, MoreHorizontal, Kanban,
     ChevronLeft, ChevronRight, Send, Loader2,
-    Flag, Target, Calendar, X, AlignLeft, Clock
+    Flag, Target, Calendar, X
 } from "lucide-react";
 
 import fAIAssistant from '../assets/images/icon-ai-assistant.png'
@@ -234,7 +234,7 @@ function AddTaskDrawer({
                                                 key={opt.value}
                                                 type="button"
                                                 onClick={() => setForm((p) => ({ ...p, priority: p.priority === opt.value ? "" : opt.value }))}
-                                                className={`px-3 bg-white py-1.5 rounded-md text-xs font-normal border transition-all ${form.priority === opt.value
+                                                className={`px-3 bg-white py-2 rounded-md text-xs font-normal border transition-all ${form.priority === opt.value
                                                     ? `${opt.bg} ${opt.color} border-current`
                                                     : "border-gray-200 text-text-secondary hover:border-gray-300"
                                                     }`}
@@ -254,7 +254,7 @@ function AddTaskDrawer({
                                                 key={col.id}
                                                 type="button"
                                                 onClick={() => setForm((p) => ({ ...p, columnId: col.id }))}
-                                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded  bg-white text-xs font-normal border transition-all ${form.columnId === col.id
+                                                className={`flex items-center gap-1.5 px-3 py-2 rounded  bg-white text-xs font-normal border transition-all ${form.columnId === col.id
                                                     ? `border-secondary text-gray-800`
                                                     : "border-gray-200 text-text-secondary hover:border-gray-300"
                                                     }`}
@@ -302,13 +302,13 @@ function AddTaskDrawer({
                                 <button
                                     type="button"
                                     onClick={handleClose}
-                                    className="flex-1 py-2.5 rounded-md border border-gray-200 text-sm font-normal text-gray-500 bg-white transition-colors"
+                                    className="flex-1 py-2.5 rounded-md border cursor-pointer border-gray-200 text-sm font-normal text-gray-500 bg-white transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 py-2.5 rounded-md bg-linear-to-t from-primary to-primary/80 text-text-primary text-sm font-normal hover:opacity-90 transition-opacity"
+                                    className="flex-1 py-2.5 rounded-md cursor-pointer bg-linear-to-t from-primary to-primary/80 text-text-primary text-sm font-normal hover:opacity-90 transition-opacity"
                                 >
                                     {editingCard ? "Save Changes" : "Add Task"}
                                 </button>
@@ -785,9 +785,9 @@ export default function Tasks() {
                                 <button
                                     key={v.label}
                                     onClick={() => setActiveView(v.label)}
-                                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${activeView === v.label
+                                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm cursor-pointer font-medium transition-all ${activeView === v.label
                                         ? "bg-primary/15 text-secondary"
-                                        : "text-gray-500 hover:text-gray-700"
+                                        : "text-gray-500 hover:text-gray-700 hover:bg-bg-app"
                                         }`}
                                 >
                                     {v.icon}
