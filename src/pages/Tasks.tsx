@@ -788,7 +788,7 @@ export default function Tasks() {
                                 <button
                                     key={v.label}
                                     onClick={() => setActiveView(v.label)}
-                                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm cursor-pointer font-medium transition-all ${activeView === v.label
+                                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm cursor-pointer font-normal transition-all ${activeView === v.label
                                         ? "bg-primary/15 text-secondary"
                                         : "text-gray-500 hover:text-gray-700 hover:bg-bg-app"
                                         }`}
