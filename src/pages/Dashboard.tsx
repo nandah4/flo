@@ -78,6 +78,7 @@ const Dashboard = () => {
         overdue: 1,
         pomodoroHrs: 8.5,
         totalNotes: 17,
+        totalEvents: 5,
     };
 
     return (
@@ -99,9 +100,9 @@ const Dashboard = () => {
 
                         {/* Right: Date + Export */}
                         <div className="flex items-center gap-4 shrink-0">
-                            <div className="flex items-center gap-1.5 text-sm text-text-primary font-normal">
-                                <Calendar size={15} className="text-text-primary" />
-                                {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                            <div className="flex items-center gap-2 bg-white rounded-lg px-4 py-2.5 border border-gray-200 ">
+                                <Calendar size={16} className="text-text-primary" />
+                                <h3 className="text-sm font-normal text-text-primary whitespace-nowrap truncate min-w-0">{new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h3>
                             </div>
                             <button className="flex items-center gap-2 bg-linear-to-t from-primary to-primary/75 hover:opacity-90 text-text-primary px-4 py-2.5 text-sm font-medium cursor-pointer border-none hover:scale-105 transition-all duration-300 rounded-lg">
                                 <Download size={15} />
@@ -196,6 +197,7 @@ const Dashboard = () => {
                             { label: 'Overdue Tasks', value: stats.overdue, icon: <AlertCircle size={18} className='fill-secondary text-white' />, description: 'Tasks that passed their deadline.' },
                             { label: 'Focus Hours', value: `${stats.pomodoroHrs}h`, icon: <Clock size={18} className='text-secondary' />, description: 'Total hours spent in deep focus.' },
                             { label: 'Total Notes', value: stats.totalNotes, icon: <FileText size={18} className='fill-secondary text-white' />, description: 'All notes you’ve created so far.' },
+                            { label: 'Total Events', value: stats.totalEvents, icon: <Calendar size={18} className='fill-secondary text-white' />, description: 'Events you’ve added to your calendar.' },
                         ].map((s, i) => (
                             <motion.div
                                 key={s.label}
