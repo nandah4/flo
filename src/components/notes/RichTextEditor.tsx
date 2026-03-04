@@ -33,7 +33,7 @@ const RichTextEditor = ({ content, onChange, placeholder }: RichTextEditorProps)
         },
         editorProps: {
             attributes: {
-                class: 'prose prose-slate prose-sm focus:outline-none min-h-[50vh] max-w-none text-text-secondary prose-p:leading-relaxed prose-headings:font-bold prose-a:text-primary hover:prose-a:text-primary-dark w-full px-2',
+                class: 'prose prose-slate prose-sm focus:outline-none min-h-[50vh] max-w-none text-xs sm:text-sm text-text-secondary prose-p:leading-relaxed prose-headings:font-bold prose-a:text-primary hover:prose-a:text-primary-dark w-full px-2',
             },
         },
     });

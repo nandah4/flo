@@ -11,6 +11,7 @@ import AddNoteModal from '../components/notes/AddNoteModal';
 import FlashcardModal from '../components/notes/FlashcardModal';
 import fAIAssistant from '../assets/images/icon-ai-assistant.png';
 import dummyPdf from '../assets/docs/dummy_doc.pdf';
+import { TypingText } from '../components/common/TypingText';
 
 export type NoteColor = 'default' | 'yellow' | 'blue' | 'green' | 'red' | 'purple';
 
@@ -129,8 +130,6 @@ const Notes = () => {
 
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'generating' | 'preview'>('idle');
     const [summaryPreview, setSummaryPreview] = useState<{ fileName: string; title: string; preview: string; tags: Label[] } | null>(null);
-    const [prompt, setPrompt] = useState('');
-    const [promptLoading, setPromptLoading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const audioInputRef = useRef<HTMLInputElement>(null);
     const [isDraggingFile, setIsDraggingFile] = useState(false);
@@ -242,11 +241,7 @@ const Notes = () => {
         e.dataTransfer.setData('text/plain', noteId.toString());
     };
     const handleDragEnd = () => { };
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        const noteId = parseInt(e.dataTransfer.getData('text/plain'), 10);
-        if (!isNaN(noteId)) setConfirmDeleteId(noteId); // show confirmation first
-    };
+
     const handleRequestDelete = (id: number) => setConfirmDeleteId(id);
     const confirmDelete = () => {
         if (confirmDeleteId !== null) setNotes(prev => prev.filter(n => n.id !== confirmDeleteId));
@@ -254,37 +249,7 @@ const Notes = () => {
     };
     const cancelDelete = () => setConfirmDeleteId(null);
 
-    const generateTopicSummary = (topic: string): string => {
-        const t = topic.trim();
-        return `<p><strong>📚 Overview</strong></p>
-<p>${t} is an important topic that encompasses a wide range of concepts and principles. Understanding ${t} provides a solid foundation for deeper study and practical application in this field.</p>
-<p><strong>🎯 Key Concepts</strong></p>
-<ul>
-<li><strong>Fundamentals of ${t}</strong> — The core principles and definitions that form the basis of this topic.</li>
-<li><strong>Historical context</strong> — How ${t} evolved over time and its significance in the broader field.</li>
-<li><strong>Core theories</strong> — The main theoretical frameworks used to understand and analyze ${t}.</li>
-<li><strong>Practical applications</strong> — Real-world uses and case studies where ${t} is applied.</li>
-<li><strong>Common challenges</strong> — Typical difficulties encountered when working with ${t} and how to overcome them.</li>
-</ul>
-<p><strong>📝 Summary</strong></p>
-<p>A strong grasp of ${t} allows you to apply its principles effectively in both academic and professional contexts. Continue exploring this topic by reviewing related subtopics and practicing with examples.</p>`;
-    };
 
-    const handleGenerateFromPrompt = async () => {
-        if (!prompt.trim() || promptLoading) return;
-        setPromptLoading(true);
-        const topic = prompt.trim();
-        await new Promise(r => setTimeout(r, 1400));
-        const content = generateTopicSummary(topic);
-        setNotes(prev => [{
-            id: Date.now(), title: topic, preview: content,
-            timestamp: 'Just now', tags: [{ text: 'AI Summary', color: 'amber' }], color: 'yellow',
-            pinned: false, notebook: selectedNotebook === 'All Notes' ? 'Lectures' : selectedNotebook,
-            wordCount: countWords(content),
-        }, ...prev]);
-        setPrompt('');
-        setPromptLoading(false);
-    };
 
     const editingNote = editingNoteId ? notes.find(n => n.id === editingNoteId) : null;
 
@@ -295,29 +260,25 @@ const Notes = () => {
                 {/* Header */}
                 <header className="px-4 md:pr-10 md:pl-0 py-5 md:py-6 flex items-center justify-between gap-3">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-text-primary">Notes</h2>
-                    <div className="flex items-center gap-3">
-                        <button onClick={handleOpenAddNote} className="flex items-center gap-2 sm:w-auto bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-3! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg!">
-                            <Plus size={16} /><span className="hidden sm:inline">New Note</span>
-                        </button>
-                    </div>
                 </header>
 
                 <div className="px-4 md:pr-10 md:pl-0 pb-2">
 
                     {/* AI Generate + Upload — side by side / stacked on mobile */}
                     <div className="mb-4">
-                        <div className="flex flex-col lg:flex-row items-stretch gap-2.5 lg:items-center lg:justify-start">
-                            <div className="w-full lg:w-fit lg:flex-none flex items-center gap-3 px-4 py-2.5 bg-white border border-gray-200 rounded-xl outline-none">
+                        <div className="flex flex-col lg:flex-row items-stretch gap-5 lg:items-center lg:justify-between">
+
+                            {/* Sesuaikan w ini agar bisa mengambil lebar yang tersisa */}
+                            <div className="w-full lg:flex-1 flex items-center gap-3 pl-3 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg outline-none">
+
                                 <img src={fAIAssistant} alt="AI" className="w-8 h-8 shrink-0" />
-                                <div className='flex flex-col'>
-                                    <p className="text-xs text-text-secondary">Ready to turn your thoughts into organized notes?</p>
-                                </div>
+                                <TypingText />
                             </div>
 
                             {/* Right: Upload PDF / Audio */}
                             <div className="flex gap-2 shrink-0 lg:w-auto w-full">
                                 {/* Upload Document Box */}
-                                <div className={`flex-1 lg:flex-none flex items-center justify-center lg:justify-start gap-2.5 px-4 py-3 bg-white border rounded-xl transition-all duration-200
+                                <div className={`flex-1 lg:flex-none flex items-center justify-center lg:justify-start gap-2.5 px-4 py-3 bg-white border rounded-lg transition-all duration-200
                                     ${isDraggingFile ? 'border-secondary bg-secondary/5 scale-[1.01]' : uploadStatus === 'generating' ? 'border-secondary' : 'border-gray-200'}
                                     ${uploadStatus !== 'preview' ? 'cursor-pointer' : ''}`}
                                     onClick={() => uploadStatus === 'idle' || uploadStatus === 'generating' ? fileInputRef.current?.click() : undefined}
@@ -329,7 +290,7 @@ const Notes = () => {
                                         onChange={e => { const f = e.target.files?.[0]; if (f) { handleUploadFile(f); if (fileInputRef.current) fileInputRef.current.value = ''; } }}
                                         accept=".pdf,.doc,.docx,.txt"
                                     />
-                                    <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${isDraggingFile ? 'text-secondary' : ' text-text-secondary'}`}>
+                                    <div className={` rounded-lg flex items-center justify-center shrink-0 ${isDraggingFile ? 'text-secondary' : ' text-text-secondary'}`}>
                                         {uploadStatus === 'generating' ? <Loader2 size={15} className="animate-spin text-secondary" /> : <CloudUpload size={16} />}
                                     </div>
                                     <div className="flex flex-col">
@@ -340,7 +301,7 @@ const Notes = () => {
                                 </div>
 
                                 {/* Upload Mic Box */}
-                                <button type="button" onClick={() => audioInputRef.current?.click()} className="flex-1 lg:flex-none flex justify-center lg:justify-start cursor-pointer items-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-xl hover:border-gray-300 hover:bg-gray-50 transition-colors shrink-0 outline-none">
+                                <button type="button" onClick={() => audioInputRef.current?.click()} className="flex-1 lg:flex-none flex justify-center lg:justify-start cursor-pointer items-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors shrink-0 outline-none">
                                     <input
                                         type="file"
                                         ref={audioInputRef}
@@ -348,13 +309,17 @@ const Notes = () => {
                                         accept="audio/*,.mp3,.wav,.m4a,.ogg"
                                         onChange={e => { const f = e.target.files?.[0]; if (f) { handleUploadAudio(f); if (audioInputRef.current) audioInputRef.current.value = ''; } }}
                                     />
-                                    <div className="rounded-lg sm:w-7 sm:h-7 w-6 h-6 text-text-secondary flex items-center justify-center shrink-0">
+                                    <div className="rounded-lg  text-text-secondary flex items-center justify-center shrink-0">
                                         {uploadStatus === 'generating' ? <Loader2 size={14} className="animate-spin text-secondary" /> : <Mic size={16} />}
                                     </div>
                                     <span className="text-sm font-normal text-text-secondary whitespace-nowrap">Voice Note</span>
                                 </button>
+                                <div className="flex items-center gap-3">
+                                    <button onClick={handleOpenAddNote} className="flex items-center gap-2 sm:w-auto bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-3! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg!">
+                                        <Plus size={16} /><span className="hidden sm:inline">New Note</span>
+                                    </button>
+                                </div>
                             </div>
-
                         </div>
                     </div>
 

@@ -39,7 +39,7 @@ const MODE_CONFIG: Record<Mode, { label: string; defaultMins: number; color: str
     long: { label: "Long Break", defaultMins: 15, color: "text-sky-500", accent: "#3b82f6" },
 };
 
-// ─── Circular Progress ────────────────────────────────────────────────────────
+// Circular Progress 
 function CircularProgress({ progress, accent, size = 280 }: { progress: number; accent: string; size?: number }) {
     const radius = (size - 20) / 2;
     const circumference = 2 * Math.PI * radius;
@@ -249,14 +249,13 @@ export default function Timer() {
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-text-primary">Focus Timer </h2>
                 </header>
 
-                {/* 5-col grid */}
                 <div className="px-4 md:pr-10 md:pl-0 grid grid-cols-1 lg:grid-cols-5 gap-4">
 
-                    {/* LEFT — 3 cols: timer + settings */}
+                    {/* left cols: timer + settings */}
                     <div className="lg:col-span-3 flex flex-col gap-4">
 
                         {/* Timer card */}
-                        <div className="bg-white rounded-2xl  border-gray-200 p-6 flex flex-col items-center gap-4 relative min-h-[440px] justify-center">
+                        <div className="bg-white rounded-xl  border-gray-200 p-6 flex flex-col items-center gap-4 relative min-h-[440px] justify-center">
                             <TimerPanel />
 
                             {/* Zen Mode button — bottom-right */}
@@ -270,7 +269,7 @@ export default function Timer() {
                         </div>
 
                         {/* Settings card */}
-                        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                             <button
                                 onClick={() => setSettingsOpen(!settingsOpen)}
                                 className="w-full flex items-center justify-between px-5 py-4 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
@@ -342,7 +341,7 @@ export default function Timer() {
                     <div className="lg:col-span-2 flex flex-col gap-4">
 
                         {/* Task panel */}
-                        <div className="bg-white rounded-2xl border border-gray-200 flex flex-col overflow-hidden flex-1">
+                        <div className="bg-white rounded-lg border border-gray-200 flex flex-col overflow-hidden flex-1">
                             {/* Panel header */}
                             <div className="flex items-center justify-between px-4 py-3.5">
                                 <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
@@ -439,7 +438,7 @@ export default function Timer() {
                         </div>
 
                         {/* Notes panel */}
-                        <div className="bg-white rounded-2xl border border-gray-200 flex flex-col">
+                        <div className="bg-white rounded-lg border border-gray-200 flex flex-col">
                             <div className="flex items-center gap-2 px-4 py-3.5 text-sm font-medium text-gray-700">
                                 <StickyNote size={16} className="text-text-primary" />
                                 Session Notes
@@ -449,7 +448,7 @@ export default function Timer() {
                                 onChange={(e) => setNotes(e.target.value)}
                                 placeholder="Jot down thoughts, blockers, or focus intent for this session..."
                                 rows={5}
-                                className="flex-1 px-4 py-3 text-sm text-text-secondary placeholder:text-text-secondary/80 outline-none resize-none rounded-b-2xl bg-transparent leading-relaxed"
+                                className="flex-1 px-4 py-3 text-sm text-text-secondary placeholder:text-text-secondary outline-none resize-none"
                             />
                         </div>
                     </div>
