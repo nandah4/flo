@@ -226,9 +226,9 @@ const Notes = () => {
             ));
         } else {
             setNotes(prev => [{ id: Date.now(), title, preview, timestamp: 'Just now', tags, color, pinned: false, notebook, wordCount: wc, documentUrl: uploadedDocUrl || undefined }, ...prev]);
-            progressQuest('note'); // auto-detect: note created
+            progressQuest('note'); 
             if (uploadedDocUrl) {
-                progressQuest('ai'); // if from document
+                progressQuest('ai');
             }
         }
     };

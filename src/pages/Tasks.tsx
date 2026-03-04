@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { useQuest } from "../context/QuestContext";
 import { motion } from "framer-motion";
-import { Kanban, Calendar, Send, Loader2 } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import DashboardLayout from "../ui/DashboardLayout";
 
 // Components
 import AddTaskDrawer from "../components/tasks/AddTaskDrawer";
 import TaskColumn from "../components/tasks/TaskColumn";
-import CalendarView from "../components/tasks/CalendarView";
+
 import DeleteModal from "../components/tasks/DeleteModal";
 import FloatingAIButton from "../components/common/FloatingAIButton";
 import AIChatPanel from "../components/common/AIChatPanel";
@@ -68,13 +68,10 @@ export default function Tasks() {
     const [columns, setColumns] = useState<Column[]>(initialColumns);
     const [prompt, setPrompt] = useState("");
     const [loading, setLoading] = useState(false);
-    const [activeView, setActiveView] = useState("Kanban");
-
     // Drawer state
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [drawerColumnId, setDrawerColumnId] = useState<string>("todo");
     const [editingCard, setEditingCard] = useState<TaskCard | null>(null);
-    const [calendarClickedDate, setCalendarClickedDate] = useState("");
 
     // Modal state
     const [deleteModalData, setDeleteModalData] = useState<{ colId: string; cardId: string } | null>(null);
@@ -125,25 +122,20 @@ export default function Tasks() {
         setLoading(false);
     }
 
-    function openDrawerFor(colId: string, card: TaskCard | null = null, date = "") {
+    function openDrawerFor(colId: string, card: TaskCard | null = null) {
         setEditingCard(card);
         setDrawerColumnId(colId);
-        setCalendarClickedDate(date);
         setDrawerOpen(true);
     }
 
     function closeDrawer() {
         setDrawerOpen(false);
-        setCalendarClickedDate("");
         setTimeout(() => setEditingCard(null), 300);
     }
 
     // Render
 
-    const views = [
-        { label: "Kanban", icon: <Kanban size={14} /> },
-        { label: "Calendar", icon: <Calendar size={14} /> },
-    ];
+
 
     return (
         <DashboardLayout>
@@ -166,7 +158,7 @@ export default function Tasks() {
                                 onChange={(e) => setPrompt(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
                                 placeholder='Create a task "Weekly Progress Report" — description: summarize this weeks results, priority: High, status: To Do, start: March 5 at 09:00, end: March 5 at 11:00.'
-                            className="flex-1 h-10 sm:h-12 text-sm text-text-primary placeholder:text-text-secondary outline-none bg-transparent"
+                                className="flex-1 h-10 sm:h-12 text-sm text-text-primary placeholder:text-text-secondary outline-none bg-transparent"
                             />
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
@@ -181,50 +173,19 @@ export default function Tasks() {
                         </div>
                     </div>
 
-                    {/* View tabs */}
-                    <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-xl p-1.5">
-                            {views.map((v) => (
-                                <button
-                                    key={v.label}
-                                    onClick={() => setActiveView(v.label)}
-                                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm cursor-pointer font-normal transition-all ${activeView === v.label
-                                        ? "bg-primary/15 text-secondary"
-                                        : "text-gray-500 hover:text-gray-700 hover:bg-bg-app"
-                                        }`}
-                                >
-                                    {v.icon}
-                                    {v.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Kanban view */}
-                    {activeView === "Kanban" && (
-                        <div className="flex gap-4 md:gap-5 overflow-x-auto pb-8 -mx-4 px-4 md:mx-0 md:px-0">
-                            {columns.map((col) => (
-                                <TaskColumn
-                                    key={col.id}
-                                    col={col}
-                                    onAddClick={(colId) => openDrawerFor(colId)}
-                                    onCardClick={(card) => openDrawerFor("todo", card)}
-                                    onDeleteClick={(colId, cardId) => setDeleteModalData({ colId, cardId })}
-                                />
-                            ))}
-                        </div>
-                    )}
-
-                    {/* Calendar view */}
-                    {activeView === "Calendar" && (
-                        <div className="pb-8">
-                            <CalendarView
-                                columns={columns}
-                                onDayClick={(dateStr) => openDrawerFor("todo", null, dateStr)}
+                    {/* Kanban */}
+                    <h4 className="text-lg font-medium text-text-primary mb-3">Kanban Board</h4>
+                    <div className="flex gap-4 md:gap-5 overflow-x-auto pb-8 -mx-4 px-4 md:mx-0 md:px-0">
+                        {columns.map((col) => (
+                            <TaskColumn
+                                key={col.id}
+                                col={col}
+                                onAddClick={(colId) => openDrawerFor(colId)}
                                 onCardClick={(card) => openDrawerFor("todo", card)}
+                                onDeleteClick={(colId, cardId) => setDeleteModalData({ colId, cardId })}
                             />
-                        </div>
-                    )}
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -236,7 +197,6 @@ export default function Tasks() {
                 onAdd={handleAddCard}
                 defaultColumnId={drawerColumnId}
                 editingCard={editingCard}
-                defaultDate={calendarClickedDate}
             />
 
             {/* Delete Confirmation Modal */}

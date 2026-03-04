@@ -4,6 +4,7 @@ import Tasks from './pages/Tasks';
 import Timer from './pages/Timer';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import Planning from './pages/Planning';
 import { QuestProvider } from './context/QuestContext';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/notes" element={<Notes />} />
           <Route path="/tasks" element={<Tasks />} />
+          <Route path="/planning" element={<Planning />} />
           <Route path="/timer" element={<Timer />} />
         </Routes>
       </BrowserRouter>
