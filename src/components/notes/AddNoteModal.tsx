@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, Tag, Sparkles, Loader2, Paperclip, Mic } from 'lucide-react';
+import { X, Plus, Tag, Sparkles, Loader2, Paperclip, Mic, BookOpen } from 'lucide-react';
 import RichTextEditor from './RichTextEditor';
 import type { NoteColor, Label } from '../../pages/Notes';
-
 import aiAssistant from '../../assets/images/icon-ai-assistant.png';
+import dummyPdf from '../../assets/docs/dummy_doc.pdf';
 
 const LABEL_COLORS = [
     'rose', 'pink', 'fuchsia', 'violet', 'indigo',
@@ -45,13 +45,11 @@ interface AddNoteModalProps {
     initialColor?: NoteColor;
     initialNotebook?: string;
     documentUrl?: string;
-    audioUploaded?: boolean;   // if true, show waveform below upload icons
-    audioFileName?: string;    // filename of uploaded audio for waveform label
+    audioUploaded?: boolean;
+    audioFileName?: string;
     availableTags: Label[];
     notebooks: string[];
 }
-
-
 
 const countWords = (html: string): number => {
     const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
@@ -69,21 +67,21 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
     const [preview, setPreview] = useState(initialPreview);
     const [tags, setTags] = useState<Label[]>(initialTags ?? []);
     const [notebook, setNotebook] = useState(initialNotebook);
-
     const [tagSearch, setTagSearch] = useState('');
+    const [openMeta, setOpenMeta] = useState<'notebook' | 'labels' | null>(null);
     const wasOpenRef = useRef(false);
 
     useEffect(() => {
-        // Only reset form when modal transitions from closed → open.
         if (isOpen && !wasOpenRef.current) {
             setTitle(initialTitle);
             setPreview(initialPreview);
             setTags(initialTags && initialTags.length ? initialTags : []);
             setNotebook(initialNotebook ?? (notebooks[0] || ''));
             setTagSearch('');
+            setOpenMeta(null);
         }
         wasOpenRef.current = isOpen;
-    }, [isOpen]); // only isOpen — avoids stale-closure reset on every keystroke
+    }, [isOpen]);
 
     const handleSave = () => {
         if (title.trim() || preview.trim()) {
@@ -91,8 +89,6 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
         }
         onClose();
     };
-
-
 
     const addTag = (text: string) => {
         if (!tags.some(t => t.text === text)) {
@@ -104,19 +100,17 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
 
     const [isPolishing, setIsPolishing] = useState(false);
 
-    // Internal upload state (from buttons inside the drawer)
+    // Internal upload state
     const [internalDocUrl, setInternalDocUrl] = useState<string | null>(null);
     const [internalAudioFile, setInternalAudioFile] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const docInputRef = useRef<HTMLInputElement>(null);
     const audioInputRef = useRef<HTMLInputElement>(null);
 
-    // Effective values = prop-supplied (from Notes.tsx) or internally uploaded
     const effectiveDocUrl = documentUrl || internalDocUrl;
     const effectiveAudioFile = audioFileName || internalAudioFile || undefined;
     const effectiveAudioUploaded = audioUploaded || !!internalAudioFile;
 
-    // Reset internal upload state when modal closes
     useEffect(() => {
         if (!isOpen) {
             setInternalDocUrl(null);
@@ -130,9 +124,9 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
         setTimeout(() => {
             const name = file.name.replace(/\.[^/.]+$/, '');
             setTitle(prev => prev || `Summary: ${name}`);
-            setPreview(prev => prev || `<p>AI generated summary for <strong>${file.name}</strong>. The document covers fundamental concepts and key takeaways. This summary highlights the core ideas and provides a structured overview of the material.</p>`);
+            setPreview(prev => prev || `<p>AI generated summary for <strong>${file.name}</strong>. The document covers fundamental concepts and key takeaways.</p>`);
             setTags(prev => prev.length ? prev : [{ text: 'AI Summary', color: 'amber' }]);
-            setInternalDocUrl('/dummy_doc.pdf'); // replace dummyPdf import with dummy path string for preview
+            setInternalDocUrl(dummyPdf);
             setIsUploading(false);
         }, 1400);
     };
@@ -142,7 +136,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
         setTimeout(() => {
             const name = file.name.replace(/\.[^/.]+$/, '');
             setTitle(prev => prev || `Voice Note: ${name}`);
-            setPreview(prev => prev || `<p>AI transcription of <strong>${file.name}</strong>. The recording has been analyzed and key points extracted into this structured note.</p>`);
+            setPreview(prev => prev || `<p>AI transcription of <strong>${file.name}</strong>. Key points have been extracted into this structured note.</p>`);
             setTags(prev => prev.length ? prev : [{ text: 'Voice Note', color: 'sky' }, { text: 'AI Summary', color: 'amber' }]);
             setInternalAudioFile(file.name);
             setIsUploading(false);
@@ -151,10 +145,8 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
 
     const handlePolish = async () => {
         if (!preview.trim() || isPolishing) return;
-
         setIsPolishing(true);
         await new Promise((resolve) => setTimeout(resolve, 1000));
-
         setIsPolishing(false);
     };
 
@@ -173,81 +165,217 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                         initial={{ opacity: 0, x: '100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: '100%' }}
                         transition={{ type: 'spring', stiffness: 320, damping: 32 }}
                         className={[
-                            'fixed z-50 bg-bg-app shadow-2xl flex flex-col mr-2 my-2',
-                            effectiveDocUrl ? 'md:inset-y-0 md:right-0 md:w-[940px] xl:w-[1040px] md:rounded-xl' : 'md:inset-y-0 md:right-0 md:w-[560px] md:rounded-xl',
-                            'max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[92vh]',
+                            'fixed z-50 bg-bg-app shadow-2xl flex flex-col rounded-lg sm:rounded-none',
+                            effectiveDocUrl
+                                ? 'md:inset-y-0 md:right-0 md:w-[940px] xl:w-[1040px]'
+                                : 'md:inset-y-0 md:right-0 md:w-[560px]',
+                            'max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:max-h-[92vh]',
                         ].join(' ')}
                     >
-                        {/* Header */}
-                        <div className="flex items-center justify-between px-6 py-5 shrink-0">
-                            <div>
-                                <h3 className="md:text-lg text-base font-medium text-text-primary">
-                                    {initialTitle ? 'Edit Note' : 'Add New Note'}
-                                </h3>
-                                <p className="text-sm text-text-secondary mt-0.5">Fill in the details below to create a note.</p>
-                            </div>
-                            <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center text-text-secondary hover:text-gray-700 hover:bg-gray-100 transition-colors">
+                        {/* Header — matches Add Task drawer style */}
+                        <div className="flex items-center justify-start border-b border-gray-200 shrink-0">
+                            <button
+                                onClick={onClose}
+                                className="p-3.5 flex items-center border-r border-gray-200 justify-center text-text-secondary hover:text-text-primary hover:bg-gray-100 transition-colors"
+                            >
                                 <X size={18} />
                             </button>
+                            <span className="text-sm font-medium text-text-primary pl-3">
+                                {initialTitle ? 'Edit Note' : 'New Note'}
+                            </span>
                         </div>
 
-                        {/* Body (Split view or Single form) */}
-                        <div className={`flex flex-1 overflow-hidden ${effectiveDocUrl ? 'flex-col md:flex-row gap-2' : 'flex-col'}`}>
+                        {/* Body — split view if doc attached */}
+                        <div className={`flex flex-1 overflow-hidden ${effectiveDocUrl ? 'flex-col md:flex-row' : 'flex-col'}`}>
 
-                            {/* Left Pane: Document Overview */}
+                            {/* Left Pane: Document preview */}
                             {effectiveDocUrl && (
-                                <div className="flex flex-col h-56 md:h-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-100 bg-gray-50/50 px-4 md:pl-6 pt-4 md:pt-0 shrink-0">
-                                    <div className="flex items-center justify-between mb-2 md:mb-3">
+                                <div className="flex flex-col md:w-[450px] shrink-0 border-b md:border-b-0 md:border-r border-gray-100 bg-gray-50/50 px-4 pt-4 pb-4">
+                                    <div className="flex items-center justify-between mb-2">
                                         <h4 className="text-sm font-medium text-text-primary">Overview Document</h4>
                                         <span className="text-xs bg-white border border-gray-200 px-2 py-0.5 rounded text-gray-500">PDF</span>
                                     </div>
-                                    <div className="flex-1 min-h-[140px] md:min-h-0 bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm mb-4 md:mb-0">
+                                    <div className="flex-1 min-h-[160px] md:min-h-0 bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                                         <object data={effectiveDocUrl} type="application/pdf" className="w-full h-full" title="Document Preview" />
                                     </div>
                                 </div>
                             )}
 
-                            {/* Right Pane: Scrollable Form */}
-                            <div className={`flex flex-col overflow-y-auto ${effectiveDocUrl ? 'md:w-[460px] shrink-0' : 'flex-1'}`}>
-                                <div className="flex flex-col gap-5 px-6 py-2">
+                            {/* Right Pane: Form */}
+                            <div className={`flex flex-col overflow-y-auto flex-1`}>
+                                <div className="flex flex-col gap-2 px-5 py-4">
 
-                                    {/* Attachment Section */}
+                                    {/* Title — Notion-style */}
+                                    <input
+                                        value={title}
+                                        onChange={e => setTitle(e.target.value)}
+                                        placeholder="Note title..."
+                                        className="w-full sm:text-xl text-lg font-medium text-text-primary placeholder:text-text-secondary bg-transparent outline-none border-none px-0 py-1"
+                                    />
+
+                                    {/* Metadata rows */}
                                     <div className="flex flex-col gap-2">
-                                        <p className="text-sm font-medium text-text-primary">Attach Resource</p>
-                                        <div className="flex items-center gap-2">
-                                            {/* Hidden file inputs */}
-                                            <input ref={docInputRef} type="file" className="hidden" accept=".pdf,.doc,.docx,.txt"
-                                                onChange={e => { const f = e.target.files?.[0]; if (f) { handleInternalDocUpload(f); if (docInputRef.current) docInputRef.current.value = ''; } }}
-                                            />
-                                            <input ref={audioInputRef} type="file" className="hidden" accept="audio/*,.mp3,.wav,.m4a,.ogg"
-                                                onChange={e => { const f = e.target.files?.[0]; if (f) { handleInternalAudioUpload(f); if (audioInputRef.current) audioInputRef.current.value = ''; } }}
-                                            />
-                                            <button type="button"
-                                                onClick={() => docInputRef.current?.click()}
-                                                disabled={isUploading}
-                                                className={`flex items-center gap-1.5 px-2.5 py-2.5 rounded-md border text-xs font-normal bg-white transition-colors
-                                                    ${effectiveDocUrl ? 'border-secondary/40 text-secondary' : 'border-gray-200 text-text-secondary hover:text-text-primary'} disabled:opacity-50`}
-                                            >
-                                                {isUploading && !effectiveAudioFile ? <Loader2 size={13} className="animate-spin" /> : <Paperclip size={14} />}
-                                                <span>{effectiveDocUrl ? 'Document attached' : 'Document'}</span>
-                                            </button>
-                                            <button type="button"
-                                                onClick={() => audioInputRef.current?.click()}
-                                                disabled={isUploading}
-                                                className={`flex items-center gap-1.5 px-2.5 py-2.5 rounded-md border text-xs font-normal bg-white transition-colors
-                                                    ${effectiveAudioUploaded ? 'border-secondary/40 text-secondary' : 'border-gray-200 text-text-secondary hover:text-text-primary'} disabled:opacity-50`}
-                                            >
-                                                {isUploading && effectiveAudioFile ? <Loader2 size={13} className="animate-spin" /> : <Mic size={14} />}
-                                                <span>{effectiveAudioUploaded ? 'Voice attached' : 'Voice Note'}</span>
-                                            </button>
+
+                                        {/* Notespace */}
+                                        <div className="flex items-start px-2">
+                                            <div className="flex items-center w-28 gap-3 text-xs text-text-secondary pt-0.5">
+                                                <BookOpen size={16} />
+                                                <span>Notespace</span>
+                                            </div>
+                                            <div className="flex-1">
+                                                {openMeta === 'notebook' ? (
+                                                    <div className="flex gap-1.5 flex-wrap">
+                                                        {notebooks.map(nb => (
+                                                            <button key={nb} type="button"
+                                                                onClick={() => { setNotebook(nb); setOpenMeta(null); }}
+                                                                className={`px-2.5 py-1 rounded-md text-xs font-normal border transition-all ${notebook === nb
+                                                                    ? 'bg-primary/20 text-secondary border-primary/30'
+                                                                    : 'bg-white border-gray-200 text-text-secondary hover:border-gray-300'}`}
+                                                            >{nb}</button>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <button type="button"
+                                                        onClick={() => setOpenMeta('notebook')}
+                                                        className="px-2.5 py-1 rounded-md text-xs font-normal border bg-primary/10 text-secondary border-primary/20 hover:border-primary/40 transition-all"
+                                                    >
+                                                        {notebook || 'Select…'}
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Labels */}
+                                        <div className="flex items-start px-2">
+                                            <div className="flex items-center w-28 gap-3 text-xs text-text-secondary pt-0.5">
+                                                <Tag size={16} />
+                                                <span>Labels</span>
+                                            </div>
+                                            <div className="flex-1">
+                                                {openMeta === 'labels' ? (
+                                                    <div className="flex flex-col gap-2">
+                                                        {/* Selected */}
+                                                        {tags.length > 0 && (
+                                                            <div className="flex flex-wrap gap-1.5">
+                                                                {tags.map(label => {
+                                                                    const s = getLabelStyle(label.color);
+                                                                    return (
+                                                                        <span key={label.text}
+                                                                            className={`flex items-center gap-1.5 px-2 py-1 ${s.bg} ${s.text} text-xs rounded-md`}>
+                                                                            <span className={`w-1.5 h-1.5 rounded-full ${s.dot} shrink-0`} />
+                                                                            {label.text}
+                                                                            <button type="button" onClick={() => removeTag(label.text)}
+                                                                                className="hover:opacity-60 ml-0.5 transition-opacity">
+                                                                                <X size={10} />
+                                                                            </button>
+                                                                        </span>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        )}
+                                                        {/* Available */}
+                                                        {availableTags.filter(l => !tags.some(t => t.text === l.text)).length > 0 && (
+                                                            <div className="flex flex-wrap gap-1.5">
+                                                                {availableTags.filter(l => !tags.some(t => t.text === l.text)).map(l => {
+                                                                    const s = getLabelStyle(l.color);
+                                                                    return (
+                                                                        <button type="button" key={l.text}
+                                                                            onClick={() => setTags(prev => [...prev, l])}
+                                                                            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs ${s.bg} ${s.text} border border-transparent hover:border-current/20 transition-colors`}>
+                                                                            <Tag size={11} />
+                                                                            {l.text}
+                                                                        </button>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        )}
+                                                        {/* New label input */}
+                                                        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-2 py-1.5 focus-within:border-primary transition-all">
+                                                            <Plus size={13} className="text-gray-400 shrink-0" />
+                                                            <input type="text"
+                                                                value={tagSearch}
+                                                                onChange={e => setTagSearch(e.target.value)}
+                                                                placeholder="New label, press Enter…"
+                                                                className="flex-1 text-xs text-gray-700 placeholder:text-text-secondary outline-none bg-transparent"
+                                                                onKeyDown={e => {
+                                                                    if ((e.key === 'Enter' || e.key === ',') && tagSearch.trim()) {
+                                                                        e.preventDefault();
+                                                                        addTag(tagSearch.trim().replace(/,$/, ''));
+                                                                    }
+                                                                }}
+                                                            />
+                                                            {tagSearch.trim() && (
+                                                                <button type="button" onClick={() => addTag(tagSearch.trim())}
+                                                                    className="text-xs text-secondary bg-primary/20 px-2.5 py-1 rounded-md shrink-0">
+                                                                    Add
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                        <button type="button" onClick={() => setOpenMeta(null)}
+                                                            className="text-xs text-text-secondary hover:text-text-primary self-start ml-1 transition-colors">
+                                                            Done
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex flex-wrap items-center gap-1.5">
+                                                        {tags.length > 0
+                                                            ? tags.map(label => {
+                                                                const s = getLabelStyle(label.color);
+                                                                return (
+                                                                    <button key={label.text} type="button"
+                                                                        onClick={() => setOpenMeta('labels')}
+                                                                        className={`flex items-center gap-1 px-2 py-0.5 ${s.bg} ${s.text} text-xs rounded-md border border-transparent`}>
+                                                                        <span className={`w-1.5 h-1.5 rounded-full ${s.dot} shrink-0`} />
+                                                                        {label.text}
+                                                                    </button>
+                                                                );
+                                                            })
+                                                            : (
+                                                                <button type="button" onClick={() => setOpenMeta('labels')}
+                                                                    className="px-2.5 py-1 rounded-md text-xs font-normal border bg-white border-gray-200 text-text-secondary hover:border-gray-300 transition-all">
+                                                                    Add label…
+                                                                </button>
+                                                            )}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Attachments */}
+                                        <div className="flex items-center px-2">
+                                            <div className="flex items-center w-28 gap-3 text-xs text-text-secondary">
+                                                <Paperclip size={16} />
+                                                <span>Attach</span>
+                                            </div>
+                                            <div className="flex flex-1 gap-1.5">
+                                                {/* Hidden inputs */}
+                                                <input ref={docInputRef} type="file" className="hidden" accept=".pdf,.doc,.docx,.txt"
+                                                    onChange={e => { const f = e.target.files?.[0]; if (f) { handleInternalDocUpload(f); if (docInputRef.current) docInputRef.current.value = ''; } }}
+                                                />
+                                                <input ref={audioInputRef} type="file" className="hidden" accept="audio/*,.mp3,.wav,.m4a,.ogg"
+                                                    onChange={e => { const f = e.target.files?.[0]; if (f) { handleInternalAudioUpload(f); if (audioInputRef.current) audioInputRef.current.value = ''; } }}
+                                                />
+                                                <button type="button" onClick={() => docInputRef.current?.click()} disabled={isUploading}
+                                                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-xs font-normal bg-white transition-colors
+                                                        ${effectiveDocUrl ? 'border-secondary/40 text-secondary' : 'border-gray-200 text-text-secondary hover:border-gray-300'} disabled:opacity-50`}>
+                                                    {isUploading && !effectiveAudioFile ? <Loader2 size={12} className="animate-spin" /> : <Paperclip size={12} />}
+                                                    {effectiveDocUrl ? 'Attached' : 'Document'}
+                                                </button>
+                                                <button type="button" onClick={() => audioInputRef.current?.click()} disabled={isUploading}
+                                                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-xs font-normal bg-white transition-colors
+                                                        ${effectiveAudioUploaded ? 'border-secondary/40 text-secondary' : 'border-gray-200 text-text-secondary hover:border-gray-300'} disabled:opacity-50`}>
+                                                    {isUploading && effectiveAudioFile ? <Loader2 size={12} className="animate-spin" /> : <Mic size={12} />}
+                                                    {effectiveAudioUploaded ? 'Voice' : 'Voice Note'}
+                                                </button>
+                                            </div>
                                         </div>
 
                                         {/* Waveform — only visible after audio upload */}
                                         {effectiveAudioUploaded && (
-                                            <div className="flex flex-col gap-1.5 bg-white border border-gray-200 rounded-xl px-4 py-3">
+                                            <div className="flex flex-col gap-1.5 bg-white border border-gray-200 rounded-xl px-4 py-3 mx-2">
                                                 <div className="flex items-center justify-between mb-1">
                                                     <div className="flex items-center gap-1.5">
-                                                        <Mic size={14} className="text-secondary" />
+                                                        <Mic size={13} className="text-secondary" />
                                                         <span className="text-xs font-medium text-text-primary truncate max-w-[200px]">{effectiveAudioFile ?? 'Voice Note'}</span>
                                                     </div>
                                                     <span className="text-xs text-secondary font-medium">AI Transcribed</span>
@@ -264,151 +392,60 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                         )}
                                     </div>
 
-                                    {/* Title */}
-                                    <div className="flex flex-col gap-y-1.5">
-                                        <label className="text-sm font-medium text-text-primary">
-                                            Title
-                                        </label>
-                                        <input
-                                            value={title} onChange={e => setTitle(e.target.value)}
-                                            placeholder="e.g. Calculus III Notes"
-                                            className="w-full text-sm text-gray-700 placeholder:text-text-secondary bg-white border border-gray-200 rounded-lg px-4 py-3 outline-none focus:border-secondary focus:ring-2 focus:ring-primary/10 transition-all"
-                                        />
-                                    </div>
-
-                                    {/* Notes with editor */}
-                                    <div className={`flex flex-col -mt-3 ${preview.trim() ? 'mb-6.5 sm:mb-3.5' : 'mb-0'}`}>
-                                        <div className="relative h-[250px]! w-full">
+                                    {/* Notes editor — at the bottom */}
+                                    <div className="flex flex-col mt-3">
+                                        <div className="relative min-h-[220px] w-full">
                                             <RichTextEditor content={preview} onChange={setPreview} placeholder="Start writing your note..." />
-                                            {preview.trim() && (
-                                                <p className="text-xs font-medium text-text-secondary mt-2 flex items-center gap-1.5">
-                                                    <Sparkles size={12} className="text-secondary" />
-                                                    With Polish, Let FloAI refine and structure your notes instantly.
-                                                </p>
-                                            )}
+                                        </div>
 
-                                            {/* AI Polish button */}
-                                            {preview.trim() && (
+                                        {/* Polish row — below editor, not overlapping */}
+                                        {preview.trim() && (
+                                            <div className="flex items-center justify-between gap-2 mt-2">
+                                                <p className="text-xs text-text-secondary flex items-center gap-1.5 flex-1 min-w-0">
+                                                    <Sparkles size={12} className="text-secondary shrink-0" />
+                                                    <span className="truncate">Let FloAI refine and structure your notes.</span>
+                                                </p>
                                                 <button
                                                     type="button"
                                                     onClick={handlePolish}
                                                     disabled={isPolishing}
-                                                    title="Polish with FLoAI"
-                                                    className="absolute bottom-2.5 right-2.5 z-10 flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white border border-gray-200 shadow-sm text-[11px] font-medium text-text-secondary hover:text-secondary hover:border-primary/40 hover:shadow transition-all disabled:opacity-60"
+                                                    className="flex shrink-0 items-center gap-1.5 px-2 py-1.5 rounded-md bg-white border border-gray-200 text-xs font-medium text-text-secondary hover:text-secondary hover:border-primary/40 hover:shadow transition-all disabled:opacity-60"
                                                 >
                                                     {isPolishing
                                                         ? <Loader2 size={13} className="animate-spin text-secondary" />
-                                                        : <img src={aiAssistant} className='w-4 h-4' alt="AI" />
+                                                        : <img src={aiAssistant} className='w-4 h-4 md:w-5 sm:h-5' alt="AI" />
                                                     }
                                                     {isPolishing ? 'Polishing...' : 'Polish'}
                                                 </button>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Notebook */}
-                                    <div className="flex flex-col gap-y-1.5">
-                                        <label className="text-sm font-medium text-text-primary">
-                                            Notespace
-                                        </label>
-                                        <div className="flex flex-wrap gap-3">
-                                            {notebooks.map(nb => (
-                                                <button key={nb} type="button" onClick={() => setNotebook(nb)}
-                                                    className={`px-3.5 py-2 rounded-md text-xs font-normal border transition-all
-                                                    ${notebook === nb ? 'bg-primary/20 text-secondary border-primary/30' : 'bg-white text-gray-400 border-gray-200 hover:border-gray-300'}`}
-                                                >{nb}</button>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Tags */}
-                                    <div className="flex flex-col gap-y-1.5">
-                                        <label className="text-sm font-medium text-text-primary">
-                                            Labels
-                                        </label>
-
-                                        {/* Selected labels */}
-                                        {tags.length > 0 && (
-                                            <div className="flex flex-wrap gap-2 mb-2">
-                                                {tags.map(label => {
-                                                    const s = getLabelStyle(label.color);
-                                                    return (
-                                                        <span key={label.text}
-                                                            className={`flex items-center gap-1.5 px-2 py-1 ${s.bg} ${s.text} text-xs rounded-md font-normal`}>
-                                                            <span className={`w-1.5 h-1.5 rounded-full ${s.dot} shrink-0`} />
-                                                            {label.text}
-                                                            <button type="button" onClick={() => removeTag(label.text)}
-                                                                className="hover:opacity-60 transition-opacity ml-0.5">
-                                                                <X size={10} />
-                                                            </button>
-                                                        </span>
-                                                    );
-                                                })}
                                             </div>
                                         )}
 
-                                        {/* Available labels to re-apply */}
-                                        {availableTags.filter(l => !tags.some(t => t.text === l.text)).length > 0 && (
-                                            <div className="flex flex-wrap gap-2 mb-2">
-                                                {availableTags.filter(l => !tags.some(t => t.text === l.text)).map(l => {
-                                                    const s = getLabelStyle(l.color);
-                                                    return (
-                                                        <button type="button" key={l.text}
-                                                            onClick={() => setTags(prev => [...prev, l])}
-                                                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs ${s.bg} ${s.text} border border-transparent hover:border-current/20 transition-colors`}>
-                                                            <Tag size={12} />
-                                                            {l.text}
-                                                        </button>
-                                                    );
-                                                })}
-                                            </div>
+                                        {/* Word count */}
+                                        {preview.trim() && (
+                                            <p className="text-[11px] text-text-secondary mt-1 text-right">
+                                                {countWords(preview)} words
+                                            </p>
                                         )}
-
-                                        {/* New label input */}
-                                        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-2 py-2 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
-                                            <Plus size={14} className="text-gray-400 shrink-0" />
-                                            <input
-                                                type="text"
-                                                value={tagSearch}
-                                                onChange={e => setTagSearch(e.target.value)}
-                                                placeholder="Add a label and press Enter..."
-                                                className="flex-1 text-xs text-gray-700 placeholder:text-text-secondary outline-none bg-transparent"
-                                                onKeyDown={e => {
-                                                    if ((e.key === 'Enter' || e.key === ',') && tagSearch.trim()) {
-                                                        e.preventDefault();
-                                                        addTag(tagSearch.trim().replace(/,$/, ''));
-                                                    }
-                                                }}
-                                            />
-                                            {tagSearch.trim() && (
-                                                <button type="button" onClick={() => addTag(tagSearch.trim())}
-                                                    className="text-xs font-normal text-secondary bg-primary/20 px-3 py-1.5 rounded-md hover:bg-primary/20 transition-colors shrink-0">
-                                                    Add
-                                                </button>
-                                            )}
-                                        </div>
                                     </div>
+                                </div>
+
+                                {/* Footer */}
+                                <div className="mt-auto px-5 py-4 flex items-center gap-3 shrink-0">
+                                    <button type="button" onClick={onClose}
+                                        className="flex-1 py-2.5 rounded-md border cursor-pointer border-gray-200 text-sm font-normal text-gray-500 bg-white transition-colors">
+                                        Cancel
+                                    </button>
+                                    <button type="button" onClick={handleSave}
+                                        className="flex-1 py-2.5 rounded-md cursor-pointer bg-linear-to-t from-primary to-primary/80 text-text-primary text-sm font-normal hover:opacity-90 transition-opacity">
+                                        {initialTitle ? 'Save Changes' : 'Add Note'}
+                                    </button>
                                 </div>
                             </div>
                         </div>
-
-                        {/* Footer */}
-                        <div className="mt-auto px-6 py-5 border-t border-gray-100 flex items-center justify-end gap-3">
-                            <button type="button" onClick={onClose}
-                                className="px-5 py-2.5 cursor-pointer rounded-md border border-gray-200 text-sm font-normal text-gray-500 bg-white hover:bg-gray-50 transition-colors">
-                                Cancel
-                            </button>
-                            <button type="button" onClick={handleSave}
-                                className="px-5 py-2.5 cursor-pointer rounded-md bg-linear-to-t from-primary to-primary/80 text-text-primary text-sm font-normal hover:opacity-90 transition-opacity">
-                                {initialTitle ? 'Save Changes' : 'Add Note'}
-                            </button>
-                        </div>
-
-
                     </motion.div>
                 </>
             )}
-        </AnimatePresence >,
+        </AnimatePresence>,
         document.body
     );
 };

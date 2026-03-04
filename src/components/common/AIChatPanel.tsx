@@ -48,7 +48,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
             />
 
             {/* Panel — same sizing as Add Task drawer: mr-2 my-2, right-side */}
-            <div className="fixed z-50 bg-bg-app shadow-2xl flex flex-col mr-2 my-2 md:top-0 md:bottom-0 md:right-0 md:left-auto md:w-[420px] md:rounded-xl max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[90vh] overflow-hidden">
+            <div className="fixed z-50 bg-bg-app shadow-2xl flex flex-col mr-2 my-2 md:top-0 md:bottom-0 md:right-0 md:left-auto md:w-[470px] md:rounded-xl max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[90vh] overflow-hidden">
 
                 {/* Close button */}
                 <div className="flex justify-end px-5 pt-5">
@@ -84,7 +84,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
 
                     {/* What I can do */}
                     <div className="px-5 pb-5">
-                        <p className="text-[11px] font-medium text-text-primary uppercase mb-3">What I can do</p>
+                        <p className="text-sm font-medium text-text-primary mb-3">What I can do</p>
                         <div className="grid grid-cols-2 gap-2">
                             {SUGGESTIONS.map((s, i) => (
                                 <button
@@ -104,7 +104,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
                 <div className="px-5 pb-5 flex flex-col gap-3 border-t border-gray-100 pt-4 bg-bg-app">
 
                     {/* Input */}
-                    <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3.5 py-3 focus-within:border-secondary/80 focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                    <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3.5 py-3 focus-within:border-secondary/80 focus-within:ring-2 focus-within:ring-primary/10 transition-all">
                         <Search size={16} className="text-gray-400 shrink-0" />
                         <input
                             value={input}
@@ -120,7 +120,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
 
                     {/* Context sources */}
                     <div>
-                        <p className="text-[11px] font-medium text-text-primary uppercase mb-2">Add context from</p>
+                        <p className="text-xs font-medium text-text-secondary mb-2">Add context from</p>
                         <div className="flex items-center gap-2 flex-wrap">
                             {CONTEXT_SOURCES.map(src => {
                                 const isActive = activeContext.includes(src.label);
@@ -136,7 +136,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
                                         <span>{src.icon}</span>
                                         {src.label}
                                         {src.count !== null && (
-                                            <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${isActive ? 'bg-primary/20 text-secondary' : 'bg-gray-100 text-gray-400'}`}>
+                                            <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${isActive ? 'bg-primary/20 text-secondary' : 'bg-gray-100 text-gray-400'}`}>
                                                 {src.count}
                                             </span>
                                         )}
