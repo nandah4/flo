@@ -10,7 +10,6 @@ import {
   FileText,
   CheckSquare,
   Timer,
-  Settings,
   ChevronsDownUp,
   ChevronDown,
   Activity,
