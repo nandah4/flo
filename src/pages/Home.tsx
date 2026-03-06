@@ -361,7 +361,7 @@ function Home() {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4 px-4 sm:px-0">
-                        <Link to="/dashboard" target="_blank" className="w-full sm:w-auto">
+                        <Link to="/dashboard" className="w-full sm:w-auto">
                             <button className="w-full h-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-6! py-3.5! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg!">
                                 Try Flo Now
                             </button>
@@ -385,7 +385,7 @@ function Home() {
             </section>
 
             {/* Section Video */}
-            <section id="video-section" className="relative z-10 md:px-10 -mt-12 sm:-mt-56 lg:-mt-64  2xl:-mt-72">
+            <section id="video-section" className="relative z-10 md:px-10 mt-5 sm:-mt-56 lg:-mt-64  2xl:-mt-72">
 
                 <div className="w-[90%] md:w-full max-w-[1200px] 2xl:max-w-[1500px] mx-auto aspect-13/7 bg-white/50 backdrop-blur-xs rounded-xl md:rounded-4xl overflow-hidden  shadow-lg">
                     <video
