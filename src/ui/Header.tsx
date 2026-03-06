@@ -107,7 +107,7 @@ function Header() {
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.4, duration: 0.35 }}
                     >
-                        <Link to="/dashboard" target="_blank">
+                        <Link to="/dashboard">
                             <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! 2xl:text-base! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-md">
                                 Get Started
                             </button>
