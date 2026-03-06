@@ -9,62 +9,15 @@ import googleCalendarIcon from "../assets/images/google-calendar.png";
 import FloatingAIButton from "../components/common/FloatingAIButton";
 import AIChatPanel from "../components/common/AIChatPanel";
 
-// Types
-interface CalEvent {
-    id: string;
-    title: string;
-    startHour: number;
-    startMin: number;
-    endHour: number;
-    endMin: number;
-    dayIndex: number; // 0=Mon
-    source: "task" | "event"; // determines color
-}
-
-// Convert DrawerCalEvent → CalEvent for the grid
-function drawerToGrid(ev: DrawerCalEvent, weekDates: Date[]): CalEvent | null {
-    const [sh, sm] = ev.startTime.split(":").map(Number);
-    const [eh, em] = ev.endTime.split(":").map(Number);
-    const evDate = new Date(ev.startDate + "T00:00:00");
-    const di = weekDates.findIndex(
-        d => d.getDate() === evDate.getDate()
-            && d.getMonth() === evDate.getMonth()
-            && d.getFullYear() === evDate.getFullYear()
-    );
-    if (di === -1) return null;
-    return {
-        id: ev.id,
-        title: ev.title,
-        startHour: sh,
-        startMin: sm,
-        endHour: eh,
-        endMin: em,
-        dayIndex: di,
-        source: ev.source,
-    };
-}
-
-// Sample seed events
-const SEED_EVENTS: CalEvent[] = [
-    { id: "e1", title: "Design Task Card UI", startHour: 9, startMin: 0, endHour: 11, endMin: 0, dayIndex: 0, source: "task" },
-    { id: "e3", title: "Morning Run", startHour: 6, startMin: 30, endHour: 7, endMin: 30, dayIndex: 0, source: "event" },
-    { id: "e4", title: "Weekly Progress Report", startHour: 14, startMin: 0, endHour: 17, endMin: 0, dayIndex: 1, source: "task" },
-    { id: "e5", title: "Repository Setup", startHour: 15, startMin: 0, endHour: 16, endMin: 0, dayIndex: 2, source: "task" },
-    { id: "e6", title: "Review Auth Module PR", startHour: 10, startMin: 0, endHour: 11, endMin: 0, dayIndex: 3, source: "task" },
-];
+import { getUpcomingTasks, initialColumns } from "../data/mockTasks";
+import { initialEvents, getUpcomingEvents, getTasksAsEvents } from "../data/mockEvents";
+import type { CalEvent } from "../data/mockEvents";
 
 // Upcoming tasks (right sidebar)
-const UPCOMING_TASKS = [
-    { id: "u1", title: "Design Task Card UI", priority: "High", due: "Mar 5", col: "To Do", colColor: "#111827" },
-    { id: "u2", title: "Weekly Progress Report", priority: "Medium", due: "Mar 4", col: "In Progress", colColor: "#3A9AFF" },
-    { id: "u3", title: "Review Auth Module PR", priority: "High", due: "Mar 6", col: "In Review", colColor: "#FF8C00" },
-    { id: "u4", title: "Repository Setup", priority: "Low", due: "Mar 3", col: "Done", colColor: "#10b981" },
-];
+const UPCOMING_TASKS = getUpcomingTasks(initialColumns);
 
 // Upcoming events (right sidebar)
-const UPCOMING_EVENTS = [
-    { id: "v1", title: "Morning Run", time: "06:30 – 07:30", day: "Mon", color: "#FF8C00" },
-];
+const UPCOMING_EVENTS = getUpcomingEvents(initialEvents);
 
 const MONTH_NAMES = [
     "January", "February", "March", "April", "May", "June",
@@ -93,7 +46,7 @@ function getWeekDays(offsetWeeks: number): Date[] {
 
 const HOUR_START = 6;
 const HOUR_END = 22;
-const ROW_H = 64; // px per hour
+const ROW_H = 64;
 
 function fmtHour(h: number) {
     const ampm = h >= 12 ? "PM" : "AM";
@@ -101,7 +54,6 @@ function fmtHour(h: number) {
     return `${hh} ${ampm}`;
 }
 
-// Event block — positioned absolutely inside a day column
 function EventBlock({ ev }: { ev: CalEvent }) {
     const isTask = ev.source === "task";
     const top = ((ev.startHour - HOUR_START) * 60 + ev.startMin) * (ROW_H / 60);
@@ -136,10 +88,12 @@ function EventBlock({ ev }: { ev: CalEvent }) {
     );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+//  Page 
 export default function Planning() {
     const [weekOffset, setWeekOffset] = useState(0);
-    const [events, setEvents] = useState<CalEvent[]>(SEED_EVENTS);
+    const [events, setEvents] = useState<CalEvent[]>(
+        [...initialEvents, ...getTasksAsEvents(initialColumns)]
+    );
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isChatOpen, setIsChatOpen] = useState(false);
 
@@ -159,6 +113,32 @@ export default function Planning() {
 
     const totalH = (HOUR_END - HOUR_START) * ROW_H;
     const hours = Array.from({ length: HOUR_END - HOUR_START }, (_, i) => HOUR_START + i);
+
+    function drawerToGrid(ev: DrawerCalEvent, currentWeekDates: Date[]): CalEvent | null {
+        const d = new Date(ev.startDate);
+        const y = d.getFullYear();
+        const m = d.getMonth();
+        const dNum = d.getDate();
+
+        const di = currentWeekDates.findIndex(
+            wd => wd.getFullYear() === y && wd.getMonth() === m && wd.getDate() === dNum
+        );
+        if (di === -1) return null;
+
+        const [sh, sm] = ev.startTime.split(":").map(Number);
+        const [eh, em] = ev.endTime.split(":").map(Number);
+
+        return {
+            id: ev.id,
+            title: ev.title,
+            startHour: sh,
+            startMin: sm,
+            endHour: eh,
+            endMin: em,
+            dayIndex: di,
+            source: ev.source,
+        };
+    }
 
     function handleAddEvent(ev: DrawerCalEvent) {
         const grid = drawerToGrid(ev, weekDates);
@@ -340,9 +320,9 @@ export default function Planning() {
                                     </div>
                                     <div className="flex flex-col divide-y divide-gray-100">
                                         {UPCOMING_TASKS.map(t => {
-                                            const priorityColor = t.priority === "High"
+                                            const priorityColor = t.priorityLabel === "High"
                                                 ? "text-red-500 bg-red-50"
-                                                : t.priority === "Medium"
+                                                : t.priorityLabel === "Medium"
                                                     ? "text-orange-500 bg-orange-50"
                                                     : "text-green-600 bg-green-50";
                                             return (
@@ -350,7 +330,7 @@ export default function Planning() {
                                                     <div className="flex items-start justify-between gap-2">
                                                         <p className="text-sm text-text-primary font-normal leading-tight flex-1">{t.title}</p>
                                                         <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded shrink-0 ${priorityColor}`}>
-                                                            {t.priority}
+                                                            {t.priorityLabel}
                                                         </span>
                                                     </div>
                                                     <div className="flex items-center gap-2 mt-1.5">
@@ -360,7 +340,7 @@ export default function Planning() {
                                                         </div>
                                                         <div className="flex items-center gap-1 text-[11px] text-text-secondary">
                                                             <Flag size={11} />
-                                                            {t.due}
+                                                            {t.due || "No Date"}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -412,9 +392,9 @@ export default function Planning() {
                                 </div>
                                 <div className="grid sm:grid-cols-2 divide-y divide-gray-100 sm:divide-y-0">
                                     {UPCOMING_TASKS.map(t => {
-                                        const priorityColor = t.priority === "High"
+                                        const priorityColor = t.priorityLabel === "High"
                                             ? "text-red-500 bg-red-50"
-                                            : t.priority === "Medium"
+                                            : t.priorityLabel === "Medium"
                                                 ? "text-orange-500 bg-orange-50"
                                                 : "text-green-600 bg-green-50";
                                         return (
@@ -422,7 +402,7 @@ export default function Planning() {
                                                 <div className="flex items-start justify-between gap-2">
                                                     <p className="text-sm text-text-primary font-normal leading-tight flex-1">{t.title}</p>
                                                     <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-md shrink-0 ${priorityColor}`}>
-                                                        {t.priority}
+                                                        {t.priorityLabel}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center gap-2 mt-1.5">
@@ -432,7 +412,7 @@ export default function Planning() {
                                                     </div>
                                                     <div className="flex items-center gap-1 text-[11px] text-text-secondary">
                                                         <Flag size={9} />
-                                                        {t.due}
+                                                        {t.due || "No Date"}
                                                     </div>
                                                 </div>
                                             </div>

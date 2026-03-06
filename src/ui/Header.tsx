@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import floLogo from '../assets/images/flo-logo.png'
+import { LogInIcon } from 'lucide-react'
 const navLinks = [
     { label: 'Home', href: '#hero' },
     { label: 'Features', href: '#features' },
@@ -108,8 +109,8 @@ function Header() {
                         transition={{ delay: 0.4, duration: 0.35 }}
                     >
                         <Link to="/dashboard">
-                            <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! 2xl:text-base! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-md">
-                                Get Started
+                            <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! 2xl:text-base! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-md flex items-center gap-2.5">
+                                <LogInIcon size={16} className="inline-block" /> Get Started
                             </button>
                         </Link>
                     </motion.div>
@@ -121,7 +122,7 @@ function Header() {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.25, duration: 0.3 }}
                         >
-                            <Link to="/notes" target="_blank">
+                            <Link to="/dashboard" >
                                 <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
                                     Get Started
                                 </button>

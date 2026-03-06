@@ -21,45 +21,7 @@ import fAIAssistant from "../assets/images/icon-ai-assistant.png";
 
 // Seed data
 
-const initialColumns: Column[] = [
-    {
-        id: "todo", label: "To Do", color: "#111827",
-        cards: [
-            {
-                id: "t1", title: "Design Task Card UI", priority: "High",
-                image: "https://images.unsplash.com/photo-1626544827763-d516dce335e2?w=400&q=80",
-                startDate: "2026-03-05", startTime: "09:00", date: "03/05", time: "11:00",
-                description: "Create a visually compelling hero section with clear CTA and brand messaging.",
-            },
-        ],
-    },
-    {
-        id: "inprogress", label: "In Progress", color: "#3A9AFF",
-        cards: [
-            {
-                id: "p1", title: "Write weekly progress report", priority: "Medium",
-                startDate: "2026-03-04", startTime: "14:00", date: "03/04", time: "17:00",
-                description: "Summarize this week's results across all active projects.",
-            },
-        ],
-    },
-    {
-        id: "inreview", label: "In Review", color: "#FF8C00",
-        cards: [
-            {
-                id: "r1", title: "Review auth module refactor PR", priority: "High",
-                date: "03/06", time: "10:00",
-                description: "Check the refactored authentication module for edge cases and code quality.",
-            },
-        ],
-    },
-    {
-        id: "done", label: "Done", color: "#10b981",
-        cards: [
-            { id: "d1", title: "Set up project repository structure", priority: "Low", startDate: "2026-02-27", startTime: "09:00", date: "03/03", time: "12:00" },
-        ],
-    },
-];
+import { initialColumns } from "../data/mockTasks";
 
 // Page
 

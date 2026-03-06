@@ -67,42 +67,7 @@ const countWords = (html: string): number => {
     return text ? text.split(' ').length : 0;
 };
 
-const initialNotes: Note[] = [
-    {
-        id: 1,
-        title: 'PBL Project Research',
-        preview: '<p>Summary of quantum computing applications in modern cryptography and their potential vulnerabilities by 2030.</p>',
-        timestamp: 'Today, 10:42 AM',
-        tags: [{ text: 'Research', color: 'violet' }, { text: 'CS', color: 'sky' }],
-        color: 'blue',
-        pinned: true,
-        notebook: 'Lectures',
-        wordCount: 85,
-        documentUrl: dummyPdf
-    },
-    {
-        id: 2,
-        title: 'Calculus III Notes',
-        preview: '<p>Multivariable calculus theories including double integrals, vector fields, and Green\'s theorem.</p>',
-        timestamp: 'Yesterday, 14:30 PM',
-        tags: [{ text: 'Math', color: 'emerald' }],
-        color: 'green',
-        pinned: false,
-        notebook: 'Lectures',
-        wordCount: 14,
-    },
-    {
-        id: 3,
-        title: 'Productivity Ideas',
-        preview: '<p>Brainstorming for the new Flo app features: AI summarization, Pomodoro integration, and ambient sounds.</p>',
-        timestamp: 'Mon, 08:15 AM',
-        tags: [{ text: 'Ideas', color: 'rose' }, { text: 'Product', color: 'amber' }],
-        color: 'purple',
-        pinned: false,
-        notebook: 'Personal',
-        wordCount: 16,
-    },
-];
+import { initialNotes } from '../data/mockNotes';
 
 const Notes = () => {
     const { progressQuest } = useQuest();
@@ -226,7 +191,7 @@ const Notes = () => {
             ));
         } else {
             setNotes(prev => [{ id: Date.now(), title, preview, timestamp: 'Just now', tags, color, pinned: false, notebook, wordCount: wc, documentUrl: uploadedDocUrl || undefined }, ...prev]);
-            progressQuest('note'); 
+            progressQuest('note');
             if (uploadedDocUrl) {
                 progressQuest('ai');
             }

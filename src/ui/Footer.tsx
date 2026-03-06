@@ -9,8 +9,8 @@ function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
                     {/* Brand Column */}
                     <div className="md:col-span-4 flex flex-col gap-4">
-                        <h2 className="text-4xl font-semibold text-text-primary mb-2">Flo.</h2>
-                        <p className="text-text-secondary text-sm md:text-base leading-relaxed max-w-sm">
+                        <h2 className="text-4xl font-semibold text-text-primary mb-2 text-center lg:text-left">Flo.</h2>
+                        <p className="text-text-secondary text-sm md:text-base leading-relaxed max-w-sm text-center lg:text-left">
                             Your smart academic companion. Manage notes, track tasks, and focus better, all in one place.
                         </p>
                     </div>

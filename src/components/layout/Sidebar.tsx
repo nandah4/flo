@@ -15,6 +15,8 @@ import {
   Activity,
 } from "lucide-react";
 
+import { initialNotes } from "../../data/mockNotes";
+
 // Types
 interface NavItem {
   icon: React.ReactNode;
@@ -209,43 +211,51 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
               </>
             )}
 
-            {[
-              { name: "Lectures", color: "#3A9AFF", count: 12 },
-              { name: "Personal", color: "#10b981", count: 5 },
-              { name: "Projects", color: "#FF8C00", count: 8 },
-            ].map((ns) => (
-              <Link
-                key={ns.name}
-                to="/notes"
-                className="group w-full flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-bg-app transition-colors"
-              >
-                <span
-                  className="w-2 h-2 rounded-full shrink-0"
-                  style={{ backgroundColor: ns.color }}
-                />
-                <AnimatePresence>
-                  {!collapsed && (
-                    <motion.span
-                      initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: "auto" }}
-                      exit={{ opacity: 0, width: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="flex-1 flex items-center justify-between overflow-hidden"
-                    >
-                      <span className="text-sm text-text-secondary whitespace-nowrap">{ns.name}</span>
-                      <span className="text-[11px] text-gray-400 shrink-0">{ns.count}</span>
-                    </motion.span>
-                  )}
-                </AnimatePresence>
+            {Object.entries(
+              initialNotes.reduce((acc, note) => {
+                const nb = note.notebook || 'Uncategorized';
+                acc[nb] = (acc[nb] || 0) + 1;
+                return acc;
+              }, {} as Record<string, number>)
+            ).map(([name, count], index) => {
+              // Assign a color based on some predefined list or index
+              const colors = ["#3A9AFF", "#10b981", "#FF8C00", "#8b5cf6", "#f43f5e"];
+              const color = colors[index % colors.length];
 
-                {/* Tooltip when collapsed */}
-                {collapsed && (
-                  <span className="absolute left-full ml-2.5 px-2 py-1 rounded-md bg-gray-800 text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">
-                    {ns.name}
-                  </span>
-                )}
-              </Link>
-            ))}
+              return (
+                <Link
+                  key={name}
+                  to="/notes"
+                  className="group w-full flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-bg-app transition-colors"
+                >
+                  <span
+                    className="w-2 h-2 rounded-full shrink-0"
+                    style={{ backgroundColor: color }}
+                  />
+                  <AnimatePresence>
+                    {!collapsed && (
+                      <motion.span
+                        initial={{ opacity: 0, width: 0 }}
+                        animate={{ opacity: 1, width: "auto" }}
+                        exit={{ opacity: 0, width: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="flex-1 flex items-center justify-between overflow-hidden"
+                      >
+                        <span className="text-sm text-text-secondary whitespace-nowrap">{name}</span>
+                        <span className="text-[11px] text-gray-400 shrink-0">{count}</span>
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Tooltip when collapsed */}
+                  {collapsed && (
+                    <span className="absolute left-full ml-2.5 px-2 py-1 rounded-md bg-gray-800 text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">
+                      {name}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
 
           </div>
 

@@ -12,7 +12,6 @@ export interface CalEvent {
     startTime: string;  // "HH:MM"
     endDate: string;    // "YYYY-MM-DD"
     endTime: string;    // "HH:MM"
-    /** "task" (from Tasks feature) | "event" (user-created in Planning) */
     source: "task" | "event";
 }
 
@@ -20,7 +19,6 @@ interface AddEventDrawerProps {
     open: boolean;
     onClose: () => void;
     onAdd: (event: CalEvent) => void;
-    /** Pre-fill date when clicking a day cell */
     defaultDate?: string;
 }
 

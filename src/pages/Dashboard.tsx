@@ -40,19 +40,18 @@ function getLevelInfo(xp: number) {
     return { ...lvl, next };
 }
 
-// Dummy task data
-const RECENT_TASKS = [
-    { id: 't1', title: 'Write project proposal for Q2 sprint planning', status: 'Done', priority: 'High', date: '01 Mar' },
-    { id: 't2', title: 'Review pull request — auth module refactor', status: 'In Progress', priority: 'High', date: '03 Mar' },
-    { id: 't3', title: 'Update onboarding documentation for new hires', status: 'In Review', priority: 'Medium', date: '04 Mar' },
-    { id: 't4', title: 'Fix navigation bug on mobile breakpoints', status: 'In Progress', priority: 'Medium', date: '05 Mar' },
-];
+import { getDashboardStats, getRecentTasks, initialColumns } from '../data/mockTasks';
+import { initialNotes } from '../data/mockNotes';
+
+// Get recent tasks dynamically
+const RECENT_TASKS = getRecentTasks(initialColumns);
 
 const STATUS_STYLE: Record<string, string> = {
     'Done': 'bg-green-50 text-green-700 border border-green-200',
     'In Progress': 'bg-blue-50 text-blue-700 border border-blue-200',
     'In Review': 'bg-orange-50 text-secondary border border-secondary/25',
     'Overdue': 'bg-red-50 text-red-600 border border-red-200',
+    'Pending': 'bg-gray-100 text-text-secondary border border-gray-200',
 };
 
 const PRIORITY_STYLE: Record<string, string> = {
@@ -60,6 +59,8 @@ const PRIORITY_STYLE: Record<string, string> = {
     Medium: 'bg-orange-50 text-secondary',
     Low: 'bg-gray-100 text-text-secondary',
 };
+
+import { initialEvents } from '../data/mockEvents';
 
 // Main component
 const Dashboard = () => {
@@ -70,15 +71,16 @@ const Dashboard = () => {
     const lvl = getLevelInfo(xp);
     const streak = 5;
 
-    // Stats
+    // Stats dynamically computed from initialColumns
+    const taskStats = getDashboardStats(initialColumns);
     const stats = {
-        completed: 12,
-        inProgress: 4,
-        inReview: 2,
-        overdue: 1,
+        completed: taskStats.completed,
+        inProgress: taskStats.inProgress,
+        inReview: taskStats.inReview,
+        overdue: taskStats.overdue,
         pomodoroHrs: 8.5,
-        totalNotes: 17,
-        totalEvents: 5,
+        totalNotes: initialNotes.length,
+        totalEvents: initialEvents.length,
     };
 
     return (
@@ -258,9 +260,9 @@ const Dashboard = () => {
                                             <span className={`text-xs font-normal px-2.5 py-1 rounded-md ${STATUS_STYLE[task.status]}`}>
                                                 {task.status}
                                             </span>
-                                            <span className={`hidden sm:inline  text-xs font-normal px-2.5 py-1 rounded-md ${PRIORITY_STYLE[task.priority]}`}>
+                                            <span className={`hidden sm:inline  text-xs font-normal px-2.5 py-1 rounded-md ${task.priority ? PRIORITY_STYLE[task.priority] || PRIORITY_STYLE.Low : PRIORITY_STYLE.Low}`}>
                                                 <Flag size={8} className="inline mr-1" />
-                                                {task.priority}
+                                                {task.priority || "Low"}
                                             </span>
                                             <span className="hidden md:flex items-center gap-1 text-xs text-text-secondary font-normal">
                                                 <Calendar size={13} />
