@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Plus, Clock, RefreshCw, Flag } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Clock, Flag } from "lucide-react";
 import DashboardLayout from "../ui/DashboardLayout";
 import AddEventDrawer from "../components/planning/AddEventDrawer";
 import type { CalEvent as DrawerCalEvent } from "../components/planning/AddEventDrawer";
 import googleCalendarIcon from "../assets/images/google-calendar.png";
+import FloatingAIButton from "../components/common/FloatingAIButton";
+import AIChatPanel from "../components/common/AIChatPanel";
 
 // Types
 interface CalEvent {
@@ -139,6 +141,7 @@ export default function Planning() {
     const [weekOffset, setWeekOffset] = useState(0);
     const [events, setEvents] = useState<CalEvent[]>(SEED_EVENTS);
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     const weekDates = getWeekDays(weekOffset);
     const now = new Date();
@@ -463,9 +466,11 @@ export default function Planning() {
                                 </div>
                             </div>
                         </div>
-
                     </div>{/* end content wrapper */}
                 </div>{/* end min-h-screen */}
+
+                <FloatingAIButton onClick={() => setIsChatOpen(true)} />
+                <AIChatPanel isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
             </DashboardLayout>
 
             <AddEventDrawer

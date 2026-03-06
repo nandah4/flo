@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
-
+import floLogo from '../assets/images/flo-logo.png'
 const navLinks = [
     { label: 'Home', href: '#hero' },
     { label: 'Features', href: '#features' },
@@ -61,7 +61,7 @@ function Header() {
         <>
             {/* Header Bar - always above overlay, sticky at top */}
             <motion.header
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-br-md rounded-bl-md
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-br-md rounded-bl-md px-6 md:px-10
                     ${isScrolled
                         ? "bg-white border-b border-gray-200"
                         : "bg-bg-app border-b border-transparent"
@@ -70,15 +70,16 @@ function Header() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
             >
-                <div className="2xl:max-w-7xl mx-auto w-full flex justify-between items-center px-6 md:px-10 py-4">
+                <div className="2xl:max-w-[1700px] mx-auto w-full flex justify-between items-center py-5">
                     {/* Logo */}
-                    <div className="logo">
-                        <h2 className="text-3xl font-medium text-text-primary">Flo.</h2>
-                    </div>
+                    <Link to="/" className="flex gap-3 items-center logo">
+                        <img src={floLogo} alt="Flo" className="h-8 md:h-10 object-contain" />
+                        <h2 className="text-3xl 2xl:text-4xl font-medium text-text-primary">Flo.</h2>
+                    </Link>
 
                     {/* Desktop Nav */}
                     <nav className="hidden md:block">
-                        <ul className="flex gap-x-12">
+                        <ul className="flex gap-x-14">
                             {navLinks.map((link, i) => (
                                 <motion.li
                                     key={link.label}
@@ -89,7 +90,7 @@ function Header() {
                                     <a
                                         href={link.href}
                                         onClick={(e) => handleNavClick(e, link.href)}
-                                        className="text-sm! font-normal! text-text-secondary! transition-colors duration-200"
+                                        className="text-sm! 2xl:text-base! font-normal! text-text-secondary! transition-colors duration-200"
                                     >
                                         {link.label}
                                     </a>
@@ -106,8 +107,8 @@ function Header() {
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.4, duration: 0.35 }}
                     >
-                        <Link to="/tasks" target="_blank">
-                            <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg">
+                        <Link to="/dashboard" target="_blank">
+                            <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! 2xl:text-base! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-md">
                                 Get Started
                             </button>
                         </Link>
@@ -120,7 +121,7 @@ function Header() {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.25, duration: 0.3 }}
                         >
-                            <Link to="/tasks" target="_blank">
+                            <Link to="/notes" target="_blank">
                                 <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
                                     Get Started
                                 </button>
