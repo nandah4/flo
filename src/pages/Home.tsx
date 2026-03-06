@@ -1,8 +1,8 @@
 
 "use client";
 
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, type Variants } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTrophy, FaBullseye, FaBrain, FaClock } from "react-icons/fa";
 
@@ -29,13 +29,7 @@ import videoDashboard from '../assets/videos/enter-dashboard.mov';
 import videoWriteNotes from '../assets/videos/write-notes.mov';
 
 
-import {
-    FiHome,
-    FiLayout,
-    FiFileText,
-    FiUpload,
-    FiEdit3
-} from "react-icons/fi";
+
 
 import whyChooseUsImage from '../assets/images/why-choose-us.png'
 
@@ -62,38 +56,7 @@ const fadeUp: Variants = {
     },
 };
 
-const STEPS = [
-    {
-        icon: <FiHome />,
-        title: "Open Flo",
-        description:
-            'Head to the Flo homepage and click "Try Flo" or "Get Started" to begin your journey.',
-    },
-    {
-        icon: <FiLayout />,
-        title: "Enter the Dashboard",
-        description:
-            "You'll land on your personal dashboard — your central hub for everything academic.",
-    },
-    {
-        icon: <FiFileText />,
-        title: "Go to Notes",
-        description:
-            "Navigate to the Notes section from the sidebar or the quick-access menu.",
-    },
-    {
-        icon: <FiUpload />,
-        title: "Add Notes or Upload a PDF",
-        description:
-            'Click "Add Note" to start writing, or upload a PDF/Word file to auto-summarize.',
-    },
-    {
-        icon: <FiEdit3 />,
-        title: "Start Writing",
-        description:
-            "Write freely, let Flo's AI assist you, and watch your notes become smarter over time.",
-    },
-];
+
 
 function HowToUseSteps() {
     return (

@@ -34,7 +34,7 @@ interface NoteCardProps {
 }
 
 const NoteCard: React.FC<NoteCardProps> = ({
-    note, colorConfig, colorDot, onClick, onDragStart, onPinToggle, onDelete, onGenerateFlashcard
+    note, onClick, onDragStart, onPinToggle, onDelete, onGenerateFlashcard
 }) => {
     const [isDragging, setIsDragging] = useState(false);
 
