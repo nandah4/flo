@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, AlignLeft } from "lucide-react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// Types
 
 export interface CalEvent {
     id: string;
@@ -50,7 +50,7 @@ function addHour(time: string) {
     return `${String(next).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// Component
 
 export default function AddEventDrawer({
     open,

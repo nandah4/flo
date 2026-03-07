@@ -288,7 +288,7 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
         </motion.aside>
       </div>
 
-      {/* ── Mobile bottom appbar (< 640px) ── */}
+      {/* Mobile bottom appbar (< 640px) */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 px-3 pb-3 font-sans">
         <nav className="bg-white border border-gray-200 rounded-2xl shadow-lg shadow-black/10 overflow-x-auto flex items-center gap-1 px-2 py-1"
           style={{ scrollbarWidth: "none" }}

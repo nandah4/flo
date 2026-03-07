@@ -32,6 +32,7 @@ import videoWriteNotes from '../assets/videos/write-notes.mov';
 
 
 import whyChooseUsImage from '../assets/images/why-choose-us.png'
+import { Highlighter } from "@/components/ui/highlighter";
 
 const emojis = ["📚", "📝", "💻", "🎓", "✏️"];
 
@@ -358,7 +359,7 @@ function Home() {
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4 px-4 sm:px-0">
                         <Link to="/dashboard" className="w-full sm:w-auto">
-                            <button className="w-full h-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-6! py-3! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg! flex items-center gap-2">
+                            <button className="w-full h-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-6! py-3! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg! flex items-center justify-center gap-2">
                                 <LogInIcon size={16} className="inline-block" /> Try Flo Now
                             </button>
                         </Link>
@@ -374,7 +375,7 @@ function Home() {
                                     });
                                 }
                             }}
-                            className="w-full sm:w-auto bg-white border! border-gray-200! text-text-primary px-6! py-3! text-sm! font-medium! cursor-pointer! hover:scale-105 transition-all duration-300 rounded-lg! flex items-center gap-2"><Play size={16} className="inline-block" /> Watch Video </button>
+                            className="w-full sm:w-auto bg-white border! border-gray-200! text-text-primary px-6! py-3! text-sm! font-medium! cursor-pointer! hover:scale-105 transition-all duration-300 rounded-lg! flex items-center justify-center gap-2"><Play size={16} className="inline-block" /> Watch Video </button>
                     </div>
                 </motion.div>
 
@@ -652,9 +653,48 @@ function Home() {
                 </div>
             </section>
 
+            {/* Highlighter Section */}
+            <section id="highlighter" className="mt-20 sm:mt-28 mb-20 px-6 md:px-10">
+                <div className="2xl:max-w-[1700px] mx-auto transition-all">
+                    <div className="flex flex-col items-center gap-6 text-center">
+
+                        {/* Main quote */}
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-text-primary max-w-4xl leading-[1.3] tracking-tight">
+                            Stop{" "}
+                            <Highlighter color="#FFD400" action="highlight" strokeWidth={2} animationDuration={800} isView>
+                                wasting hours
+                            </Highlighter>
+                            {" "}on chaos.{" "}
+                            <br className="hidden sm:block" />
+                            Start{" "}
+                            <Highlighter color="#FF8C00" action="underline" strokeWidth={2.5} animationDuration={600} isView>
+                                owning your time
+                            </Highlighter>
+                            {" "}with Flo.
+                        </h2>
+
+                        {/* Sub-taglines */}
+                        <p className="text-base sm:text-lg text-text-secondary max-w-2xl leading-relaxed">
+                            Every minute you{" "}
+                            <Highlighter color="#FFD400" action="box" strokeWidth={1.5} animationDuration={500} padding={4} isView>
+                                plan well
+                            </Highlighter>
+                            {" "}is a minute you can{" "}
+                            <Highlighter color="#FF8C00" action="circle" strokeWidth={1.5} animationDuration={500} isView>
+                                focus freely
+                            </Highlighter>
+                            .
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+
+
             {/* Section How to Use New */}
             <section id="how-to-use-new" className="mt-20 sm:mt-32 px-6 md:px-10">
-                <div className="2xl:max-w-[1700px] mx-auto transition-all">
+                <div className="2xl:max-w-[1700px] mx-auto transition-all flex flex-col items-center">
+
                     <HowToUseSteps />
                 </div>
             </section>

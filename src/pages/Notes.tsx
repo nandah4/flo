@@ -233,7 +233,7 @@ const Notes = () => {
                     <div className="mb-4">
                         <div className="flex flex-col lg:flex-row items-stretch gap-5 lg:items-center lg:justify-between">
 
-                            {/* Sesuaikan w ini agar bisa mengambil lebar yang tersisa */}
+                            {/* Adjust this width to take the remaining space */}
                             <div className="w-full lg:flex-1 flex items-center gap-3 pl-3 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg outline-none">
 
                                 <img src={fAIAssistant} alt="AI" className="w-8 h-8 shrink-0" />

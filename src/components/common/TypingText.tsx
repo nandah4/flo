@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 
 const TEXT = "Hi, I'm Flo AI 👋 Ready to turn your thoughts into smart, organized notes today?";
-const TYPING_SPEED = 45;   // ms per character
-const ERASE_SPEED = 25;   // ms per character
-const PAUSE_AFTER = 5000; // ms pause before erasing
+const TYPING_SPEED = 45;
+const ERASE_SPEED = 25;
+const PAUSE_AFTER = 5000;
 
 export function TypingText() {
     const [displayed, setDisplayed] = useState("");

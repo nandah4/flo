@@ -221,7 +221,7 @@ const Dashboard = () => {
                     {/* BOTTOM GRID */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
-                        {/* Recently Tasks */}
+                        {/* Recent Tasks */}
                         <motion.div
                             initial={{ opacity: 0, y: 16 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -230,7 +230,7 @@ const Dashboard = () => {
                         >
                             <div className="flex items-center justify-between mb-4">
                                 <div>
-                                    <h3 className="text-base font-medium text-text-primary">Recently Tasks</h3>
+                                    <h3 className="text-base font-medium text-text-primary">Recent Tasks</h3>
                                     <p className="text-sm text-text-secondary mt-0.5">Your latest task activity</p>
                                 </div>
                                 <Link

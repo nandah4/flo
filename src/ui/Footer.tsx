@@ -10,7 +10,7 @@ function Footer() {
                     {/* Brand Column */}
                     <div className="md:col-span-4 flex flex-col gap-4">
                         <h2 className="text-4xl font-semibold text-text-primary mb-2 text-center lg:text-left">Flo.</h2>
-                        <p className="text-text-secondary text-sm md:text-base leading-relaxed max-w-sm text-center lg:text-left">
+                        <p className="text-text-destructive text-sm md:text-base leading-relaxed max-w-sm text-center lg:text-left">
                             Your smart academic companion. Manage notes, track tasks, and focus better, all in one place.
                         </p>
                     </div>
