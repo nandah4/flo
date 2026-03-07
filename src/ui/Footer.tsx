@@ -5,7 +5,7 @@ function Footer() {
         <footer className="relative mt-20 pt-24 pb-10 overflow-hidden bg-bg-app">
 
 
-            <div className="relative z-10 w-full 2xl:max-w-[1700px] mx-auto px-6 md:px-10">
+            <div className="relative z-10 w-full max-w-[1920px] mx-auto px-6 md:px-10 2xl:px-20">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
                     {/* Brand Column */}
                     <div className="md:col-span-4 flex flex-col gap-4">

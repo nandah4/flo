@@ -295,7 +295,7 @@ function Home() {
     return (
         <Layout>
             {/* Section Hero */}
-            <section id="hero" className="relative px-6 md:px-10 w-full pt-14 min-h-[70vh] md:h-screen flex flex-col items-center">
+            <section id="hero" className="relative px-6 md:px-10 w-full pt-14 min-h-[75vh] 2xl:h-fit flex flex-col items-center">
                 {/* Hero Background Elements */}
                 <div className="absolute -bottom-25 left-0 right-0 w-full h-full z-0 pointer-events-none">
                     <div className="absolute inset-0 bg-linear-to-t from-transparent to-bg-app h-10 z-10"></div>
@@ -382,9 +382,9 @@ function Home() {
             </section>
 
             {/* Section Video */}
-            <section id="video-section" className="relative z-10 md:px-10 mt-5 sm:-mt-56 lg:-mt-64  2xl:-mt-72">
+            <section id="video-section" className="relative z-10 md:px-10 mt-5 sm:-mt-32 lg:-mt-20  2xl:-mt-40">
 
-                <div className="w-[90%] md:w-full max-w-[1200px] 2xl:max-w-[1500px] mx-auto aspect-13/7 bg-white/50 backdrop-blur-xs rounded-xl md:rounded-4xl overflow-hidden  shadow-lg">
+                <div className="w-[90%] md:w-full max-w-[1200px] 2xl:max-w-[1520px] mx-auto aspect-13/7 bg-white/50 backdrop-blur-xs rounded-xl md:rounded-4xl overflow-hidden  shadow-lg">
                     <video
                         src={videoNotes}
                         autoPlay
@@ -399,8 +399,8 @@ function Home() {
 
 
             {/* Section How We Help You */}
-            <section id="features" className="mt-16 sm:mt-24 px-6 md:px-10 mx-auto">
-                <div className="2xl:max-w-[1700px] mx-auto transition-all">
+            <section id="features" className="mt-16 sm:mt-24 px-6 md:px-10 2xl:px-20 mx-auto">
+                <div className="max-w-[1920px] mx-auto transition-all">
                     <h2 className="text-3xl sm:text-4xl font-medium text-text-primary mb-8 sm:mb-10 text-center md:text-left">How Flo Helps You Stay on Track.</h2>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4">
@@ -512,8 +512,8 @@ function Home() {
 
 
             {/* Why choose Flo */}
-            <section className="mt-20 sm:mt-32 px-6 md:px-10">
-                <div className="2xl:max-w-[1700px] mx-auto transition-all">
+            <section className="mt-20 sm:mt-32 px-6 md:px-10 2xl:px-20">
+                <div className="max-w-[1920px] mx-auto transition-all">
                     <div className="flex flex-col items-center mb-12 md:mb-20">
                         <h2 className="text-3xl sm:text-4xl font-medium text-text-primary mb-4 text-center">
                             Why Choose Flo?
@@ -654,8 +654,8 @@ function Home() {
             </section>
 
             {/* Highlighter Section */}
-            <section id="highlighter" className="mt-20 sm:mt-28 mb-20 px-6 md:px-10">
-                <div className="2xl:max-w-[1700px] mx-auto transition-all">
+            <section id="highlighter" className="mt-20 sm:mt-28 mb-20 px-6 md:px-10 2xl:px-20">
+                <div className="max-w-[1920px] mx-auto transition-all">
                     <div className="flex flex-col items-center gap-6 text-center">
 
                         {/* Main quote */}
@@ -691,9 +691,9 @@ function Home() {
 
 
 
-            {/* Section How to Use New */}
-            <section id="how-to-use-new" className="mt-20 sm:mt-32 px-6 md:px-10">
-                <div className="2xl:max-w-[1700px] mx-auto transition-all flex flex-col items-center">
+            {/* Section How to Use  */}
+            <section id="how-to-use" className="mt-20 sm:mt-32 px-6 md:px-10 2xl:px-20">
+                <div className="max-w-[1920px] mx-auto transition-all flex flex-col items-center">
 
                     <HowToUseSteps />
                 </div>
@@ -701,8 +701,8 @@ function Home() {
 
 
             {/* Testimonials */}
-            <section id="testimonials" className="mt-20 sm:mt-32 px-6 md:px-10">
-                <div className="2xl:max-w-[1700px] mx-auto transition-all">
+            <section id="testimonials" className="mt-20 sm:mt-32 px-6 md:px-10 2xl:px-20">
+                <div className="max-w-[1920px] mx-auto transition-all">
                     <h2
                         className="text-3xl sm:text-4xl font-medium text-text-primary text-center"
                     >

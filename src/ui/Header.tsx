@@ -62,7 +62,7 @@ function Header() {
         <>
             {/* Header Bar - always above overlay, sticky at top */}
             <motion.header
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-br-md rounded-bl-md px-6 md:px-10
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-br-md rounded-bl-md px-6 md:px-10 2xl:px-20
                     ${isScrolled
                         ? "bg-white border-b border-gray-200"
                         : "bg-bg-app border-b border-transparent"
@@ -71,7 +71,7 @@ function Header() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
             >
-                <div className="2xl:max-w-[1700px] mx-auto w-full flex justify-between items-center py-5">
+                <div className="w-full flex justify-between items-center py-5">
                     {/* Logo */}
                     <Link to="/" className="flex gap-3 items-center logo">
                         <img src={floLogo} alt="Flo" className="h-8 md:h-10 object-contain" />
