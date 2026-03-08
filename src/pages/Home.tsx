@@ -10,6 +10,8 @@ import { FaTrophy } from "react-icons/fa";
 import Layout from '../ui/Layout'
 import bgHero from '../assets/images/bg-hero.png'
 import fAIAssistant from '../assets/images/assets-ai-assistant.png'
+import notesPic from '../assets/images/notes-pic.png'
+import notesVideoStep from '../assets/videos/notes-video.mp4'
 
 import featureSmartNotesImage from "../assets/images/feature-smart-notes.png"
 import featureTaskManagementImage from "../assets/images/feature-tasks.png"
@@ -25,10 +27,6 @@ import testimonial4 from '../assets/images/testi-4.jpeg'
 import testimonial5 from '../assets/images/testi-5.jpeg'
 
 import videoNotes from '../assets/videos/video.mov';
-import videoDashboard from '../assets/videos/enter-dashboard.mov';
-import videoWriteNotes from '../assets/videos/write-notes.mov';
-
-
 
 
 import whyChooseUsImage from '../assets/images/why-choose-us.png'
@@ -61,7 +59,7 @@ const fadeUp: Variants = {
 
 function HowToUseSteps() {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
             {/* Title and description */}
             <div className="flex flex-col md:items-start mb-6 text-center md:text-left">
                 <h2 className="text-3xl lg:text-4xl font-medium text-text-primary mb-4">Start organizing in seconds.</h2>
@@ -71,7 +69,7 @@ function HowToUseSteps() {
             </div>
 
             {/* Row 1 */}
-            <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4">
+            <div className="flex flex-col lg:grid lg:grid-cols-5 gap-5">
                 {/* Col 1: Step 1 */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -80,9 +78,9 @@ function HowToUseSteps() {
                     className="lg:col-span-2 bg-white rounded-2xl overflow-hidden p-6 lg:p-8 flex flex-col justify-center "
                 >
                     <div className="flex flex-col gap-2 relative z-10">
-                        <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Click Get Started</h4>
+                        <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Click Get Started or Try Flo Now</h4>
                         <p className="text-sm sm:text-base text-text-secondary leading-relaxed mb-6 text-center lg:text-left">
-                            Head to the Flo homepage and click "Try Flo Now" or "Get Started" to begin your journey. It's that simple to take control of your academic life.
+                            Enter your dashboard, open the Notes tab from the sidebar, and start writing your first note in seconds.
                         </p>
 
                     </div>
@@ -96,29 +94,21 @@ function HowToUseSteps() {
                     transition={{ delay: 0.1 }}
                     className="lg:col-span-3 bg-white rounded-2xl overflow-hidden  flex flex-col"
                 >
-                    <div className="h-48 sm:h-56 w-full bg-gray-50 flex items-center justify-center relative overflow-hidden">
+                    <div className="w-full bg-gray-50 flex items-center justify-center relative overflow-hidden">
                         <video
-                            src={videoDashboard}
+                            src={notesVideoStep}
                             autoPlay
                             loop
                             muted
                             playsInline
-                            className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+                            className="w-full h-auto z-10 pointer-events-none"
                         />
-                    </div>
-                    <div className="p-6 lg:p-8 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-white relative z-20">
-                        <div className="flex flex-col gap-2 w-full">
-                            <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Dashboard to Notes</h4>
-                            <p className="text-sm sm:text-base text-text-secondary leading-relaxed max-w-md mx-auto lg:mx-0 text-center lg:text-left">
-                                Land on your personal dashboard, then head straight to the Notes section to begin organizing your thoughts.
-                            </p>
-                        </div>
                     </div>
                 </motion.div>
             </div>
 
             {/* Row 2 */}
-            <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4">
+            <div className="flex flex-col lg:grid lg:grid-cols-5 gap-5 ">
                 {/* Col 1: Step 3 */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -127,24 +117,14 @@ function HowToUseSteps() {
                     transition={{ delay: 0.2 }}
                     className="lg:col-span-3 bg-white rounded-2xl overflow-hidden flex flex-col items-center"
                 >
-                    <div className="h-48 sm:h-56 w-full bg-gray-50 flex items-center justify-center relative overflow-hidden">
-                        <video
-                            src={videoWriteNotes}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="absolute inset-0 w-full h-full object-cover object-top-right z-10 pointer-events-none "
+                    <div className="w-full bg-gray-50  flex items-center justify-center relative overflow-hidden">
+                        <img
+                            src={notesPic}
+                            alt="Dashboard Overview"
+                            className="w-full h-auto z-10 pointer-events-none"
                         />
                     </div>
-                    <div className="p-6 lg:p-8 flex justify-start bg-white  w-full relative z-20">
-                        <div className="flex flex-col gap-2 w-full">
-                            <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Write a Note Instantly</h4>
-                            <p className="text-sm sm:text-base text-text-secondary leading-relaxed max-w-md mx-auto lg:mx-0 text-center lg:text-left">
-                                Click 'New Note', type your thoughts into the editor block, and hit 'Add Note' to save it immediately.
-                            </p>
-                        </div>
-                    </div>
+
                 </motion.div>
 
                 {/* Col 2: Step 4 */}
@@ -153,12 +133,17 @@ function HowToUseSteps() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
-                    className="lg:col-span-2 bg-white rounded-2xl overflow-hidden p-6 lg:p-8 flex flex-col justify-center"
+                    className="lg:col-span-2 bg-white rounded-2xl overflow-hidden p-6 lg:p-8 flex flex-col justify-center "
                 >
-                    <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">You're All Set</h4>
-                    <p className="text-sm sm:text-base text-text-secondary leading-relaxed text-center lg:text-left">
-                        That's it! You are ready to manage your productivity, track your tasks, and stay on top of your academic life with Flo.
-                    </p>
+                    <div className="flex flex-col gap-2 relative z-10">
+                        <h4 className="text-lg sm:text-xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">
+                            You’re all set
+                        </h4>
+
+                        <p className="text-sm sm:text-base text-text-secondary leading-relaxed mb-6 text-center lg:text-left">
+                            Explore tasks, focus sessions, and planning tools to stay organized in both academic and daily life.
+                        </p>
+                    </div>
                 </motion.div>
             </div>
         </div>

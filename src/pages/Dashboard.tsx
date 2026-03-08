@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -6,8 +6,18 @@ import {
     CheckCircle2, Clock, FileText, AlertCircle,
     ArrowRight, Flag, Lock,
     ChevronRight, Loader, SquareStack, Info, X,
+    ChevronLeft,
 } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
+import {
+    BarChart, Bar, XAxis, CartesianGrid, LabelList,
+} from 'recharts';
+import {
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+    type ChartConfig,
+} from '../components/ui/chart';
 import DashboardLayout from '../ui/DashboardLayout';
 import { useQuest } from '../context/QuestContext';
 import FloatingAIButton from '../components/common/FloatingAIButton';
@@ -16,7 +26,7 @@ import AIChatPanel from '../components/common/AIChatPanel';
 // Character images
 import beginnerImg from '../assets/images/begginer.png';
 import learnerImg from '../assets/images/learners.png';
-import explorerImg from '../assets/images/explorers.png';
+import explorerImg from '../assets/images/explorer.png';
 
 // Level config
 interface Level {
@@ -61,6 +71,32 @@ const PRIORITY_STYLE: Record<string, string> = {
 };
 
 import { initialEvents } from '../data/mockEvents';
+
+// Notes chart config 
+const notesChartConfig = {
+    notes: {
+        label: 'Notes',
+        color: 'var(--chart-1)',
+    },
+} satisfies ChartConfig;
+
+
+function buildNotesChartData(notes: { date: string, wordCount: number }[], weekOffset: number = 0) {
+    const todayDate = new Date().getDate();
+    const today = new Date(`2026-03-${todayDate}`);
+
+    // Apply offset (positive offset = future weeks, negative = past weeks)
+    today.setDate(today.getDate() + (weekOffset * 7));
+
+    return Array.from({ length: 7 }, (_, i) => {
+        const d = new Date(today);
+        d.setDate(today.getDate() - (6 - i));
+        const iso = d.toISOString().slice(0, 10);
+        const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const count = notes.filter(n => n.date === iso).length;
+        return { day: label, notes: count };
+    });
+}
 
 // Main component
 const Dashboard = () => {
@@ -137,7 +173,7 @@ const Dashboard = () => {
 
                             {/* Stats pills */}
                             <div>
-                                <p className="text-base text-text-primary font-normal mb-1">Your Profile Stats</p>
+                                <p className="text-base text-text-primary font-normal mb-1.5"><span className='font-medium'>Wandi Der</span> Profile Stats</p>
 
                                 <div className="flex flex-wrap gap-2 items-center">
 
@@ -148,7 +184,7 @@ const Dashboard = () => {
                                     ].map((pill) => (
                                         <div
                                             key={pill.label}
-                                            className={`flex items-center gap-2.5 px-3 py-1.5 rounded text-sm font-normal
+                                            className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-sm font-normal
                                             ${pill.dark
                                                     ? 'bg-secondary text-white border-transparent'
                                                     : ' text-text-primary'}`}
@@ -176,7 +212,7 @@ const Dashboard = () => {
                                                     How to maintain your streak
                                                 </p>
                                                 <p className="text-[11px] text-white/70 leading-relaxed">
-                                                    Complete at least one activity in Flo every day — write a note, finish a task, or run a focus session — to keep your streak alive.
+                                                    Complete at least one activity in Flo every day — write a note, finish a task, plan a schedule, or run a focus session — to keep your streak alive.
                                                 </p>
                                             </div>
                                             {/* Arrow */}
@@ -218,6 +254,113 @@ const Dashboard = () => {
                         ))}
                     </div>
 
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        <div className="lg:col-span-2 h-full">
+                            {/* Notes Chart */}
+                            {(() => {
+                                const [weekOffset, setWeekOffset] = useState(0);
+                                const chartData = useMemo(() => buildNotesChartData(initialNotes, weekOffset), [weekOffset]);
+                                const totalNotes = chartData.reduce((s, d) => s + d.notes, 0);
+                                return (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 16 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.16 }}
+                                        className="bg-white rounded-xl border border-gray-200 p-5 h-full"
+                                    >
+                                        <div className="flex items-start flex-col sm:flex-row justify-between mb-4">
+                                            <div>
+                                                <h3 className="text-base font-medium text-text-primary">Notes Activity</h3>
+                                                <p className="text-sm text-text-secondary mt-0.5">Notes created in the last 7 days</p>
+                                            </div>
+                                            <div className="flex items-center justify-between sm:justify-end mt-2.5 sm:mt-0 w-full gap-2">
+                                                <div className="flex items-center gap-1 bg-bg-app rounded-md">
+                                                    <button onClick={() => setWeekOffset(prev => prev - 1)} className="p-1 rounded-full text-text-secondary cursor-pointer hover:text-secondary"><ChevronLeft size={20} /></button>
+                                                    <button onClick={() => setWeekOffset(prev => prev + 1)} className="p-1 rounded-full text-text-secondary cursor-pointer hover:text-secondary"><ChevronRight size={20} /></button></div>
+                                                <span className="text-xs font-medium bg-primary/20 text-secondary px-3 py-1.5 rounded-full">
+                                                    {totalNotes} total
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                        <ChartContainer config={notesChartConfig} className="h-48 w-full">
+                                            <BarChart data={chartData} margin={{ top: 20 }}>
+                                                <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#f1f5f9" />
+                                                <XAxis
+                                                    dataKey="day"
+                                                    tickLine={false}
+                                                    axisLine={false}
+                                                    tickMargin={10}
+                                                    tick={{ fontSize: 13, fill: '#94a3b8' }}
+                                                />
+                                                <ChartTooltip
+                                                    cursor={false}
+                                                    content={<ChartTooltipContent hideLabel />}
+                                                />
+                                                <Bar dataKey="notes" fill="#FFD400" radius={6}>
+                                                    <LabelList
+                                                        position="top"
+                                                        offset={10}
+                                                        className="fill-foreground"
+                                                        fontSize={11}
+                                                        formatter={(v: number) => v > 0 ? v : ''}
+                                                    />
+                                                </Bar>
+                                            </BarChart>
+                                        </ChartContainer>
+                                    </motion.div>
+                                );
+                            })()}</div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.18 }}
+                            className="lg:col-span-1 bg-white rounded-lg border border-gray-200 p-5"
+                        >
+                            <div className="flex items-center justify-between mb-4">
+                                <div>
+                                    <h3 className="text-base font-medium text-text-primary">Recent Notes</h3>
+                                    <p className="text-sm text-text-secondary mt-0.5">Your latest note activity</p>
+                                </div>
+                                <Link
+                                    to="/notes"
+                                    className="flex items-center gap-1.5 text-sm font-normal text-text-secondary hover:text-text-primary transition-colors"
+                                >
+                                    View All <ArrowRight size={14} />
+                                </Link>
+                            </div>
+
+                            <div className="space-y-2">
+                                {initialNotes.slice(0, 4).map((note, i) => (
+                                    <motion.div
+                                        key={note.id}
+                                        initial={{ opacity: 0, x: -8 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.22 + i * 0.04 }}
+                                        className="flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-bg-app transition-all group cursor-pointer"
+                                    >
+                                        {/* Title */}
+                                        <p className="flex-1 text-sm font-normal text-text-primary line-clamp-1 leading-snug">
+                                            {note.title}
+                                        </p>
+
+                                        {/* Metadata */}
+                                        <div className="flex items-center gap-2 shrink-0">
+                                            <span className="hidden md:flex items-center gap-1 text-xs text-text-secondary font-normal">
+                                                <Calendar size={13} />
+                                                {new Date(note.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}
+                                                {note.timestamp.includes(',') ? `, ${note.timestamp.split(',')[1].trim()}` : ''}
+                                            </span>
+                                        </div>
+
+                                        <ChevronRight size={13} className="text-gray-200 group-hover:text-gray-400 transition-colors shrink-0" />
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </div>
 
                     {/* BOTTOM GRID */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -313,7 +456,7 @@ const Dashboard = () => {
                                                     How to Earn XP
                                                 </p>
                                                 <p className="text-xs text-text-secondary leading-relaxed">
-                                                    Complete any activity in Flow — write a note, create a task, or start a focus session —
+                                                    Complete any activity in Flow — write a note, create a task, plan a schedule, or run a focus session —
                                                     and earn <span className="font-medium text-text-primary">10 XP per activity each day</span>.
                                                 </p>
                                             </div>
@@ -342,7 +485,7 @@ const Dashboard = () => {
 
                                             {/* Info */}
                                             <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-1.5">
+                                                <div className="flex items-center gap-1.5 ">
                                                     <p className={`text-sm font-normal truncate
                                                         ${current ? 'text-text-primary font-medium' : reached ? 'text-text-primary' : 'text-text-secondary'}`}
                                                     >

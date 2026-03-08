@@ -1,12 +1,15 @@
 import type { Note } from '../pages/Notes';
+
+export type NoteWithDate = Note & { date: string };
 import dummyPdf from '../assets/docs/dummy_doc.pdf';
 
-export const initialNotes: Note[] = [
+export const initialNotes: NoteWithDate[] = [
     {
         id: 1,
         title: 'PBL Project Research',
         preview: '<p>Summary of quantum computing applications in modern cryptography and their potential vulnerabilities by 2030.</p>',
         timestamp: 'Today, 10:42 AM',
+        date: '2026-03-08',
         tags: [{ text: 'Research', color: 'violet' }, { text: 'CS', color: 'sky' }],
         color: 'blue',
         pinned: true,
@@ -19,6 +22,7 @@ export const initialNotes: Note[] = [
         title: 'Calculus III Notes',
         preview: '<p>Multivariable calculus theories including double integrals, vector fields, and Green\'s theorem.</p>',
         timestamp: 'Yesterday, 14:30 PM',
+        date: '2026-03-07',
         tags: [{ text: 'Math', color: 'emerald' }],
         color: 'green',
         pinned: false,
@@ -30,6 +34,7 @@ export const initialNotes: Note[] = [
         title: 'Productivity Ideas',
         preview: '<p>Brainstorming for the new Flo app features: AI summarization, Pomodoro integration, and ambient sounds.</p>',
         timestamp: 'Mon, 08:15 AM',
+        date: '2026-03-03',
         tags: [{ text: 'Ideas', color: 'rose' }, { text: 'Product', color: 'amber' }],
         color: 'purple',
         pinned: false,
@@ -41,6 +46,7 @@ export const initialNotes: Note[] = [
         title: 'Weekly Standup Notes',
         preview: '<p>Discussed blockers on the frontend architecture. Agreed to migrate the shared components into the `ui` folder to ensure consistent styling.</p>',
         timestamp: 'Tue, 11:00 AM',
+        date: '2026-03-04',
         tags: [{ text: 'Meeting', color: 'orange' }, { text: 'Team', color: 'fuchsia' }],
         color: 'yellow',
         pinned: true,
@@ -52,6 +58,7 @@ export const initialNotes: Note[] = [
         title: 'Literature Review Notes',
         preview: '<p>Reviewing Dr. Smith\'s paper on cognitive load theory. The main takeaway is that splitting complex tasks reduces failure rates by 30% in high-stress academic environments.</p>',
         timestamp: 'Wed, 16:45 PM',
+        date: '2026-03-05',
         tags: [{ text: 'Research', color: 'violet' }, { text: 'Reading', color: 'blue' }],
         color: 'default',
         pinned: false,
@@ -63,6 +70,7 @@ export const initialNotes: Note[] = [
         title: 'Q2 Goals & Habits',
         preview: '<p>Goals for the upcoming quarter: run 3 times a week, read 1 book per month, and complete the advanced algorithms coursera course.</p>',
         timestamp: 'Thu, 09:20 AM',
+        date: '2026-03-06',
         tags: [{ text: 'Goals', color: 'lime' }, { text: 'Habits', color: 'teal' }],
         color: 'red',
         pinned: false,
