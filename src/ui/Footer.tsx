@@ -9,8 +9,8 @@ function Footer() {
             <div className="relative z-10 w-full max-w-[1920px] mx-auto px-6 md:px-10 2xl:px-20">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
                     {/* Brand Column */}
-                    <div className="md:col-span-4 flex flex-col gap-4">
-                        <div className="flex gap-2.5 items-center logo">
+                    <div className="md:col-span-4 flex items-center lg:items-start flex-col gap-4">
+                        <div className="flex justify-center lg:justify-start gap-2.5 items-center logo">
                             <img src={floLogo} alt="Flo" className="h-11 md:h-12 object-contain" />
                             <h2 className="text-2xl 2xl:text-3xl font-normal text-text-secondary">Flo.</h2>
                         </div>

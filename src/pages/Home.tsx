@@ -202,7 +202,7 @@ function TestimonialsCarousel() {
 
     return (
         <div className="flex flex-col items-center gap-10">
-            {/* Quote + attribution */}
+            {/* Quote */}
             <div className="flex flex-col items-center gap-6 min-h-[200px] sm:min-h-[160px] mt-16 sm:mt-20 lg:mt-30">
                 <AnimatePresence mode="wait">
                     <motion.p
@@ -280,7 +280,7 @@ function Home() {
     return (
         <Layout>
             {/* Section Hero */}
-            <section id="hero" className="relative px-6 md:px-10 w-full pt-14 min-h-[75vh] 2xl:h-fit flex flex-col items-center">
+            <section id="hero" className="relative px-6 md:px-10 w-full pb-16 md:pb-32 lg:pb-52 xl:pb-56 2xl:h-fit flex flex-col items-center">
                 {/* Hero Background Elements */}
                 <div className="absolute -bottom-25 left-0 right-0 w-full h-full z-0 pointer-events-none">
                     <div className="absolute inset-0 bg-linear-to-t from-transparent to-bg-app h-10 z-10"></div>
@@ -292,7 +292,7 @@ function Home() {
                 </div>
 
                 <motion.div
-                    className="relative z-10 flex flex-col items-center justify-center gap-y-6 md:gap-y-8 max-w-3xl 2xl:max-w-4xl mx-auto mt-8 md:mt-0"
+                    className="relative z-10 flex flex-col items-center justify-center gap-y-6 md:gap-y-8 max-w-3xl 2xl:max-w-4xl mx-auto mt-8 md:mt-12 lg:mt-14 2xl:mt-20"
                     variants={container}
                     initial="hidden"
                     animate="show"
@@ -367,17 +367,19 @@ function Home() {
             </section>
 
             {/* Section Video */}
-            <section id="video-section" className="relative z-10 md:px-10 mt-5 sm:-mt-32 lg:-mt-20  2xl:-mt-40">
+            <section id="video-section" className="relative z-10 md:-mt-10 lg:-mt-16 xl:-mt-20 2xl:-mt-28">
 
-                <div className="w-[90%] md:w-full max-w-[1200px] 2xl:max-w-[1520px] mx-auto aspect-13/7 bg-white/50 backdrop-blur-xs rounded-xl md:rounded-4xl overflow-hidden  shadow-lg">
-                    <video
+                <div className="w-[90%] lg:w-full max-w-[1250px] 2xl:max-w-[1550px] mx-auto 2xl:px-10">
+
+                    <div className="bg-white/40 backdrop-blur-sm rounded-xl md:rounded-3xl overflow-hidden shadow-lg p-2.5 md:p-4.5 lg:p-5"><video
                         src={videoNotes}
                         autoPlay
                         loop
                         muted
                         playsInline
-                        className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
-                    />
+                        className="w-full h-auto z-10 pointer-events-none block rounded-xl"
+                    /></div>
+
                 </div>
 
             </section>

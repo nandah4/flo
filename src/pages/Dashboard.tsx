@@ -128,7 +128,7 @@ const Dashboard = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         {/* Left: Title + description */}
                         <div>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal! text-text-primary">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-text-primary">
                                 Dashboard
                             </h2>
                             <p className="text-sm text-text-secondary mt-0.5">

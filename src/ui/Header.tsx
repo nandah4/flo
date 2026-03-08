@@ -62,10 +62,10 @@ function Header() {
         <>
             {/* Header Bar - always above overlay, sticky at top */}
             <motion.header
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-br-md rounded-bl-md px-6 md:px-10 2xl:px-20
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${menuOpen ? "" : "rounded-br-lg rounded-bl-lg"} px-6 md:px-10 2xl:px-20
                     ${isScrolled
                         ? "bg-white border-b border-gray-200"
-                        : "bg-white sm:bg-bg-app border-b border-transparent"
+                        : "bg-bg-app sm:bg-bg-app border-b border-transparent"
                     }`}
                 initial={{ y: -40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -74,7 +74,7 @@ function Header() {
                 <div className="w-full flex justify-between items-center py-4">
                     {/* Logo */}
                     <Link to="/" className="flex gap-2.5 items-center logo">
-                        <img src={floLogo} alt="Flo" className="h-11 md:h-12 object-contain" />
+                        <img src={floLogo} alt="Flo" className="h-9 sm:h-10 md:h-11 object-contain" />
                         <h2 className="text-2xl 2xl:text-3xl font-normal text-text-secondary">Flo.</h2>
                     </Link>
 
@@ -116,17 +116,6 @@ function Header() {
 
                     {/* Mobile Hamburger */}
                     <div className="flex items-center gap-4 md:hidden">
-                        {/* <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.25, duration: 0.3 }}
-                        >
-                            <Link to="/dashboard" >
-                                <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
-                                    Get Started
-                                </button>
-                            </Link>
-                        </motion.div> */}
                         <button
                             className="md:hidden flex flex-col gap-[5px] bg-transparent! border-none! cursor-pointer! p-2!"
                             onClick={() => setMenuOpen(!menuOpen)}
@@ -168,7 +157,7 @@ function Header() {
 
                         {/* Menu panel */}
                         <motion.div
-                            className="fixed top-[70px] left-0 w-full bg-white shadow-md md:hidden z-50 rounded-br-md rounded-bl-md"
+                            className="fixed top-[65px] left-0 w-full bg-white shadow-md md:hidden z-50 rounded-br-md rounded-bl-md"
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
@@ -194,13 +183,15 @@ function Header() {
                                     ))}
                                 </ul>
                             </nav>
-                            <div className="px-6 pb-6">
+                            <motion.div initial={{ x: -20, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ delay:  0.32, duration: 0.3 }} className="px-6 pb-6">
                                 <Link to="/dashboard">
                                     <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-4! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
                                         Get Started
                                     </button>
                                 </Link>
-                            </div>
+                            </motion.div>
 
                         </motion.div>
                     </>
