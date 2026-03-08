@@ -7,6 +7,8 @@
 
 ## 👥 Tim Pengembang
 
+Nama Tim : mohon bulan April dispen dulu yh - Wandi
+
 | Nama | Institusi |
 |------|-----------|
 | **Ananda Priya Yustira** | Politeknik Negeri Malang |
