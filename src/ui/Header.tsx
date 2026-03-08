@@ -65,17 +65,17 @@ function Header() {
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-br-md rounded-bl-md px-6 md:px-10 2xl:px-20
                     ${isScrolled
                         ? "bg-white border-b border-gray-200"
-                        : "bg-bg-app border-b border-transparent"
+                        : "bg-white sm:bg-bg-app border-b border-transparent"
                     }`}
                 initial={{ y: -40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
             >
-                <div className="w-full flex justify-between items-center py-5">
+                <div className="w-full flex justify-between items-center py-4">
                     {/* Logo */}
-                    <Link to="/" className="flex gap-3 items-center logo">
-                        <img src={floLogo} alt="Flo" className="h-8 md:h-10 object-contain" />
-                        <h2 className="text-3xl 2xl:text-4xl font-medium text-text-primary">Flo.</h2>
+                    <Link to="/" className="flex gap-2.5 items-center logo">
+                        <img src={floLogo} alt="Flo" className="h-11 md:h-12 object-contain" />
+                        <h2 className="text-2xl 2xl:text-3xl font-normal text-text-secondary">Flo.</h2>
                     </Link>
 
                     {/* Desktop Nav */}
@@ -99,7 +99,6 @@ function Header() {
                             ))}
                         </ul>
                     </nav>
-                    {/* </div> */}
 
                     {/* Desktop CTA */}
                     <motion.div
@@ -117,7 +116,7 @@ function Header() {
 
                     {/* Mobile Hamburger */}
                     <div className="flex items-center gap-4 md:hidden">
-                        <motion.div
+                        {/* <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.25, duration: 0.3 }}
@@ -127,7 +126,7 @@ function Header() {
                                     Get Started
                                 </button>
                             </Link>
-                        </motion.div>
+                        </motion.div> */}
                         <button
                             className="md:hidden flex flex-col gap-[5px] bg-transparent! border-none! cursor-pointer! p-2!"
                             onClick={() => setMenuOpen(!menuOpen)}
@@ -169,7 +168,7 @@ function Header() {
 
                         {/* Menu panel */}
                         <motion.div
-                            className="fixed top-[70px] left-0 w-full bg-bg-app shadow-md md:hidden z-50 rounded-br-md rounded-bl-md"
+                            className="fixed top-[70px] left-0 w-full bg-white shadow-md md:hidden z-50 rounded-br-md rounded-bl-md"
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
@@ -187,7 +186,7 @@ function Header() {
                                             <a
                                                 href={link.href}
                                                 onClick={(e) => handleNavClick(e, link.href)}
-                                                className="text-lg! font-semibold! text-text-primary! transition-colors duration-200"
+                                                className="text-lg! font-medium! text-text-primary! transition-colors duration-200"
                                             >
                                                 {link.label}
                                             </a>
@@ -195,6 +194,14 @@ function Header() {
                                     ))}
                                 </ul>
                             </nav>
+                            <div className="px-6 pb-6">
+                                <Link to="/dashboard">
+                                    <button className="w-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-4! text-sm! font-medium! cursor-pointer! border-none! rounded-lg">
+                                        Get Started
+                                    </button>
+                                </Link>
+                            </div>
+
                         </motion.div>
                     </>
                 )}

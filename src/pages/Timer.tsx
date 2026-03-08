@@ -179,12 +179,12 @@ export default function Timer() {
             <div className={`flex flex-col w-full items-center gap-6 ${zen ? "justify-center flex-1" : ""}`}>
 
                 {/* Mode tabs */}
-                <div className="flex items-center gap-1 bg-bg-app rounded-md p-1">
+                <div className="flex items-center gap-1 rounded-md p-1">
                     {(["focus", "short", "long"] as Mode[]).map((m) => (
                         <button
                             key={m}
                             onClick={() => switchMode(m)}
-                            className={`px-3 py-1.5 rounded-md text-xs font-normal transition-all ${mode === m ? "bg-primary/20 text-secondary" : "text-gray-400 hover:text-gray-700"}`}
+                            className={`px-3 py-1.5 rounded-md cursor-pointer text-xs sm:text-sm font-normal transition-all ${mode === m ? "bg-primary/20 text-secondary" : "text-text-secondary hover:text-text-primary"}`}
                         >
                             {MODE_CONFIG[m].label}
                         </button>
@@ -201,7 +201,7 @@ export default function Timer() {
                                 <span className={`font-semibold tracking-tight tabular-nums text-text-primary ${zen ? "text-6xl" : isMobile ? "text-4xl" : "text-5xl"}`}>
                                     {formatTime(timeLeft)}
                                 </span>
-                                <span className="text-xs text-text-secondary font-normal">
+                                <span className={`text-xs sm:text-sm text-text-secondary font-normal`}>
                                     {MODE_CONFIG[mode].label}
                                 </span>
                             </div>
@@ -415,7 +415,7 @@ export default function Timer() {
 
                                             {/* Title */}
                                             <div className="flex-1 min-w-0">
-                                                <p className={`text-xs font-normal leading-snug ${task.done ? "line-through text-gray-500" : "text-text-secondary"}`}>
+                                                <p className={`text-xs sm:text-sm font-normal leading-snug ${task.done ? "line-through text-gray-500" : "text-text-secondary"}`}>
                                                     {task.title}
                                                 </p>
                                             </div>
@@ -463,7 +463,7 @@ export default function Timer() {
                 </>
             )}
 
-            {/* ── Zen Mode Overlay ── */}
+            {/* Zen Mode Overlay */}
             <AnimatePresence>
                 {zenMode && (
                     <motion.div
@@ -556,7 +556,7 @@ export default function Timer() {
                                 <button
                                     key={m}
                                     onClick={() => switchMode(m)}
-                                    className={`px-4 py-2.5 rounded-lg text-xs font-normal! transition-all ${mode === m ? "bg-primary/20 text-secondary" : "text-gray-400 hover:text-gray-700"}`}
+                                    className={`px-4 py-2.5 rounded-lg cursor-pointer text-xs sm:text-sm font-normal! transition-all ${mode === m ? "bg-primary/20 text-secondary" : "text-gray-400 hover:text-gray-700"}`}
                                 >
                                     {MODE_CONFIG[m].label}
                                 </button>

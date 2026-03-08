@@ -26,7 +26,7 @@ import testimonial3 from '../assets/images/testi-3.jpeg'
 import testimonial4 from '../assets/images/testi-4.jpeg'
 import testimonial5 from '../assets/images/testi-5.jpeg'
 
-import videoNotes from '../assets/videos/video.mov';
+import videoNotes from '../assets/videos/videos.mp4';
 
 
 import whyChooseUsImage from '../assets/images/why-choose-us.png'
@@ -639,7 +639,7 @@ function Home() {
             </section>
 
             {/* Highlighter Section */}
-            <section id="highlighter" className="mt-20 sm:mt-28 mb-20 px-6 md:px-10 2xl:px-20">
+            <section id="highlighter" className="mt-30 sm:mt-28 mb-30 sm:mb-24 px-6 md:px-10 2xl:px-20">
                 <div className="max-w-[1920px] mx-auto transition-all">
                     <div className="flex flex-col items-center gap-6 text-center">
 

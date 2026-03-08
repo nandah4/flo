@@ -13,6 +13,7 @@ import {
   ChevronsDownUp,
   ChevronDown,
   Activity,
+  Bell,
 } from "lucide-react";
 
 import { initialNotes } from "../../data/mockNotes";
@@ -21,19 +22,25 @@ import { initialNotes } from "../../data/mockNotes";
 interface NavItem {
   icon: React.ReactNode;
   label: string;
-  path: string;
+  path?: string;
   badge?: boolean;
 }
 
 // Data
-const navItems: NavItem[] = [
+const topNavItems: NavItem[] = [
   { icon: <Search size={18} />, label: "Search", path: "/search" },
   { icon: <LayoutDashboard size={18} />, label: "Dashboard", path: "/dashboard" },
-  { icon: <FileText size={18} />, label: "Notes", badge: true, path: "/notes" },
+  { icon: <Bell size={18} />, label: "Notifications", badge: true },
+];
+
+const mainNavItems: NavItem[] = [
+  { icon: <FileText size={18} />, label: "Notes", path: "/notes" },
   { icon: <CheckSquare size={18} />, label: "Tasks", path: "/tasks" },
   { icon: <Activity size={18} />, label: "Planning", path: "/planning" },
   { icon: <Timer size={18} />, label: "Focus Timer", path: "/timer" },
 ];
+
+const allNavItems: NavItem[] = [...topNavItems, ...mainNavItems];
 
 // Sidebar nav row (desktop)
 function NavRow({
@@ -41,11 +48,13 @@ function NavRow({
   collapsed,
   isActive,
   onSearchOpen,
+  onNotificationOpen,
 }: {
   item: NavItem;
   collapsed: boolean;
   isActive: boolean;
   onSearchOpen?: () => void;
+  onNotificationOpen?: () => void;
 }) {
   const inner = (
     <motion.div
@@ -55,6 +64,9 @@ function NavRow({
     >
       <span className={`relative shrink-0 ${isActive ? "text-secondary" : "text-text-secondary"}`}>
         {item.icon}
+        {item.badge && (
+          <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-red-500 border border-white" />
+        )}
       </span>
 
       <AnimatePresence>
@@ -89,8 +101,16 @@ function NavRow({
     );
   }
 
+  if (item.label === "Notifications") {
+    return (
+      <button className="block w-full" onClick={onNotificationOpen}>
+        {inner}
+      </button>
+    );
+  }
+
   return (
-    <Link to={item.path} className="block w-full">
+    <Link to={item.path || "/"} className="block w-full">
       {inner}
     </Link>
   );
@@ -101,18 +121,23 @@ function BottomNavItem({
   item,
   isActive,
   onSearchOpen,
+  onNotificationOpen,
 }: {
   item: NavItem;
   isActive: boolean;
   onSearchOpen?: () => void;
+  onNotificationOpen?: () => void;
 }) {
   const inner = (
     <motion.div
       whileTap={{ scale: 0.94 }}
       className="flex flex-col items-center gap-1 px-4 py-2.5 rounded-xl transition-colors"
     >
-      <span className={`${isActive ? "text-secondary" : "text-text-secondary"}`}>
+      <span className={`relative ${isActive ? "text-secondary" : "text-text-secondary"}`}>
         {item.icon}
+        {item.badge && (
+          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-red-500 border border-white" />
+        )}
       </span>
       <span
         className={`text-[10px] font-medium whitespace-nowrap ${isActive ? "text-secondary" : "text-text-secondary"
@@ -131,16 +156,27 @@ function BottomNavItem({
     );
   }
 
+  if (item.label === "Notifications") {
+    return (
+      <button onClick={onNotificationOpen} className="shrink-0">
+        {inner}
+      </button>
+    );
+  }
+
   return (
-    <Link to={item.path} className="shrink-0">
+    <Link to={item.path || "/"} className="shrink-0">
       {inner}
     </Link>
   );
 }
 
 // Main Component
+import NotificationPanel from "../common/NotificationPanel";
+
 export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void }) {
   const [collapsed, setCollapsed] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const location = useLocation();
 
   const sidebarWidth = collapsed ? 64 : 260;
@@ -181,7 +217,7 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
                 ) : (
                   <div className="flex gap-3 items-center">
                     <img src={floLogo} alt="Flo" className="h-8 object-contain" />
-                    <h2 className="text-2xl font-medium text-text-primary">Flo.</h2>
+                    <h2 className="text-xl font-normal text-text-secondary">Flo.</h2>
                   </div>
                 )}
               </AnimatePresence>
@@ -189,18 +225,37 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
           </div>
 
           {/* Scrollable nav */}
-          <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 pb-3 space-y-2">
-            {navItems.map((item) => (
+          <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide py-6 px-1.5 flex flex-col gap-1.5">
+            {/* Top Navigation Group */}
+            {topNavItems.map((item) => (
               <NavRow
                 key={item.label}
                 item={item}
                 collapsed={collapsed}
-                isActive={location.pathname === item.path}
+                isActive={item.path ? location.pathname === item.path : isNotificationOpen && item.label === "Notifications"}
                 onSearchOpen={item.label === "Search" ? onSearchOpen : undefined}
+                onNotificationOpen={item.label === "Notifications" ? () => setIsNotificationOpen(true) : undefined}
               />
             ))}
 
-            <div className="my-3 border-t border-gray-100" />
+            {/* Divider / Menu Label */}
+            <div className={`mb-1 px-3 transition-opacity duration-200 ${collapsed ? "opacity-0" : "opacity-100"}`}>
+              <span className="text-sm font-medium text-text-primary">
+                Menu
+              </span>
+            </div>
+
+            {/* Main Navigation Group */}
+            {mainNavItems.map((item) => (
+              <NavRow
+                key={item.label}
+                item={item}
+                collapsed={collapsed}
+                isActive={item.path ? location.pathname === item.path : isNotificationOpen && item.label === "Notifications"}
+                onSearchOpen={item.label === "Search" ? onSearchOpen : undefined}
+                onNotificationOpen={item.label === "Notifications" ? () => setIsNotificationOpen(true) : undefined}
+              />
+            ))}
 
             {/* Notespace section */}
             {!collapsed && (
@@ -293,15 +348,16 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
         <nav className="bg-white border border-gray-200 rounded-2xl shadow-lg shadow-black/10 overflow-x-auto flex items-center gap-1 px-2 py-1"
           style={{ scrollbarWidth: "none" }}
         >
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shrink-0">
-            <img src={floLogo} alt="Flo" className="w-7 h-7 object-contain" />
+          <div className="pl-2 shrink-0">
+            <img src={floLogo} alt="Flo" className="w-9 h-9 object-contain" />
           </div>
-          {navItems.map((item) => (
+          {allNavItems.map((item) => (
             <BottomNavItem
               key={item.label}
               item={item}
-              isActive={location.pathname === item.path}
+              isActive={item.path ? location.pathname === item.path : isNotificationOpen && item.label === "Notifications"}
               onSearchOpen={item.label === "Search" ? onSearchOpen : undefined}
+              onNotificationOpen={item.label === "Notifications" ? () => setIsNotificationOpen(true) : undefined}
             />
           ))}
           <motion.button
@@ -326,6 +382,12 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
           </motion.button>
         </nav>
       </div>
+
+      <NotificationPanel
+        isOpen={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
+        sidebarCollapsed={collapsed}
+      />
     </>
   );
 }
