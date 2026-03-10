@@ -117,7 +117,7 @@ export default function AddTaskDrawer({
                         transition={{ type: "spring", stiffness: 320, damping: 32 }}
                         className={[
                             "fixed z-50 bg-bg-app shadow-2xl flex rounded-lg sm:rounded-none flex-col",
-                            "md:inset-y-0 md:right-0 md:w-[550px]",
+                            "md:inset-y-0 md:right-0 md:w-[550px] 2xl:w-[660px]",
                             "max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:max-h-[90vh]",
                         ].join(" ")}
                     >
@@ -125,18 +125,18 @@ export default function AddTaskDrawer({
                         <div className="flex items-center justify-start border-b border-gray-200 shrink-0">
                             <button
                                 onClick={handleClose}
-                                className="p-3.5 flex items-center border-r border-gray-200 justify-center text-text-secondary hover:text-text-primary hover:bg-gray-100 transition-colors"
+                                className="p-3.5 2xl:p-4 flex items-center border-r border-gray-200 justify-center text-text-secondary hover:text-text-primary hover:bg-gray-100 transition-colors"
                             >
                                 <X size={18} />
                             </button>
-                            <span className="text-sm font-medium text-text-primary pl-3">
+                            <span className="text-sm 2xl:text-base font-medium text-text-primary pl-3 2xl:pl-4">
                                 {editingCard ? "Edit Task" : "Create Task"}
                             </span>
                         </div>
 
                         {/* Scrollable form body */}
                         <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-y-auto">
-                            <div className="flex flex-col gap-3 px-4 sm:px-5 py-3 sm:py-4">
+                            <div className="flex flex-col gap-3 px-4 sm:px-5 2xl:px-7 py-3 sm:py-4 2xl:py-5">
 
                                 {/* Title */}
                                 <input
@@ -144,15 +144,15 @@ export default function AddTaskDrawer({
                                     value={form.title}
                                     onChange={set("title")}
                                     placeholder="Task title..."
-                                    className="w-full text-lg sm:text-xl font-medium text-text-primary placeholder:text-text-secondary bg-transparent outline-none border-none px-0 py-2 sm:py-3"
+                                    className="w-full text-lg sm:text-xl 2xl:text-2xl font-medium text-text-primary placeholder:text-text-secondary bg-transparent outline-none border-none px-0 py-2 sm:py-3 2xl:py-3.5"
                                 />
 
                                 {/* Metadata rows */}
-                                <div className="flex flex-col gap-1.5 sm:gap-2">
+                                <div className="flex flex-col gap-1.5 sm:gap-2 2xl:gap-3">
 
                                     {/* Priority */}
                                     <div className="flex items-start px-2">
-                                        <div className="flex items-center w-28 gap-3 text-xs text-text-secondary pt-0.5">
+                                        <div className="flex items-center w-28 gap-3 text-xs 2xl:text-sm text-text-secondary pt-0.5">
                                             <Flag size={16} />
                                             <span>Priority</span>
                                         </div>
@@ -167,7 +167,7 @@ export default function AddTaskDrawer({
                                                                 setForm((p) => ({ ...p, priority: p.priority === opt.value ? "" : opt.value }));
                                                                 setOpenMeta(null);
                                                             }}
-                                                            className={`px-2.5 py-1 rounded-md text-xs font-normal border transition-all ${form.priority === opt.value
+                                                            className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border transition-all ${form.priority === opt.value
                                                                 ? `${opt.bg} ${opt.color} border-current`
                                                                 : "bg-white border-gray-200 text-text-secondary hover:border-gray-300"
                                                                 }`}
@@ -180,7 +180,7 @@ export default function AddTaskDrawer({
                                                 <button
                                                     type="button"
                                                     onClick={() => setOpenMeta("priority")}
-                                                    className={`px-2.5 py-1 rounded-md text-xs font-normal border transition-all ${form.priority
+                                                    className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border transition-all ${form.priority
                                                         ? `${PRIORITY_OPTIONS.find(o => o.value === form.priority)?.bg} ${PRIORITY_OPTIONS.find(o => o.value === form.priority)?.color} border-current`
                                                         : "bg-white border-gray-200 text-text-secondary hover:border-gray-300"
                                                         }`}
@@ -193,7 +193,7 @@ export default function AddTaskDrawer({
 
                                     {/* Status */}
                                     <div className="flex items-center px-2">
-                                        <div className="flex items-center w-28 gap-3 shrink-0 text-xs text-text-secondary pt-0.5">
+                                        <div className="flex items-center w-28 gap-3 shrink-0 text-xs 2xl:text-sm text-text-secondary pt-0.5">
                                             <Target size={16} />
                                             <span>Status</span>
                                         </div>
@@ -205,7 +205,7 @@ export default function AddTaskDrawer({
                                                             key={col.id}
                                                             type="button"
                                                             onClick={() => { setForm((p) => ({ ...p, columnId: col.id })); setOpenMeta(null); }}
-                                                            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-normal border transition-all ${form.columnId === col.id
+                                                            className={`flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border transition-all ${form.columnId === col.id
                                                                 ? "border-gray-400 text-gray-800 bg-white"
                                                                 : "bg-white border-gray-200 text-text-secondary hover:border-gray-300"
                                                                 }`}
@@ -219,7 +219,7 @@ export default function AddTaskDrawer({
                                                 <button
                                                     type="button"
                                                     onClick={() => setOpenMeta("status")}
-                                                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-normal border bg-white border-gray-200 text-text-secondary hover:border-gray-300 transition-all"
+                                                    className="flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border bg-white border-gray-200 text-text-secondary hover:border-gray-300 transition-all"
                                                 >
                                                     {(() => {
                                                         const col = columns.find(c => c.id === form.columnId);
@@ -237,7 +237,7 @@ export default function AddTaskDrawer({
 
                                     {/* Start Date + Time */}
                                     <div className="flex items-start px-2 py-1">
-                                        <div className="flex items-center gap-3 w-24 sm:w-28 pt-0.5 shrink-0 text-xs text-text-secondary">
+                                        <div className="flex items-center gap-3 w-24 sm:w-28 pt-0.5 shrink-0 text-xs 2xl:text-sm text-text-secondary">
                                             <Calendar size={15} />
                                             <span>Start</span>
                                         </div>
@@ -246,20 +246,20 @@ export default function AddTaskDrawer({
                                                 type="date"
                                                 value={form.startDate}
                                                 onChange={(e) => setForm((p) => ({ ...p, startDate: e.target.value }))}
-                                                className="w-full sm:flex-1 text-xs text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="w-full sm:flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.startTime}
                                                 onChange={(e) => setForm((p) => ({ ...p, startTime: e.target.value }))}
-                                                className="text-xs text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>
 
                                     {/* Due Date + Time */}
                                     <div className="flex items-start px-2 py-1">
-                                        <div className="flex items-center gap-3 w-24 sm:w-28 shrink-0 pt-0.5 text-xs text-text-secondary">
+                                        <div className="flex items-center gap-3 w-24 sm:w-28 shrink-0 pt-0.5 text-xs 2xl:text-sm text-text-secondary">
                                             <Calendar size={15} />
                                             <span>Due</span>
                                         </div>
@@ -272,13 +272,13 @@ export default function AddTaskDrawer({
                                                     if (raw) { const [, mm, dd] = raw.split("-"); setForm((p) => ({ ...p, date: `${mm}/${dd}` })); }
                                                     else setForm((p) => ({ ...p, date: "" }));
                                                 }}
-                                                className="w-full sm:flex-1 text-xs text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="w-full sm:flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.time}
                                                 onChange={set("time")}
-                                                className="text-xs text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>
@@ -293,23 +293,23 @@ export default function AddTaskDrawer({
                                             el.style.height = el.scrollHeight + "px";
                                         }}
                                         placeholder="Add more context or details here..."
-                                        className="mt-5 w-full text-sm text-text-primary font-normal placeholder:text-text-secondary outline-none resize-none overflow-hidden"
+                                        className="mt-5 w-full text-sm 2xl:text-base text-text-primary font-normal placeholder:text-text-secondary outline-none resize-none overflow-hidden"
                                     />
                                 </div>
                             </div>
 
                             {/* Footer actions */}
-                            <div className="mt-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center gap-3 shrink-0">
+                            <div className="mt-auto px-4 sm:px-6 2xl:px-7 py-4 sm:py-5 2xl:py-6 flex items-center gap-3 shrink-0">
                                 <button
                                     type="button"
                                     onClick={handleClose}
-                                    className="flex-1 py-2.5 rounded-md border cursor-pointer border-gray-200 text-sm font-normal text-gray-500 bg-white transition-colors"
+                                    className="flex-1 py-2.5 2xl:py-3 rounded-md border cursor-pointer border-gray-200 text-sm 2xl:text-base font-normal text-gray-500 bg-white transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 py-2.5 rounded-md cursor-pointer bg-linear-to-t from-primary to-primary/80 text-text-primary text-sm font-normal hover:opacity-90 transition-opacity"
+                                    className="flex-1 py-2.5 2xl:py-3 rounded-md cursor-pointer bg-linear-to-t from-primary to-primary/80 text-text-primary text-sm 2xl:text-base font-normal hover:opacity-90 transition-opacity"
                                 >
                                     {editingCard ? "Save Changes" : "Add Task"}
                                 </button>

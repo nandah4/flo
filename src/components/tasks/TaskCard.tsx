@@ -20,13 +20,13 @@ export default function TaskCard({ card, onCardClick, onDeleteClick }: CardProps
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
             onClick={onCardClick}
-            className="bg-white rounded-xl p-4 border hover:-translate-y-1 border-gray-200 cursor-pointer transition-shadow"
+            className="bg-white rounded-xl p-4 2xl:p-5 border hover:-translate-y-1 border-gray-200 cursor-pointer transition-shadow"
         >
             {/* Header: priority badge + context menu */}
             <div className="flex items-start justify-between mb-3">
                 {card.priority && (
                     <span
-                        className={`px-2 py-1.5 rounded-md text-[10px] flex items-center gap-x-1.5 font-semibold uppercase tracking-wider ${card.priority === "High"
+                        className={`px-2 py-1.5 2xl:px-2.5 2xl:py-2 rounded-md text-[10px] 2xl:text-xs flex items-center gap-x-1.5 font-semibold uppercase tracking-wider ${card.priority === "High"
                             ? "bg-red-50 text-red-600"
                             : card.priority === "Medium"
                                 ? "bg-orange-50 text-orange-500"
@@ -94,7 +94,7 @@ export default function TaskCard({ card, onCardClick, onDeleteClick }: CardProps
             {/* Title */}
             {card.title && (
                 <div className="mb-3">
-                    <p className="text-sm font-medium text-text-primary">{card.title}</p>
+                    <p className="text-sm 2xl:text-base font-medium text-text-primary">{card.title}</p>
                 </div>
             )}
 
@@ -107,13 +107,13 @@ export default function TaskCard({ card, onCardClick, onDeleteClick }: CardProps
 
             {/* Description */}
             {card.description && (
-                <p className="text-xs text-text-secondary mb-3 leading-relaxed line-clamp-2">{card.description}</p>
+                <p className="text-xs 2xl:text-sm text-text-secondary mb-3 2xl:mb-4 leading-relaxed line-clamp-2">{card.description}</p>
             )}
 
             {/* Footer: dates */}
-            <div className="mt-2 pt-3 border-t border-gray-100 space-y-1">
+            <div className="mt-2 pt-3 2xl:pt-4 border-t border-gray-100 space-y-1">
                 {(card.startDate || card.startTime) && (
-                    <div className="flex items-center gap-1.5 text-xs text-text-secondary">
+                    <div className="flex items-center gap-1.5 text-xs 2xl:text-sm text-text-secondary">
                         <Calendar size={12} className="shrink-0" />
                         <span>
                             {card.startDate ? new Date(card.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ""}
@@ -125,7 +125,7 @@ export default function TaskCard({ card, onCardClick, onDeleteClick }: CardProps
                     </div>
                 )}
                 {!card.startDate && card.date && (
-                    <div className="flex items-center gap-1.5 text-xs text-text-secondary">
+                    <div className="flex items-center gap-1.5 text-xs 2xl:text-sm text-text-secondary">
                         <Flag size={12} className="shrink-0" />
                         <span>{formatTaskDate(card.date)}{card.time ? ` • ${card.time}` : ""}</span>
                     </div>

@@ -12,13 +12,13 @@ interface TaskColumnProps {
 
 export default function TaskColumn({ col, onAddClick, onCardClick, onDeleteClick }: TaskColumnProps) {
     return (
-        <div className="flex flex-col gap-3 min-w-[240px] sm:min-w-[280px] flex-1">
+        <div className="flex flex-col gap-3 2xl:gap-4 min-w-[240px] sm:min-w-[280px] 2xl:min-w-[320px] flex-1">
             {/* Column header */}
             <div className="flex items-center justify-between px-2 bg-white py-2 rounded-md">
                 <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: col.color }} />
-                    <span className="text-sm font-medium">{col.label}</span>
-                    <span className="text-xs text-gray-400 font-medium">
+                    <span className="text-sm 2xl:text-base font-medium">{col.label}</span>
+                    <span className="text-xs 2xl:text-sm text-gray-400 font-medium">
                         ({String(col.cards.length).padStart(2, "0")})
                     </span>
                 </div>
@@ -32,10 +32,10 @@ export default function TaskColumn({ col, onAddClick, onCardClick, onDeleteClick
             {/* Add Task Button */}
             <button
                 onClick={() => onAddClick(col.id)}
-                className="flex items-center justify-center gap-2 px-3 py-2.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                className="flex items-center justify-center gap-2 px-3 py-2.5 2xl:py-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >
                 <Plus size={16} className="text-gray-500" />
-                <span className="text-sm font-normal text-text-secondary">Add Task</span>
+                <span className="text-sm 2xl:text-base font-normal text-text-secondary">Add Task</span>
             </button>
 
             {/* Cards */}
