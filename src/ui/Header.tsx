@@ -71,7 +71,7 @@ function Header() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
             >
-                <div className="w-full flex justify-between items-center py-4">
+                <div className="w-full flex justify-between items-center py-4 xl:py-4.5 2xl:py-5.5">
                     {/* Logo */}
                     <Link to="/" className="flex gap-2.5 items-center logo">
                         <img src={floLogo} alt="Flo" className="h-9 sm:h-10 md:h-11 object-contain" />
@@ -80,7 +80,7 @@ function Header() {
 
                     {/* Desktop Nav */}
                     <nav className="hidden md:block">
-                        <ul className="flex gap-x-14">
+                        <ul className="flex gap-x-14 2xl:gap-x-20">
                             {navLinks.map((link, i) => (
                                 <motion.li
                                     key={link.label}
@@ -91,7 +91,7 @@ function Header() {
                                     <a
                                         href={link.href}
                                         onClick={(e) => handleNavClick(e, link.href)}
-                                        className="text-sm! 2xl:text-base! font-normal! text-text-secondary! transition-colors duration-200"
+                                        className="text-sm! lg:text-sm! xl:text-base! 2xl:text-lg! font-normal! text-text-secondary! transition-colors duration-200"
                                     >
                                         {link.label}
                                     </a>
@@ -108,7 +108,7 @@ function Header() {
                         transition={{ delay: 0.4, duration: 0.35 }}
                     >
                         <Link to="/dashboard">
-                            <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-2.5! text-sm! 2xl:text-base! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-md flex items-center gap-2.5">
+                            <button className="bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-3.5! py-2.5! text-sm! xl:text-base! 2xl:text-lg! font-normal! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg flex items-center gap-2.5">
                                 <LogInIcon size={16} className="inline-block" /> Get Started
                             </button>
                         </Link>

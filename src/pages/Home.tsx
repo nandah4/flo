@@ -292,7 +292,7 @@ function Home() {
                 </div>
 
                 <motion.div
-                    className="relative z-10 flex flex-col items-center justify-center gap-y-6 md:gap-y-8 max-w-3xl 2xl:max-w-4xl mx-auto mt-8 md:mt-12 lg:mt-14 2xl:mt-20"
+                    className="relative z-10 flex flex-col items-center justify-center gap-y-6 md:gap-y-8 max-w-3xl mx-auto mt-8 md:mt-12 lg:mt-14 2xl:mt-20"
                     variants={container}
                     initial="hidden"
                     animate="show"
@@ -305,14 +305,14 @@ function Home() {
                         </span>
                     </motion.div>
 
-                    <div className="flex flex-col gap-y-4">
+                    <div className="flex flex-col gap-y-5">
                         {/* Heading */}
                         <motion.h1
                             variants={fadeUp}
-                            className="font-medium text-center text-text-primary text-4xl! sm:text-5xl! md:text-[3.5rem]! leading-[1.2] md:leading-[1.1] tracking-tight"
+                            className="font-medium text-center text-text-primary text-4xl! md:text-5xl! xl:text-6xl! 2xl:text-7xl! leading-[1.2] md:leading-[1.1] tracking-tight"
                         >
                             Take C
-                            <span className="relative inline-flex text-3xl sm:text-4xl items-center justify-center bg-linear-to-t from-primary to-primary/50 border border-primary text-white mx-1 sm:mx-1.5 h-12 w-12 sm:h-16 sm:w-16 rounded-xl sm:rounded-2xl rotate-4 overflow-hidden"
+                            <span className="relative inline-flex text-3xl sm:text-4xl items-center justify-center bg-linear-to-t from-primary to-primary/50 border border-primary text-white mx-1 sm:mx-1.5 2xl:mx-2 h-12 w-12 sm:h-16 sm:w-16 rounded-xl sm:rounded-2xl rotate-4 overflow-hidden"
                                 style={{ minWidth: "2.5rem", verticalAlign: "middle" }}
                             >
                                 <AnimatePresence mode="popLayout">
@@ -334,7 +334,7 @@ function Home() {
                         {/* Description */}
                         <motion.p
                             variants={fadeUp}
-                            className="text-center text-sm sm:text-base text-text-secondary px-4 md:px-0"
+                            className="text-center text-sm sm:text-base 2xl:text-lg text-text-secondary px-4 md:px-0"
                         >
                             Flo is your all-in-one productivity tool built for students. Plan
                             assignments, track deadlines, manage daily tasks, and never miss what
@@ -344,7 +344,7 @@ function Home() {
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4 px-4 sm:px-0">
                         <Link to="/dashboard" className="w-full sm:w-auto">
-                            <button className="w-full h-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-6! py-3! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg! flex items-center justify-center gap-2">
+                            <button className="w-full h-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-6! py-3! text-sm! xl:text-base! 2xl:text-lg! font-normal! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg! flex items-center justify-center gap-2">
                                 <LogInIcon size={16} className="inline-block" /> Try Flo Now
                             </button>
                         </Link>
@@ -360,7 +360,7 @@ function Home() {
                                     });
                                 }
                             }}
-                            className="w-full sm:w-auto bg-white border! border-gray-200! text-text-primary px-6! py-3! text-sm! font-medium! cursor-pointer! hover:scale-105 transition-all duration-300 rounded-lg! flex items-center justify-center gap-2"><Play size={16} className="inline-block" /> Watch Video </button>
+                            className="w-full sm:w-auto bg-white border! border-gray-200! text-text-primary px-6! py-3! text-sm! xl:text-base! 2xl:text-lg! font-normal! cursor-pointer! hover:scale-105 transition-all duration-300 rounded-lg! flex items-center justify-center gap-2"><Play size={16} className="inline-block" /> Watch Video </button>
                     </div>
                 </motion.div>
 
