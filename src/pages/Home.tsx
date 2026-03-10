@@ -227,7 +227,7 @@ function TestimonialsCarousel() {
                         className="flex flex-col items-center gap-0.5 mt-14"
                     >
                         <span className="text-sm sm:text-base lg:text-lg 2xl:text-xl font-medium text-text-primary">{current.name}</span>
-                        <span className="text-xs sm:text-sm lg:text-base 2xl:text-lg text-gray-400">{current.school}</span>
+                        <span className="text-xs sm:text-sm lg:text-base 2xl:text-lg text-text-secondary">{current.school}</span>
                     </motion.div>
                 </AnimatePresence>
             </div>
@@ -292,15 +292,15 @@ function Home() {
                 </div>
 
                 <motion.div
-                    className="relative z-10 flex flex-col items-center justify-center gap-y-6 md:gap-y-8 max-w-3xl 2xl:max-w-5xl mx-auto mt-8 md:mt-12 lg:mt-14 2xl:mt-24"
+                    className="relative z-10 flex flex-col items-center justify-center gap-y-8 md:gap-y-9 max-w-3xl 2xl:max-w-5xl mx-auto mt-8 md:mt-12 lg:mt-14 2xl:mt-24"
                     variants={container}
                     initial="hidden"
                     animate="show"
                 >
                     {/* Badge */}
                     <motion.div variants={fadeUp}>
-                        <span className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-gray-200 bg-white text-secondary  text-xs font-medium tracking-wide uppercase text-center">
-                            <FaTrophy className="md:text-md text-xs shrink-0" />
+                        <span className="inline-flex items-center gap-2.5 2xl:gap-3 px-3.5 py-2 rounded-lg border border-gray-200 bg-white text-secondary text-xs 2xl:text-sm font-medium tracking-wide uppercase text-center">
+                            <FaTrophy className="text-xs md:text-sm 2xl:text-base  shrink-0" />
                             1st Student Productivity Tool
                         </span>
                     </motion.div>
@@ -309,7 +309,7 @@ function Home() {
                         {/* Heading */}
                         <motion.h1
                             variants={fadeUp}
-                            className="font-normal text-center text-text-primary text-4xl md:text-5xl xl:text-7xl 3xl:text-8xl! leading-[1.2] md:leading-[1.1] 2xl:leading-[1.2] tracking-tight"
+                            className="font-normal text-center text-text-primary text-4xl md:text-5xl xl:text-7xl 3xl:text-8xl! leading-[1.2] md:leading-[1.15] 2xl:leading-[1.2] tracking-normal"
                         >
                             Take C
                             <span className="relative inline-flex text-3xl sm:text-4xl items-center justify-center bg-linear-to-t from-primary to-primary/50 border border-primary text-white mx-1 sm:mx-1.5 2xl:mx-2.5 h-12 w-12 sm:h-16 sm:w-16 2xl:h-20 2xl:w-20 rounded-xl sm:rounded-2xl rotate-6 overflow-hidden"
@@ -342,7 +342,7 @@ function Home() {
                         </motion.p>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4 2xl:mt-6 px-4 sm:px-0">
+                    <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4 2xl:mt-6 px-4 sm:px-0">
                         <Link to="/dashboard" className="w-full sm:w-auto">
                             <button className="w-full h-full bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-6! py-3! text-sm! 2xl:text-base! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg! flex items-center justify-center gap-2 2xl:gap-3">
                                 <LogInIcon size={16} className="inline-block" /> Try Flo Now
@@ -361,7 +361,7 @@ function Home() {
                                 }
                             }}
                             className="w-full sm:w-auto bg-white border! border-gray-200! text-text-primary px-6! py-3! text-sm! 2xl:text-base! font-medium! cursor-pointer! hover:scale-105 transition-all duration-300 rounded-lg! flex items-center justify-center gap-2  2xl:gap-3"><Play size={16} className="inline-block" /> Watch Video </button>
-                    </div>
+                    </motion.div>
                 </motion.div>
 
             </section>
@@ -369,7 +369,13 @@ function Home() {
             {/* Section Video */}
             <section id="video-section" className="relative z-10 md:-mt-10 lg:-mt-16 xl:-mt-20 2xl:-mt-28">
 
-                <div className="w-[90%] lg:w-full max-w-[1250px] 2xl:max-w-[1550px] mx-auto 2xl:px-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.15 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="w-[90%] lg:w-full max-w-[1250px] 2xl:max-w-[1550px] mx-auto 2xl:px-10"
+                >
 
                     <div className="bg-white/40 backdrop-blur-sm rounded-xl md:rounded-3xl overflow-hidden shadow-lg p-2.5 md:p-4.5 lg:p-5"><video
                         src={videoNotes}
@@ -380,7 +386,7 @@ function Home() {
                         className="w-full h-auto z-10 pointer-events-none block rounded-xl"
                     /></div>
 
-                </div>
+                </motion.div>
 
             </section>
 
@@ -390,6 +396,7 @@ function Home() {
                 <div className="max-w-[1920px] mx-auto transition-all">
                     <h2 className="text-3xl sm:text-4xl 2xl:text-5xl  font-medium text-text-primary mb-8 sm:mb-10 text-center md:text-left">How Flo Helps You Stay on Track.</h2>
                     <div className="flex flex-col gap-4">
+
                         <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4">
                             {/* Your 24/7 Academic Assistant */}
                             <div className="lg:col-span-2 bg-white rounded-2xl overflow-hidden">
@@ -402,7 +409,7 @@ function Home() {
                                 </div>
                                 <div className="p-5 sm:p-6 lg:p-8">
                                     <h4 className="text-lg sm:text-xl 2xl:text-2xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Flo, Your 24/7 Academic Assistant</h4>
-                                    <p className="text-xs sm:text-sm xl:text-base 2xl:text-lg text-text-secondary leading-relaxed text-center lg:text-left">Stuck on an assignment? Flo helps you brainstorm ideas, review your tasks and notes, and keep your academic work on track.</p>
+                                    <p className="text-sm xl:text-base 2xl:text-lg text-text-secondary leading-relaxed text-center lg:text-left">Stuck on an assignment? Flo helps you brainstorm ideas, review your tasks and notes, and keep your academic work on track.</p>
                                 </div>
                             </div>
 
@@ -423,7 +430,7 @@ function Home() {
                                 </div>
                                 <div className="p-5 sm:p-6 lg:p-8">
                                     <h4 className="text-lg sm:text-xl 2xl:text-2xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Turn Anything Into Smart Notes</h4>
-                                    <p className="text-xs sm:text-sm xl:text-base 2xl:text-lg text-text-secondary leading-relaxed text-center lg:text-left">Upload documents or voice notes to generate summaries, refine your writing, and turn key ideas into flashcards for smarter studying.</p>
+                                    <p className="text-sm xl:text-base 2xl:text-lg text-text-secondary leading-relaxed text-center lg:text-left">Upload documents or voice notes to generate summaries, refine your writing, and turn key ideas into flashcards for smarter studying.</p>
                                 </div>
                             </div>
                         </div>
@@ -442,7 +449,7 @@ function Home() {
                                 </div>
                                 <div className="p-5 sm:p-6 lg:p-8">
                                     <h4 className="text-lg sm:text-xl 2xl:text-2xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Plan Your Tasks Smarter</h4>
-                                    <p className="text-xs sm:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-relaxed text-center lg:text-left">Turn your ideas into organized tasks, break them into steps, and track your progress until every assignment is complete.</p>
+                                    <p className="text-sm xl:text-base 2xl:text-lg text-text-secondary leading-relaxed text-center lg:text-left">Turn your ideas into organized tasks, break them into steps, and track your progress until every assignment is complete.</p>
                                 </div>
                             </div>
 
@@ -467,7 +474,7 @@ function Home() {
                                 </div>
                                 <div className="p-5 sm:p-6 lg:p-8">
                                     <h4 className="text-lg sm:text-xl 2xl:text-2xl  font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Focus Deep. Finish Faster.</h4>
-                                    <p className="text-xs sm:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-relaxed text-center lg:text-left">Enter Zen Mode with a built-in Pomodoro timer. Stay fully focused and capture quick notes during each focus session.</p>
+                                    <p className="text-sm xl:text-base 2xl:text-lg text-text-secondary leading-relaxed text-center lg:text-left">Enter Zen Mode with a built-in Pomodoro timer. Stay fully focused and capture quick notes during each focus session.</p>
                                 </div>
                             </div>
 
@@ -487,7 +494,7 @@ function Home() {
                                 </div>
                                 <div className="p-5 sm:p-6 lg:p-8">
                                     <h4 className="text-lg sm:text-xl 2xl:text-2xl font-medium text-text-primary mb-2 sm:mb-3 text-center lg:text-left">Planning Your Activities</h4>
-                                    <p className="text-xs sm:text-sm xl:text-base 2xl:text-lg text-gray-600 leading-relaxed text-center lg:text-left">Stay on top of your schedule with a calendar connected to your tasks. Track deadlines and plan events ahead.</p>
+                                    <p className="text-sm xl:text-base 2xl:text-lg text-text-secondary leading-relaxed text-center lg:text-left">Stay on top of your schedule with a calendar connected to your tasks. Track deadlines and plan events ahead.</p>
                                 </div>
                             </div>
                         </div>
@@ -559,18 +566,24 @@ function Home() {
                                 border-t 2xl:border-t-2 border-x border-dashed border-gray-200 rounded-t-full pointer-events-none" />
 
                             {/* Center Image */}
-                            <div className="relative z-10
+                            <motion.div
+                                initial={{ opacity: 0, y: 60, scale: 0.9 }}
+                                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                viewport={{ once: true, amount: 0.3 }}
+                                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                                className="relative z-10
                                 w-52 h-52
                                 md:w-64 md:h-64
                                 lg:w-80 lg:h-80
                                 xl:w-96 xl:h-96
-                                rounded-t-full overflow-hidden flex items-center justify-center">
+                                rounded-t-full overflow-hidden flex items-center justify-center"
+                            >
                                 <img
                                     src={whyChooseUsImage}
                                     alt="Student using Flo"
                                     className="w-full h-full object-cover"
                                 />
-                            </div>
+                            </motion.div>
 
                             {/* Feature 1: Left */}
                             <motion.div
@@ -591,7 +604,7 @@ function Home() {
                                     <CopyCheck size={22} className="text-primary" />
                                 </div>
                                 <h4 className="font-medium text-text-primary mb-2 text-lg lg:text-xl 2xl:text-2xl">Built for Student Life</h4>
-                                <p className="text-xs md:text-sm xl:text-base 2xl:text-lg text-gray-500 leading-relaxed">Designed for assignments, deadlines, and daily study routines—Flo fits the way students actually work.</p>
+                                <p className="text-sm xl:text-base 2xl:text-lg text-text-secondary leading-relaxed">Designed for assignments, deadlines, and daily study routines—Flo fits the way students actually work.</p>
                             </motion.div>
 
                             {/* Feature 2: Top Center */}
@@ -615,7 +628,7 @@ function Home() {
                                     <Bot size={24} className="text-primary" />
                                 </div>
                                 <h4 className="font-medium text-text-primary mb-2 text-lg lg:text-xl 2xl:text-2xl">AI That Helps You Stay Organized</h4>
-                                <p className="text-xs md:text-sm xl:text-base 2xl:text-lg text-gray-500 leading-relaxed">Flo doesn't just store your tasks — it helps you prioritize, organize, and stay focused.</p>
+                                <p className="text-sm xl:text-base 2xl:text-lg text-text-secondary leading-relaxed">Flo doesn't just store your tasks — it helps you prioritize, organize, and stay focused.</p>
                             </motion.div>
 
                             {/* Feature 3: Right */}
@@ -637,7 +650,7 @@ function Home() {
                                     <BellOff size={22} className="text-primary " />
                                 </div>
                                 <h4 className="font-medium text-text-primary mb-2 text-lg lg:text-xl 2xl:text-2xl">Focus Without Distractions</h4>
-                                <p className="text-xs md:text-sm xl:text-base 2xl:text-lg text-gray-500 leading-relaxed">Pomodoro timers and Zen Mode help you stay focused and make every study session more productive.</p>
+                                <p className="text-sm xl:text-base 2xl:text-lg text-text-secondary leading-relaxed">Pomodoro timers and Zen Mode help you stay focused and make every study session more productive.</p>
                             </motion.div>
                         </div>
                     </div>
@@ -645,7 +658,7 @@ function Home() {
             </section>
 
             {/* Highlighter Section */}
-            <section id="highlighter" className="mt-30 sm:mt-28 mb-30 sm:mb-24 px-6 md:px-10 2xl:px-20">
+            <section id="highlighter" className="mt-40 mb-44  px-6 md:px-10 2xl:px-20">
                 <div className="max-w-[1920px] mx-auto transition-all">
                     <div className="flex flex-col items-center gap-6 text-center">
 
@@ -665,7 +678,7 @@ function Home() {
                         </h2>
 
                         {/* Sub-taglines */}
-                        <p className="text-base sm:text-lg 2xl:text-xl text-text-secondary max-w-2xl leading-relaxed">
+                        <p className="text-sm sm:text-base 2xl:text-lg text-text-secondary max-w-2xl leading-relaxed">
                             Every minute you{" "}
                             <Highlighter color="#FFD400" action="box" strokeWidth={1.5} animationDuration={500} padding={4} isView>
                                 plan well

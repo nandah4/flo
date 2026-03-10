@@ -194,14 +194,14 @@ const Dashboard = () => {
 
                                     {/* Streak pill */}
                                     <div className="relative group">
-                                        <div className="flex items-center gap-2.5 px-3 py-1.5 rounded text-sm font-normal text-text-primary cursor-default">
+                                        <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xs text-sm font-normal text-text-primary cursor-default">
                                             <Flame size={12} className="text-red-500 fill-red-500" />
                                             <span className="text-text-secondary text-xs 2xl:text-sm">Streak</span>
                                             <span className="font-medium text-[13px] 2xl:text-base">{streak} Days</span>
                                         </div>
 
                                         {/* Tooltip */}
-                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 pointer-events-none
+                                        <div className="absolute bottom-full left-30 -translate-x-1/2 mb-2 w-72 pointer-events-none
                                             opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
                                             <div className="bg-text-primary text-white rounded-xl px-3.5 py-3 shadow-lg">
                                                 <p className="text-xs 2xl:text-sm font-medium mb-1 flex items-center gap-1.5">

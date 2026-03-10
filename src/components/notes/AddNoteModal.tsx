@@ -157,7 +157,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                     <motion.div key="overlay"
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed inset-0 bg-black/60 z-40"
+                        className="fixed inset-0 bg-black/60 z-50"
                         onClick={handleSave}
                     />
 
@@ -165,11 +165,11 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                         initial={{ opacity: 0, x: '100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: '100%' }}
                         transition={{ type: 'spring', stiffness: 320, damping: 32 }}
                         className={[
-                            'fixed z-50 bg-bg-app shadow-2xl flex flex-col rounded-lg sm:rounded-none',
+                            'fixed z-50 bg-bg-app shadow-2xl flex flex-col rounded-lg overflow-hidden sm:rounded-none',
                             effectiveDocUrl
                                 ? 'md:inset-y-0 md:right-0 md:w-[940px] xl:w-[1040px] 2xl:w-[1200px]'
                                 : 'md:inset-y-0 md:right-0 md:w-[560px] 2xl:w-[680px]',
-                            'max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:max-h-[92vh]',
+                            'max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:max-h-[82vh]',
                         ].join(' ')}
                     >
                         {/* Header — matches Add Task drawer style */}

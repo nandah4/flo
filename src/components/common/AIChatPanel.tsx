@@ -48,7 +48,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
             />
 
             {/* Panel — same sizing as Add Task drawer: mr-2 my-2, right-side */}
-            <div className="fixed z-60 bg-bg-app shadow-2xl flex flex-col mr-2 my-2 md:top-0 md:bottom-0 md:right-0 md:left-auto md:w-[470px] 2xl:w-[580px] md:rounded-xl max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[90vh] overflow-hidden">
+            <div className="fixed z-60 bg-bg-app shadow-2xl flex flex-col mr-2 my-2 md:top-0 md:bottom-0 md:right-0 md:left-auto md:w-[470px] 2xl:w-[580px] md:rounded-xl max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[80vh] overflow-hidden">
 
                 {/* Close button */}
                 <div className="flex justify-end px-5 pt-5">

@@ -104,7 +104,7 @@ export default function AddTaskDrawer({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed inset-0 bg-black/60 z-40"
+                        className="fixed inset-0 bg-black/60 z-50"
                         onClick={handleClose}
                     />
 
@@ -118,7 +118,7 @@ export default function AddTaskDrawer({
                         className={[
                             "fixed z-50 bg-bg-app shadow-2xl flex rounded-lg sm:rounded-none flex-col",
                             "md:inset-y-0 md:right-0 md:w-[550px] 2xl:w-[660px]",
-                            "max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:max-h-[90vh]",
+                            "max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:max-h-[80vh]",
                         ].join(" ")}
                     >
                         {/* Header */}

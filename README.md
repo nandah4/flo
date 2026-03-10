@@ -86,7 +86,7 @@ Disarankan untuk menilai aplikasi mengikuti alur berikut:
 - **Global Search** — cari Notes, Tasks, atau Timer dari mana saja lewat sidebar menu .
 
 ### 🏆 Gamification
-- **XP & Level System** — setiap aksi produktif (buat catatan, selesaikan task) kasih poin XP; level naik otomatis dengan progress bar animasi.
+- **XP & Level System** — setiap aksi produktif (buat catatan, selesaikan task) kasih poin XP dan level naik otomatis 
 - **Streak Tracker** — pelacak konsistensi harian biar kamu tetap on track dan nggak putus streak.
 
 ---

@@ -86,7 +86,7 @@ export default function NotificationPanel({ isOpen, onClose, sidebarCollapsed }:
         <>
             {/* Mobile Overlay (Only visible on small screens) */}
             <div
-                className="fixed inset-0 z-40 bg-black/20 sm:hidden transition-opacity"
+                className="fixed inset-0 z-50 bg-black/20 sm:hidden transition-opacity"
                 onClick={onClose}
             />
 
@@ -95,7 +95,7 @@ export default function NotificationPanel({ isOpen, onClose, sidebarCollapsed }:
                 ref={panelRef}
                 className={`fixed z-50 bg-white flex flex-col overflow-hidden border border-gray-100 
           /* Mobile constraints - centered */
-          top-5 left-1/2 -translate-x-1/2  w-[90%] max-w-md h-[72vh] rounded-lg
+          top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2  w-[90%] max-w-md h-[80vh] rounded-lg
           /* Desktop constraints */
           sm:translate-x-0 sm:translate-y-0 sm:bottom-auto sm:top-6 2xl:top-8 sm:w-[420px] sm:h-[600px] sm:max-h-[85vh] 2xl:w-[520px] 2xl:h-[700px] transition-all duration-300 ${leftPosition}`}
             >
@@ -104,9 +104,9 @@ export default function NotificationPanel({ isOpen, onClose, sidebarCollapsed }:
                     <h2 className="text-base sm:text-lg 2xl:text-xl font-medium text-text-primary">Notifications</h2>
                     <button
                         onClick={onClose}
-                        className="p-1.5 rounded-lg text-text-secondary hover:bg-bg-app hover:text-text-primary transition-colors"
+                        className="rounded-lg text-text-secondary hover:text-text-primary transition-colors"
                     >
-                        <X size={18} />
+                        <X size={20} />
                     </button>
                 </div>
 
