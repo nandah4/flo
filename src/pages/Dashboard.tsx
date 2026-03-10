@@ -128,7 +128,7 @@ const Dashboard = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         {/* Left: Title + description */}
                         <div>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-medium text-text-primary">
+                            <h2 className="text-2xl md:text-3xl 2xl:text-4xl font-medium text-text-primary">
                                 Dashboard
                             </h2>
                             <p className="text-sm lg:text-base 2xl:text-lg text-text-secondary mt-0.5 lg:mt-1 2xl:mt-1.5">
@@ -269,13 +269,13 @@ const Dashboard = () => {
                                         <div className="flex items-start flex-col sm:flex-row justify-between mb-4">
                                             <div>
                                                 <h3 className="text-base  2xl:text-lg font-medium text-text-primary">Notes Activity</h3>
-                                                <p className="text-sm text-text-secondary mt-0.5">Notes created in the last 7 days</p>
+                                                <p className="text-sm   2xl:text-base text-text-secondary mt-0.5">Notes created in the last 7 days</p>
                                             </div>
                                             <div className="flex items-center justify-between sm:justify-end mt-2.5 sm:mt-0 w-full gap-2">
                                                 <div className="flex items-center gap-1 bg-bg-app rounded-md">
-                                                    <button onClick={() => setWeekOffset(prev => prev - 1)} className="p-1 rounded-full text-text-secondary cursor-pointer hover:text-secondary"><ChevronLeft size={20} /></button>
-                                                    <button onClick={() => setWeekOffset(prev => prev + 1)} className="p-1 rounded-full text-text-secondary cursor-pointer hover:text-secondary"><ChevronRight size={20} /></button></div>
-                                                <span className="text-xs font-medium bg-primary/20 text-secondary px-3 py-1.5 rounded-full">
+                                                    <button onClick={() => setWeekOffset(prev => prev - 1)} className="p-1 2xl:p-1.5 rounded-full text-text-secondary cursor-pointer hover:text-secondary"><ChevronLeft size={20} /></button>
+                                                    <button onClick={() => setWeekOffset(prev => prev + 1)} className="p-1 2xl:p-1.5 rounded-full text-text-secondary cursor-pointer hover:text-secondary"><ChevronRight size={20} /></button></div>
+                                                <span className="text-xs 2xl:text-sm font-medium bg-primary/20 text-secondary px-3 py-1.5 2xl:py-2 2xl:px-3.5 rounded-full">
                                                     {totalNotes} total
                                                 </span>
                                             </div>
@@ -319,11 +319,11 @@ const Dashboard = () => {
                             <div className="flex items-center justify-between mb-4">
                                 <div>
                                     <h3 className="text-base 2xl:text-lg font-medium text-text-primary">Recent Notes</h3>
-                                    <p className="text-sm text-text-secondary mt-0.5">Your latest note activity</p>
+                                    <p className="text-sm 2xl:text-base text-text-secondary mt-0.5">Your latest note activity</p>
                                 </div>
                                 <Link
                                     to="/notes"
-                                    className="flex items-center gap-1.5 text-sm font-normal text-text-secondary hover:text-text-primary transition-colors"
+                                    className="flex items-center gap-1.5 text-sm 2xl:text-base font-normal text-text-secondary hover:text-text-primary transition-colors"
                                 >
                                     View All <ArrowRight size={14} />
                                 </Link>
@@ -336,10 +336,10 @@ const Dashboard = () => {
                                         initial={{ opacity: 0, x: -8 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: 0.22 + i * 0.04 }}
-                                        className="flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-bg-app transition-all group cursor-pointer"
+                                        className="flex items-center gap-3 px-3 py-3 2xl:p-3.5 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-bg-app transition-all group cursor-pointer"
                                     >
                                         {/* Title */}
-                                        <p className="flex-1 text-sm font-normal text-text-primary line-clamp-1 leading-snug">
+                                        <p className="flex-1 text-sm 2xl:text-base font-normal text-text-primary line-clamp-1 leading-snug">
                                             {note.title}
                                         </p>
 
@@ -372,7 +372,7 @@ const Dashboard = () => {
                             <div className="flex items-center justify-between mb-4">
                                 <div>
                                     <h3 className="text-base  2xl:text-lg font-medium text-text-primary">Recent Tasks</h3>
-                                    <p className="text-sm text-text-secondary mt-0.5">Your latest task activity</p>
+                                    <p className="text-sm 2xl:text-base text-text-secondary mt-0.5">Your latest task activity</p>
                                 </div>
                                 <Link
                                     to="/tasks"
@@ -389,23 +389,23 @@ const Dashboard = () => {
                                         initial={{ opacity: 0, x: -8 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: 0.22 + i * 0.04 }}
-                                        className="flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-bg-app transition-all group cursor-pointer"
+                                        className="flex items-center gap-3 px-3 py-3 2xl:p-3.5 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-bg-app transition-all group cursor-pointer"
                                     >
                                         {/* Title */}
-                                        <p className="flex-1 text-sm  font-normal text-text-primary line-clamp-1 leading-snug">
+                                        <p className="flex-1 text-sm 2xl:text-base  font-normal text-text-primary line-clamp-1 leading-snug">
                                             {task.title}
                                         </p>
 
                                         {/* Meta */}
                                         <div className="flex items-center gap-2 shrink-0">
-                                            <span className={`text-xs font-normal px-2.5 py-1 rounded-md ${STATUS_STYLE[task.status]}`}>
+                                            <span className={`text-xs 2xl:text-base font-normal px-2.5 py-1 rounded-md ${STATUS_STYLE[task.status]}`}>
                                                 {task.status}
                                             </span>
-                                            <span className={`hidden sm:inline  text-xs font-normal px-2.5 py-1 rounded-md ${task.priority ? PRIORITY_STYLE[task.priority] || PRIORITY_STYLE.Low : PRIORITY_STYLE.Low}`}>
+                                            <span className={`hidden sm:inline  text-xs 2xl:text-base font-normal px-2.5 py-1 rounded-md ${task.priority ? PRIORITY_STYLE[task.priority] || PRIORITY_STYLE.Low : PRIORITY_STYLE.Low}`}>
                                                 <Flag size={8} className="inline mr-1" />
                                                 {task.priority || "Low"}
                                             </span>
-                                            <span className="hidden md:flex items-center gap-1 text-xs text-text-secondary font-normal">
+                                            <span className="hidden md:flex items-center gap-1 text-xs 2xl:text-base text-text-secondary font-normal">
                                                 <Calendar size={13} />
                                                 {task.date}
                                             </span>
@@ -428,13 +428,13 @@ const Dashboard = () => {
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <h3 className="text-base 2xl:text-lg font-medium text-text-primary">Level Roadmap</h3>
-                                        <p className="text-sm text-text-secondary mt-0.5">XP required per level</p>
+                                        <p className="text-sm 2xl:text-base text-text-secondary mt-0.5">XP required per level</p>
                                     </div>
                                     <button
                                         onClick={() => setXpInfoOpen(o => !o)}
                                         className="w-8 h-8 flex items-center justify-center rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-app transition-colors shrink-0"
                                     >
-                                        {xpInfoOpen ? <X size={15} /> : <Info size={15} />}
+                                        {xpInfoOpen ? <X size={16} /> : <Info size={16} />}
                                     </button>
                                 </div>
 
@@ -449,10 +449,10 @@ const Dashboard = () => {
                                             className="overflow-hidden"
                                         >
                                             <div className="mt-3">
-                                                <p className="text-sm font-medium text-text-primary mb-1">
+                                                <p className="text-sm 2xl:text-base font-medium text-text-primary mb-1">
                                                     How to Earn XP
                                                 </p>
-                                                <p className="text-xs text-text-secondary leading-relaxed">
+                                                <p className="text-xs 2xl:text-sm text-text-secondary leading-relaxed">
                                                     Complete any activity in Flow — write a note, create a task, plan a schedule, or run a focus session —
                                                     and earn <span className="font-medium text-text-primary">10 XP per activity each day</span>.
                                                 </p>
@@ -483,7 +483,7 @@ const Dashboard = () => {
                                             {/* Info */}
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-1.5 ">
-                                                    <p className={`text-sm font-normal truncate
+                                                    <p className={`text-sm 2xl:text-base font-normal truncate
                                                         ${current ? 'text-text-primary font-medium' : reached ? 'text-text-primary' : 'text-text-secondary'}`}
                                                     >
                                                         Lv.{l.level} — {l.title}
@@ -494,7 +494,7 @@ const Dashboard = () => {
                                                         </span>
                                                     )}
                                                 </div>
-                                                <p className="text-[11px] text-text-secondary mt-0.5">
+                                                <p className="text-[11px] 2xl:text-xs text-text-secondary mt-0.5">
                                                     {l.minXp} – {l.maxXp === 9999 ? '∞' : l.maxXp} XP
                                                 </p>
                                             </div>

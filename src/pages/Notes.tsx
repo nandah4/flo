@@ -224,7 +224,7 @@ const Notes = () => {
 
                 {/* Header */}
                 <header className="px-4 md:pr-10 md:pl-0 py-5 md:py-6 flex items-center justify-between gap-3">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-text-primary">Notes</h2>
+                    <h2 className="text-2xl md:text-3xl 2xl:text-4xl font-medium text-text-primary">Notes</h2>
                 </header>
 
                 <div className="px-4 md:pr-10 md:pl-0 pb-2">
@@ -259,7 +259,7 @@ const Notes = () => {
                                         {uploadStatus === 'generating' ? <Loader2 size={15} className="animate-spin text-secondary" /> : <CloudUpload size={16} />}
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-sm font-normal text-text-secondary whitespace-nowrap">
+                                        <span className="text-sm 2xl:text-base font-normal text-text-secondary whitespace-nowrap">
                                             {uploadStatus === 'generating' ? 'Processing...' : uploadStatus === 'preview' && summaryPreview ? summaryPreview.fileName : 'Document'}
                                         </span>
                                     </div>
@@ -277,10 +277,10 @@ const Notes = () => {
                                     <div className="rounded-lg  text-text-secondary flex items-center justify-center shrink-0">
                                         {uploadStatus === 'generating' ? <Loader2 size={14} className="animate-spin text-secondary" /> : <Mic size={16} />}
                                     </div>
-                                    <span className="text-sm font-normal text-text-secondary whitespace-nowrap">Voice Note</span>
+                                    <span className="text-sm 2xl:text-base font-normal text-text-secondary whitespace-nowrap">Voice Note</span>
                                 </button>
                                 <div className="flex items-center gap-3">
-                                    <button onClick={handleOpenAddNote} className="flex items-center gap-2 sm:w-auto bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-3! text-sm! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg!">
+                                    <button onClick={handleOpenAddNote} className="flex items-center gap-2 sm:w-auto bg-linear-to-t from-primary to-primary/75 hover:bg-primary! text-text-primary px-4! py-3! text-sm! 2xl:text-base! font-medium! cursor-pointer! border-none! hover:scale-105 transition-all duration-300 rounded-lg!">
                                         <Plus size={16} /><span className="hidden sm:inline">New Note</span>
                                     </button>
                                 </div>
@@ -292,7 +292,7 @@ const Notes = () => {
                     {/* Notespace section */}
                     <div className="mt-4 mb-5">
                         {/* Header */}
-                        <h4 className="text-lg font-medium text-text-primary mb-3">Notespace</h4>
+                        <h4 className="text-lg 2xl:text-xl  font-medium text-text-primary mb-3 2xl:mb-4">Notespace</h4>
 
                         {/* Single row */}
                         <div className="flex items-center gap-2">
@@ -303,7 +303,7 @@ const Notes = () => {
                                 {notebooks.map(nb => (
                                     <div key={nb} className="relative group shrink-0">
                                         <button onClick={() => setSelectedNotebook(nb)}
-                                            className={`pr-6 pl-3.5 py-2 rounded-md text-sm font-normal transition-all whitespace-nowrap
+                                            className={`pr-6 pl-3.5 py-2 2xl:pr-6.5 2xl:pl-4 2xl:py-2.5 rounded-md text-sm 2xl:text-base font-normal transition-all whitespace-nowrap
                                             ${selectedNotebook === nb ? 'bg-primary/20 text-secondary' : 'text-gray-500 hover:bg-white hover:text-gray-700'}`}
                                         >{nb}</button>
                                         {nb !== 'All Notes' && (
@@ -313,9 +313,9 @@ const Notes = () => {
                                                     setNotebooks(prev => prev.filter(n => n !== nb));
                                                     if (selectedNotebook === nb) setSelectedNotebook('All Notes');
                                                 }}
-                                                className="absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100"
+                                                className="absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 2xl:h-5 2xl:w-5 flex items-center justify-center rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100"
                                             >
-                                                <X size={11} />
+                                                <X size={13} />
                                             </button>
                                         )}
                                     </div>
@@ -327,20 +327,20 @@ const Notes = () => {
                                             onChange={e => setNewNotebookName(e.target.value)}
                                             onKeyDown={e => { if (e.key === 'Enter') confirmAddNotebook(); if (e.key === 'Escape') { setIsAddingNotebook(false); setNewNotebookName(''); } }}
                                             placeholder="Notebook name..."
-                                            className="w-32 px-3 py-2 text-xs bg-white border border-primary/40 rounded-md outline-none text-gray-700"
+                                            className="w-32 px-3 py-2 2xl:py-2.5 text-xs 2xl:text-sm bg-white border border-primary/40 rounded-md outline-none text-gray-700"
                                         />
                                         <button onClick={confirmAddNotebook} className="w-7 h-7 flex items-center justify-center rounded-md bg-primary/15 text-secondary hover:bg-primary/25 transition-colors">
-                                            <Check size={14} />
+                                            <Check size={15} />
                                         </button>
                                         <button onClick={() => { setIsAddingNotebook(false); setNewNotebookName(''); }} className="w-6 h-6 flex items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 transition-colors">
-                                            <X size={14} />
+                                            <X size={15} />
                                         </button>
                                     </div>
                                 ) : (
                                     <button onClick={() => setIsAddingNotebook(true)}
-                                        className="shrink-0 flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-white transition-all ml-1"
+                                        className="shrink-0 flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm 2xl:text-base font-medium text-text-secondary hover:text-text-primary hover:bg-white transition-all ml-1"
                                     >
-                                        <Plus size={12} /> New
+                                        <Plus size={15} /> New
                                     </button>
                                 )}
                             </div>
@@ -348,18 +348,19 @@ const Notes = () => {
                             {/* Fixed right */}
                             <div className="flex items-center gap-2 shrink-0">
                                 <div className="relative">
-                                    <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                                     <input type="text" placeholder="Search..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-                                        className="pl-8 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-text-primary placeholder:text-text-secondary outline-none focus:border-primary transition-all w-36 sm:w-44"
+                                        className="pl-8 pr-3 py-2.5 2xl:pl-9 2xl:pr-4 2xl:py-3.5 bg-white border border-gray-200 rounded-lg text-sm 2xl:text-base text-text-primary placeholder:text-text-secondary outline-none focus:border-primary transition-all w-36 sm:w-44"
                                     />
                                 </div>
+
                                 <div className="relative" ref={sortRef}>
                                     <button onClick={() => setIsSortOpen(o => !o)}
-                                        className="flex items-center gap-1.5 px-3 py-[11px] bg-white border border-gray-200 rounded-lg text-sm text-text-secondary font-medium hover:bg-gray-50 transition-all"
+                                        className="flex items-center gap-1.5 2xl:gap-2.5 px-3 py-[11px] 2xl:px-4 2xl:py-3.5 bg-white border border-gray-200 rounded-lg text-sm 2xl:text-base text-text-secondary font-medium hover:bg-gray-50 transition-all"
                                     >
-                                        <SortAsc size={15} />
+                                        <SortAsc size={16} />
                                         <span className="hidden sm:inline">{SORT_LABELS[sortBy]}</span>
-                                        <ChevronDown size={14} className={`transition-transform ${isSortOpen ? 'rotate-180' : ''}`} />
+                                        <ChevronDown size={16} className={`transition-transform ${isSortOpen ? 'rotate-180' : ''}`} />
                                     </button>
                                     <AnimatePresence>
                                         {isSortOpen && (
@@ -370,7 +371,7 @@ const Notes = () => {
                                                 >
                                                     {(Object.entries(SORT_LABELS) as [SortOption, string][]).map(([val, label]) => (
                                                         <button key={val} onClick={() => { setSortBy(val); setIsSortOpen(false); }}
-                                                            className={`w-full text-left px-4 py-4 text-sm font-normal transition-colors ${sortBy === val ? 'text-secondary bg-primary/20' : 'text-gray-600 hover:bg-gray-50'}`}
+                                                            className={`w-full text-left px-4 py-4 text-sm 2xl:text-base font-normal transition-colors ${sortBy === val ? 'text-secondary bg-primary/20' : 'text-gray-600 hover:bg-gray-50'}`}
                                                         >{label}</button>
                                                     ))}
                                                 </motion.div>
@@ -393,7 +394,7 @@ const Notes = () => {
                                 {/* All chip */}
                                 <button
                                     onClick={() => setSelectedTag(null)}
-                                    className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap
+                                    className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs 2xl:text-sm font-medium transition-all whitespace-nowrap
                                         ${selectedTag === null
                                             ? 'bg-text-primary text-white'
                                             : 'bg-white border border-gray-200 text-text-secondary hover:border-gray-300 hover:text-text-primary'
@@ -406,7 +407,7 @@ const Notes = () => {
                                     <button
                                         key={tag.text}
                                         onClick={() => setSelectedTag(prev => prev === tag.text ? null : tag.text)}
-                                        className={`shrink-0 flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap
+                                        className={`shrink-0 flex items-center gap-2 px-3.5 py-1.5 2xl:gap-2.5 2xl:px-4 2xl:py-2 rounded-full text-xs 2xl:text-sm font-medium transition-all whitespace-nowrap
                                             ${selectedTag === tag.text
                                                 ? 'bg-text-primary text-white'
                                                 : 'bg-white border border-gray-200 text-text-secondary hover:border-gray-300 hover:text-text-primary'
@@ -424,9 +425,9 @@ const Notes = () => {
                     {/* Pinned section */}
                     {pinnedNotes.length > 0 && (
                         <div className="mb-5">
-                            <div className="flex items-center gap-1.5 mb-3">
+                            <div className="flex items-center gap-1.5 mb-3 2xl:gap-2.5 2xl:mb-4">
                                 <Pin size={16} className="text-secondary" />
-                                <span className="text-base font-medium text-text-primary">Pinned</span>
+                                <span className="text-base 2xl:text-lg font-medium text-text-primary">Pinned</span>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                                 <AnimatePresence>

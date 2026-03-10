@@ -60,7 +60,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
             onDragStart={handleDragStart}
             onDragEnd={() => setIsDragging(false)}
             onClick={onClick}
-            className={`bg-white rounded-lg p-4 border border-gray-200 cursor-pointer group transition-all duration-200 relative
+            className={`bg-white rounded-lg p-4 2xl:p-5 border border-gray-200 cursor-pointer group transition-all duration-200 relative
                 ${isDragging ? 'opacity-40 scale-[0.98]' : 'hover:-translate-y-1 hover:shadow-md'}`}
         >
 
@@ -112,12 +112,12 @@ const NoteCard: React.FC<NoteCardProps> = ({
 
             {/* Labels */}
             {note.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-3">
+                <div className="flex flex-wrap gap-2 2xl:gap-2.5 mb-3 2xl:mb-4">
                     {note.tags.slice(0, 3).map((label: Label) => {
                         const s = getLabelStyle(label.color);
                         return (
                             <span key={label.text}
-                                className={`flex items-center gap-2 px-2 py-1.5 rounded-md text-xs font-normal ${s.bg} ${s.text}`}>
+                                className={`flex items-center gap-2 px-2 py-1.5 2xl:px-2.5 2xl:py-2 rounded-md text-xs 2xl:text-sm font-normal ${s.bg} ${s.text}`}>
                                 <Tag size={13} />
                                 {label.text}
                             </span>
@@ -132,25 +132,25 @@ const NoteCard: React.FC<NoteCardProps> = ({
             )}
 
             {/* Title */}
-            <p className="text-base font-medium text-text-primary mb-1.5 line-clamp-2">
+            <p className="text-base 2xl:text-lg font-medium text-text-primary mb-1.5 2xl:mb-2 line-clamp-2">
                 {note.title}
             </p>
 
             {/* Preview */}
-            <p className="text-sm text-text-secondary line-clamp-2 mb-3">
+            <p className="text-sm 2xl:text-base text-text-secondary line-clamp-2 mb-3 2xl:mb-4">
                 {plainPreview}
             </p>
 
 
 
             {/* Footer */}
-            <div className="flex items-center justify-between pt-2.5">
-                <p className="text-xs text-text-secondary">
+            <div className="flex items-center justify-between pt-2.5 2xl:pt-3">
+                <p className="text-xs 2xl:text-sm text-text-secondary">
                     Last Edited
                 </p>
                 <div className="flex items-center gap-1.5">
                     <Clock size={14} className="text-text-secondary" />
-                    <span className="text-xs text-text-secondary font-normal">{note.timestamp}</span>
+                    <span className="text-xs 2xl:text-sm text-text-secondary font-normal">{note.timestamp}</span>
                 </div>
                 {/* <div className="flex items-center gap-2">
                     {note.wordCount > 0 && (

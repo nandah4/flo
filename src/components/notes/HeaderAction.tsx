@@ -49,14 +49,14 @@ const HeaderAction = ({ onAddNote, onUploadFile }: HeaderActionProps) => {
     };
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-10 lg:mb-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 2xl:gap-10 mb-10 lg:mb-14 2xl:mb-16">
             {/* Upload & AI Summary Card */}
             <div
                 onClick={() => fileInputRef.current?.click()}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                className={`relative bg-gradient-to-br from-white to-slate-50/50 border border-slate-200/80 rounded-[2.5rem] p-8 lg:p-10 flex flex-col items-center justify-center min-h-[200px] group transition-all duration-500 cursor-pointer overflow-hidden shadow-sm
+                className={`relative bg-gradient-to-br from-white to-slate-50/50 border border-slate-200/80 rounded-[2.5rem] p-8 lg:p-10 2xl:p-12 flex flex-col items-center justify-center min-h-[200px] 2xl:min-h-[240px] group transition-all duration-500 cursor-pointer overflow-hidden shadow-sm
                     ${isDraggingFile
                         ? 'border-secondary bg-secondary/5 shadow-[0_8px_30px_rgba(255,140,0,0.15)] scale-[1.02]'
                         : 'hover:border-primary/60 hover:shadow-[0_20px_40px_-15px_rgba(255,212,0,0.15)] hover:-translate-y-1'
@@ -84,14 +84,14 @@ const HeaderAction = ({ onAddNote, onUploadFile }: HeaderActionProps) => {
                 <div className={`bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-100 p-5 rounded-full mb-5 group-hover:bg-primary/10 group-hover:border-primary/20 transition-all duration-500 group-hover:scale-110 ${isDraggingFile ? 'opacity-0 scale-90' : 'opacity-100'}`}>
                     <CloudUpload className="text-slate-400 group-hover:text-secondary transition-colors duration-500" size={38} strokeWidth={1.5} />
                 </div>
-                <p className={`text-text-primary text-xl font-extrabold tracking-tight transition-all duration-500 ${isDraggingFile ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>Upload Document</p>
-                <p className={`text-sm text-slate-400 mt-1.5 font-medium transition-all duration-500 delay-75 ${isDraggingFile ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>Drag & Drop PDF, Word or Text files</p>
+                <p className={`text-text-primary text-xl 2xl:text-2xl font-extrabold tracking-tight transition-all duration-500 ${isDraggingFile ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>Upload Document</p>
+                <p className={`text-sm 2xl:text-base text-slate-400 mt-1.5 font-medium transition-all duration-500 delay-75 ${isDraggingFile ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>Drag & Drop PDF, Word or Text files</p>
             </div>
 
             {/* Add New Note Card */}
             <div
                 onClick={onAddNote}
-                className="bg-white rounded-[2.5rem] p-8 lg:p-10 flex flex-col items-end justify-between min-h-[200px] group hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(255,212,0,0.15)] transition-all duration-500 cursor-pointer overflow-hidden relative border border-slate-200/80 shadow-sm"
+                className="bg-white rounded-[2.5rem] p-8 lg:p-10 2xl:p-12 flex flex-col items-end justify-between min-h-[200px] 2xl:min-h-[240px] group hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(255,212,0,0.15)] transition-all duration-500 cursor-pointer overflow-hidden relative border border-slate-200/80 shadow-sm"
             >
                 {/* Decorative background elements */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-3xl -mr-20 -mt-20 group-hover:opacity-100 opacity-60 transition-opacity duration-500"></div>
@@ -99,14 +99,14 @@ const HeaderAction = ({ onAddNote, onUploadFile }: HeaderActionProps) => {
 
                 <div className="w-full flex justify-between items-start z-10">
                     <div>
-                        <h3 className="text-3xl font-extrabold text-text-primary tracking-tight group-hover:text-secondary transition-colors duration-300">Quick Note</h3>
-                        <p className="text-sm text-slate-500 font-medium mt-2">Jot down thoughts instantly</p>
+                        <h3 className="text-3xl 2xl:text-4xl font-extrabold text-text-primary tracking-tight group-hover:text-secondary transition-colors duration-300">Quick Note</h3>
+                        <p className="text-sm 2xl:text-base text-slate-500 font-medium mt-2">Jot down thoughts instantly</p>
                     </div>
                 </div>
 
                 <div className="relative z-10 w-full flex items-end justify-end mt-6">
                     <div className="bg-primary text-text-primary font-bold px-7 py-4 rounded-full flex items-center space-x-3 group-hover:bg-text-primary group-hover:text-white transition-all duration-500 shadow-[0_8px_20px_rgba(255,212,0,0.2)] group-hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] hover:scale-105">
-                        <span className="text-[15px] tracking-wide">Write Now</span>
+                        <span className="text-[15px] 2xl:text-base tracking-wide">Write Now</span>
                         <div className="bg-white/50 group-hover:bg-white/20 p-1.5 rounded-full transition-colors duration-300">
                             <Plus size={18} strokeWidth={3} className="text-current" />
                         </div>
