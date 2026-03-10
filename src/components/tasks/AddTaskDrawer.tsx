@@ -104,7 +104,7 @@ export default function AddTaskDrawer({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed inset-0 bg-black/60 z-50"
+                        className="fixed inset-0 bg-black/50 z-50"
                         onClick={handleClose}
                     />
 
@@ -151,14 +151,14 @@ export default function AddTaskDrawer({
                                 <div className="flex flex-col gap-1.5 sm:gap-2 2xl:gap-3">
 
                                     {/* Priority */}
-                                    <div className="flex items-start px-2">
-                                        <div className="flex items-center w-28 gap-3 text-xs 2xl:text-sm text-text-secondary pt-0.5">
+                                    <div className="flex items-start gap-2 px-2">
+                                        <div className="flex items-center w-28 gap-3 text-sm 2xl:text-base font-medium text-text-secondary pt-0.5">
                                             <Flag size={16} />
                                             <span>Priority</span>
                                         </div>
                                         <div className="flex-1">
                                             {openMeta === "priority" ? (
-                                                <div className="flex gap-1.5 flex-wrap">
+                                                <div className="flex gap-2 flex-wrap">
                                                     {PRIORITY_OPTIONS.map((opt) => (
                                                         <button
                                                             key={opt.value}
@@ -167,7 +167,7 @@ export default function AddTaskDrawer({
                                                                 setForm((p) => ({ ...p, priority: p.priority === opt.value ? "" : opt.value }));
                                                                 setOpenMeta(null);
                                                             }}
-                                                            className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border transition-all ${form.priority === opt.value
+                                                            className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border transition-all ${form.priority === opt.value
                                                                 ? `${opt.bg} ${opt.color} border-current`
                                                                 : "bg-white border-gray-200 text-text-secondary hover:border-gray-300"
                                                                 }`}
@@ -180,7 +180,7 @@ export default function AddTaskDrawer({
                                                 <button
                                                     type="button"
                                                     onClick={() => setOpenMeta("priority")}
-                                                    className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border transition-all ${form.priority
+                                                    className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border transition-all ${form.priority
                                                         ? `${PRIORITY_OPTIONS.find(o => o.value === form.priority)?.bg} ${PRIORITY_OPTIONS.find(o => o.value === form.priority)?.color} border-current`
                                                         : "bg-white border-gray-200 text-text-secondary hover:border-gray-300"
                                                         }`}
@@ -192,20 +192,20 @@ export default function AddTaskDrawer({
                                     </div>
 
                                     {/* Status */}
-                                    <div className="flex items-center px-2">
-                                        <div className="flex items-center w-28 gap-3 shrink-0 text-xs 2xl:text-sm text-text-secondary pt-0.5">
+                                    <div className="flex items-center gap-2 px-2">
+                                        <div className="flex items-center w-28 gap-3 shrink-0 text-sm 2xl:text-base font-medium text-text-secondary pt-0.5">
                                             <Target size={16} />
                                             <span>Status</span>
                                         </div>
                                         <div className="flex-1">
                                             {openMeta === "status" ? (
-                                                <div className="flex gap-1.5 flex-wrap">
+                                                <div className="flex gap-2 flex-wrap">
                                                     {columns.map((col) => (
                                                         <button
                                                             key={col.id}
                                                             type="button"
                                                             onClick={() => { setForm((p) => ({ ...p, columnId: col.id })); setOpenMeta(null); }}
-                                                            className={`flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border transition-all ${form.columnId === col.id
+                                                            className={`flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border transition-all ${form.columnId === col.id
                                                                 ? "border-gray-400 text-gray-800 bg-white"
                                                                 : "bg-white border-gray-200 text-text-secondary hover:border-gray-300"
                                                                 }`}
@@ -219,7 +219,7 @@ export default function AddTaskDrawer({
                                                 <button
                                                     type="button"
                                                     onClick={() => setOpenMeta("status")}
-                                                    className="flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border bg-white border-gray-200 text-text-secondary hover:border-gray-300 transition-all"
+                                                    className="flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border bg-white border-gray-200 text-text-secondary hover:border-gray-300 transition-all"
                                                 >
                                                     {(() => {
                                                         const col = columns.find(c => c.id === form.columnId);
@@ -236,8 +236,8 @@ export default function AddTaskDrawer({
                                     </div>
 
                                     {/* Start Date + Time */}
-                                    <div className="flex items-start px-2 py-1">
-                                        <div className="flex items-center gap-3 w-24 sm:w-28 pt-0.5 shrink-0 text-xs 2xl:text-sm text-text-secondary">
+                                    <div className="flex items-start gap-2 px-2 py-1">
+                                        <div className="flex items-center gap-3 w-24 sm:w-28 pt-0.5 shrink-0 text-sm 2xl:text-base font-medium text-text-secondary">
                                             <Calendar size={15} />
                                             <span>Start</span>
                                         </div>
@@ -246,20 +246,20 @@ export default function AddTaskDrawer({
                                                 type="date"
                                                 value={form.startDate}
                                                 onChange={(e) => setForm((p) => ({ ...p, startDate: e.target.value }))}
-                                                className="w-full sm:flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="w-full sm:flex-1 text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.startTime}
                                                 onChange={(e) => setForm((p) => ({ ...p, startTime: e.target.value }))}
-                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>
 
                                     {/* Due Date + Time */}
-                                    <div className="flex items-start px-2 py-1">
-                                        <div className="flex items-center gap-3 w-24 sm:w-28 shrink-0 pt-0.5 text-xs 2xl:text-sm text-text-secondary">
+                                    <div className="flex items-start gap-2 px-2 py-1">
+                                        <div className="flex items-center gap-3 w-24 sm:w-28 shrink-0 pt-0.5 text-sm 2xl:text-base font-medium text-text-secondary">
                                             <Calendar size={15} />
                                             <span>Due</span>
                                         </div>
@@ -272,13 +272,13 @@ export default function AddTaskDrawer({
                                                     if (raw) { const [, mm, dd] = raw.split("-"); setForm((p) => ({ ...p, date: `${mm}/${dd}` })); }
                                                     else setForm((p) => ({ ...p, date: "" }));
                                                 }}
-                                                className="w-full sm:flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="w-full sm:flex-1 text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.time}
                                                 onChange={set("time")}
-                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>

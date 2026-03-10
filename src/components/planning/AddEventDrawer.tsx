@@ -165,11 +165,11 @@ export default function AddEventDrawer({
                                 <div className="border-t border-gray-100" />
 
                                 {/* Metadata rows */}
-                                <div className="flex flex-col gap-1 2xl:gap-2">
+                                <div className="flex flex-col gap-2 2xl:gap-3">
 
                                     {/* Start */}
-                                    <div className="flex items-start px-2 py-1.5">
-                                        <div className="flex items-center gap-3 w-28 shrink-0 text-xs 2xl:text-sm text-text-secondary pt-0.5">
+                                    <div className="flex items-start gap-2 px-2 py-1.5">
+                                        <div className="flex items-center gap-3 w-28 shrink-0 text-sm 2xl:text-base font-medium text-text-secondary pt-0.5">
                                             <Calendar size={15} />
                                             <span>Starts</span>
                                         </div>
@@ -178,20 +178,20 @@ export default function AddEventDrawer({
                                                 type="date"
                                                 value={form.startDate}
                                                 onChange={set("startDate")}
-                                                className="flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="flex-1 text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.startTime}
                                                 onChange={set("startTime")}
-                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>
 
                                     {/* End */}
-                                    <div className="flex items-start px-2 py-1.5">
-                                        <div className="flex items-center gap-3 w-28 shrink-0 text-xs 2xl:text-sm text-text-secondary pt-0.5">
+                                    <div className="flex items-start gap-2 px-2 py-1.5">
+                                        <div className="flex items-center gap-3 w-28 shrink-0 text-sm 2xl:text-base font-medium text-text-secondary pt-0.5">
                                             <Calendar size={15} />
                                             <span>Ends</span>
                                         </div>
@@ -200,13 +200,13 @@ export default function AddEventDrawer({
                                                 type="date"
                                                 value={form.endDate}
                                                 onChange={set("endDate")}
-                                                className="flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="flex-1 text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.endTime}
                                                 onChange={set("endTime")}
-                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>
@@ -215,8 +215,8 @@ export default function AddEventDrawer({
                                     <div className="border-t border-gray-100 my-1" />
 
                                     {/* Notes */}
-                                    <div className="flex items-start px-2 py-1.5">
-                                        <div className="flex items-center gap-3 w-28 shrink-0 text-xs 2xl:text-sm text-text-secondary pt-0.5">
+                                    <div className="flex items-start gap-2 px-2 py-1.5">
+                                        <div className="flex items-center gap-3 w-28 shrink-0 text-sm 2xl:text-base font-medium text-text-secondary pt-0.5">
                                             <AlignLeft size={15} />
                                             <span>Notes</span>
                                         </div>

@@ -86,7 +86,7 @@ export default function NotificationPanel({ isOpen, onClose, sidebarCollapsed }:
         <>
             {/* Mobile Overlay (Only visible on small screens) */}
             <div
-                className="fixed inset-0 z-50 bg-black/20 sm:hidden transition-opacity"
+                className="fixed inset-0 z-50 bg-black/50 sm:hidden transition-opacity"
                 onClick={onClose}
             />
 

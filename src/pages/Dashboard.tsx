@@ -252,8 +252,8 @@ const Dashboard = () => {
                     </div>
 
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                        <div className="lg:col-span-2 h-full">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 gap-4">
+                        <div className="lg:col-span-2 2xl:col-span-3 h-full">
                             {/* Notes Chart */}
                             {(() => {
                                 const [weekOffset, setWeekOffset] = useState(0);
@@ -314,7 +314,7 @@ const Dashboard = () => {
                             initial={{ opacity: 0, y: 16 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.18 }}
-                            className="lg:col-span-1 bg-white rounded-lg border border-gray-200 p-5"
+                            className="lg:col-span-1 2xl:col-span-2 bg-white rounded-lg border border-gray-200 p-5"
                         >
                             <div className="flex items-center justify-between mb-4">
                                 <div>
@@ -360,14 +360,14 @@ const Dashboard = () => {
                     </div>
 
                     {/* BOTTOM GRID */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 gap-4">
 
                         {/* Recent Tasks */}
                         <motion.div
                             initial={{ opacity: 0, y: 16 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.18 }}
-                            className="lg:col-span-2 bg-white rounded-lg border border-gray-200 p-5"
+                            className="lg:col-span-2 2xl:col-span-3 bg-white rounded-lg border border-gray-200 p-5"
                         >
                             <div className="flex items-center justify-between mb-4">
                                 <div>
@@ -422,7 +422,7 @@ const Dashboard = () => {
                             initial={{ opacity: 0, y: 16 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.22 }}
-                            className="bg-white rounded-lg border border-gray-200 p-5"
+                            className="bg-white lg:col-span-1  2xl:col-span-2 rounded-lg border border-gray-200 p-5"
                         >
                             <div className="mb-4">
                                 <div className="flex items-center justify-between">

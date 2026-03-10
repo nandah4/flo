@@ -214,21 +214,21 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                     />
 
                                     {/* Metadata rows */}
-                                    <div className="flex flex-col gap-2 2xl:gap-3">
+                                    <div className="flex flex-col gap-2.5 2xl:gap-3">
 
                                         {/* Notespace */}
-                                        <div className="flex items-start px-2">
-                                            <div className="flex items-center w-28 gap-3 text-xs 2xl:text-sm text-text-secondary pt-0.5">
+                                        <div className="flex items-start gap-2 px-2">
+                                            <div className="flex items-center w-28 gap-3 text-sm 2xl:text-base font-medium text-text-secondary pt-0.5">
                                                 <BookOpen size={16} />
                                                 <span>Notespace</span>
                                             </div>
                                             <div className="flex-1">
                                                 {openMeta === 'notebook' ? (
-                                                    <div className="flex gap-1.5 flex-wrap">
+                                                    <div className="flex gap-2 flex-wrap">
                                                         {notebooks.map(nb => (
                                                             <button key={nb} type="button"
                                                                 onClick={() => { setNotebook(nb); setOpenMeta(null); }}
-                                                                className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border transition-all ${notebook === nb
+                                                                className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border transition-all ${notebook === nb
                                                                     ? 'bg-primary/20 text-secondary border-primary/30'
                                                                     : 'bg-white border-gray-200 text-text-secondary hover:border-gray-300'}`}
                                                             >{nb}</button>
@@ -237,7 +237,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                                 ) : (
                                                     <button type="button"
                                                         onClick={() => setOpenMeta('notebook')}
-                                                        className="px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border bg-primary/10 text-secondary border-primary/20 hover:border-primary/40 transition-all"
+                                                        className="px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border bg-primary/10 text-secondary border-primary/20 hover:border-primary/40 transition-all"
                                                     >
                                                         {notebook || 'Select…'}
                                                     </button>
@@ -246,8 +246,8 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                         </div>
 
                                         {/* Labels */}
-                                        <div className="flex items-start px-2">
-                                            <div className="flex items-center w-28 gap-3 text-xs 2xl:text-sm text-text-secondary pt-0.5">
+                                        <div className="flex items-start gap-2 px-2">
+                                            <div className="flex items-center w-28 gap-3 text-sm 2xl:text-base font-medium text-text-secondary pt-0.5">
                                                 <Tag size={16} />
                                                 <span>Labels</span>
                                             </div>
@@ -261,7 +261,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                                                     const s = getLabelStyle(label.color);
                                                                     return (
                                                                         <span key={label.text}
-                                                                            className={`flex items-center gap-1.5 px-2 py-1 ${s.bg} ${s.text} text-xs 2xl:text-sm rounded-md`}>
+                                                                            className={`flex items-center gap-1.5 px-2 py-1.5 ${s.bg} ${s.text} text-sm 2xl:text-base rounded`}>
                                                                             <span className={`w-1.5 h-1.5 rounded-full ${s.dot} shrink-0`} />
                                                                             {label.text}
                                                                             <button type="button" onClick={() => removeTag(label.text)}
@@ -281,7 +281,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                                                     return (
                                                                         <button type="button" key={l.text}
                                                                             onClick={() => setTags(prev => [...prev, l])}
-                                                                            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs 2xl:text-sm ${s.bg} ${s.text} border border-transparent hover:border-current/20 transition-colors`}>
+                                                                            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded text-sm 2xl:text-base ${s.bg} ${s.text} border border-transparent hover:border-current/20 transition-colors`}>
                                                                             <Tag size={11} />
                                                                             {l.text}
                                                                         </button>
@@ -290,13 +290,13 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                                             </div>
                                                         )}
                                                         {/* New label input */}
-                                                        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-2 py-1.5 focus-within:border-primary transition-all">
+                                                        <div className="flex items-center mt-1 sm:mt-0 gap-2 bg-white border border-gray-200 rounded-md px-2 py-2 focus-within:border-primary transition-all">
                                                             <Plus size={13} className="text-gray-400 shrink-0" />
                                                             <input type="text"
                                                                 value={tagSearch}
                                                                 onChange={e => setTagSearch(e.target.value)}
                                                                 placeholder="New label, press Enter…"
-                                                                className="flex-1 text-xs text-gray-700 placeholder:text-text-secondary outline-none bg-transparent"
+                                                                className="flex-1 text-sm 2xl:text-base text-text-secondary placeholder:text-text-secondary outline-none bg-transparent"
                                                                 onKeyDown={e => {
                                                                     if ((e.key === 'Enter' || e.key === ',') && tagSearch.trim()) {
                                                                         e.preventDefault();
@@ -306,13 +306,13 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                                             />
                                                             {tagSearch.trim() && (
                                                                 <button type="button" onClick={() => addTag(tagSearch.trim())}
-                                                                    className="text-xs 2xl:text-sm text-secondary bg-primary/20 px-2.5 py-1 rounded-md shrink-0">
+                                                                    className="text-sm 2xl:text-base text-secondary bg-primary/20 px-2.5 py-1.5 rounded shrink-0">
                                                                     Add
                                                                 </button>
                                                             )}
                                                         </div>
                                                         <button type="button" onClick={() => setOpenMeta(null)}
-                                                            className="text-xs 2xl:text-sm text-text-secondary hover:text-text-primary self-start ml-1 transition-colors">
+                                                            className="text-sm 2xl:text-base text-text-secondary hover:text-text-primary self-start ml-1 transition-colors">
                                                             Done
                                                         </button>
                                                     </div>
@@ -332,7 +332,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                                             })
                                                             : (
                                                                 <button type="button" onClick={() => setOpenMeta('labels')}
-                                                                    className="px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md text-xs 2xl:text-sm font-normal border bg-white border-gray-200 text-text-secondary hover:border-gray-300 transition-all">
+                                                                    className="px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border bg-white border-gray-200 text-text-secondary hover:border-gray-300 transition-all">
                                                                     Add label…
                                                                 </button>
                                                             )}
@@ -342,8 +342,8 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                         </div>
 
                                         {/* Attachments */}
-                                        <div className="flex items-center px-2">
-                                            <div className="flex items-center w-28 gap-3 text-xs 2xl:text-sm text-text-secondary">
+                                        <div className="flex items-center gap-2 px-2">
+                                            <div className="flex items-center w-28 gap-3 text-sm 2xl:text-base text-text-secondary">
                                                 <Paperclip size={16} />
                                                 <span>Attach</span>
                                             </div>
@@ -356,13 +356,13 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
                                                     onChange={e => { const f = e.target.files?.[0]; if (f) { handleInternalAudioUpload(f); if (audioInputRef.current) audioInputRef.current.value = ''; } }}
                                                 />
                                                 <button type="button" onClick={() => docInputRef.current?.click()} disabled={isUploading}
-                                                    className={`flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md border text-xs 2xl:text-sm font-normal bg-white transition-colors
+                                                    className={`flex items-center gap-1.5 px-2.5 py-2 2xl:px-3 2xl:py-2.5 rounded border text-xs 2xl:text-sm font-normal bg-white transition-colors
                                                         ${effectiveDocUrl ? 'border-secondary/40 text-secondary' : 'border-gray-200 text-text-secondary hover:border-gray-300'} disabled:opacity-50`}>
                                                     {isUploading && !effectiveAudioFile ? <Loader2 size={12} className="animate-spin" /> : <Paperclip size={12} />}
                                                     {effectiveDocUrl ? 'Attached' : 'Document'}
                                                 </button>
                                                 <button type="button" onClick={() => audioInputRef.current?.click()} disabled={isUploading}
-                                                    className={`flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded-md border text-xs 2xl:text-sm font-normal bg-white transition-colors
+                                                    className={`flex items-center gap-1.5 px-2.5 py-2 2xl:px-3 2xl:py-2.5 rounded border text-xs 2xl:text-sm font-normal bg-white transition-colors
                                                         ${effectiveAudioUploaded ? 'border-secondary/40 text-secondary' : 'border-gray-200 text-text-secondary hover:border-gray-300'} disabled:opacity-50`}>
                                                     {isUploading && effectiveAudioFile ? <Loader2 size={12} className="animate-spin" /> : <Mic size={12} />}
                                                     {effectiveAudioUploaded ? 'Voice' : 'Voice Note'}

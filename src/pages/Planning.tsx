@@ -194,7 +194,7 @@ export default function Planning() {
                                 </div>
                                 <button
                                     onClick={() => setDrawerOpen(true)}
-                                    className="flex items-center gap-1.5 bg-linear-to-t from-primary to-primary/75 text-text-primary rounded-lg px-3 py-2 text-sm font-normal hover:opacity-90 transition-opacity cursor-pointer"
+                                    className="flex items-center gap-1.5 bg-linear-to-t from-primary to-primary/75 text-text-primary rounded-md lg:rounded-lg px-3 py-2 text-sm font-normal hover:opacity-90 transition-opacity cursor-pointer"
                                 >
                                     <Plus size={14} />
                                     Add Event
