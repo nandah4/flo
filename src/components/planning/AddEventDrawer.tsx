@@ -130,7 +130,7 @@ export default function AddEventDrawer({
                         transition={{ type: "spring", stiffness: 320, damping: 32 }}
                         className={[
                             "fixed z-50 bg-bg-app shadow-2xl flex rounded-lg sm:rounded-none flex-col",
-                            "md:inset-y-0 md:right-0 md:w-[480px]",
+                            "md:inset-y-0 md:right-0 md:w-[480px] 2xl:w-[580px]",
                             "max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:max-h-[90vh]",
                         ].join(" ")}
                     >
@@ -139,18 +139,18 @@ export default function AddEventDrawer({
                             <button
                                 type="button"
                                 onClick={handleClose}
-                                className="p-3.5 flex items-center border-r border-gray-200 justify-center text-text-secondary hover:text-text-primary hover:bg-gray-100 transition-colors"
+                                className="p-3.5 2xl:p-4 flex items-center border-r border-gray-200 justify-center text-text-secondary hover:text-text-primary hover:bg-gray-100 transition-colors"
                             >
                                 <X size={18} />
                             </button>
-                            <span className="text-sm font-medium text-text-primary pl-3">
+                            <span className="text-sm 2xl:text-base font-medium text-text-primary pl-3 2xl:pl-4">
                                 Add Event
                             </span>
                         </div>
 
                         {/* Form */}
                         <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-y-auto">
-                            <div className="flex flex-col gap-3 px-4 sm:px-5 py-3 sm:py-4">
+                            <div className="flex flex-col gap-3 px-4 sm:px-5 2xl:px-7 py-3 sm:py-4 2xl:py-5">
 
                                 {/* Title */}
                                 <input
@@ -158,18 +158,18 @@ export default function AddEventDrawer({
                                     value={form.title}
                                     onChange={set("title")}
                                     placeholder="Event title..."
-                                    className="w-full text-lg sm:text-xl font-medium text-text-primary placeholder:text-text-secondary bg-transparent outline-none border-none px-0 py-2 sm:py-3"
+                                    className="w-full text-lg sm:text-xl 2xl:text-2xl font-medium text-text-primary placeholder:text-text-secondary bg-transparent outline-none border-none px-0 py-2 sm:py-3 2xl:py-3.5"
                                 />
 
                                 {/* Divider */}
                                 <div className="border-t border-gray-100" />
 
                                 {/* Metadata rows */}
-                                <div className="flex flex-col gap-1">
+                                <div className="flex flex-col gap-1 2xl:gap-2">
 
                                     {/* Start */}
                                     <div className="flex items-start px-2 py-1.5">
-                                        <div className="flex items-center gap-3 w-28 shrink-0 text-xs text-text-secondary pt-0.5">
+                                        <div className="flex items-center gap-3 w-28 shrink-0 text-xs 2xl:text-sm text-text-secondary pt-0.5">
                                             <Calendar size={15} />
                                             <span>Starts</span>
                                         </div>
@@ -178,20 +178,20 @@ export default function AddEventDrawer({
                                                 type="date"
                                                 value={form.startDate}
                                                 onChange={set("startDate")}
-                                                className="flex-1 text-xs text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.startTime}
                                                 onChange={set("startTime")}
-                                                className="text-xs text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>
 
                                     {/* End */}
                                     <div className="flex items-start px-2 py-1.5">
-                                        <div className="flex items-center gap-3 w-28 shrink-0 text-xs text-text-secondary pt-0.5">
+                                        <div className="flex items-center gap-3 w-28 shrink-0 text-xs 2xl:text-sm text-text-secondary pt-0.5">
                                             <Calendar size={15} />
                                             <span>Ends</span>
                                         </div>
@@ -200,13 +200,13 @@ export default function AddEventDrawer({
                                                 type="date"
                                                 value={form.endDate}
                                                 onChange={set("endDate")}
-                                                className="flex-1 text-xs text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.endTime}
                                                 onChange={set("endTime")}
-                                                className="text-xs text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>
@@ -216,7 +216,7 @@ export default function AddEventDrawer({
 
                                     {/* Notes */}
                                     <div className="flex items-start px-2 py-1.5">
-                                        <div className="flex items-center gap-3 w-28 shrink-0 text-xs text-text-secondary pt-0.5">
+                                        <div className="flex items-center gap-3 w-28 shrink-0 text-xs 2xl:text-sm text-text-secondary pt-0.5">
                                             <AlignLeft size={15} />
                                             <span>Notes</span>
                                         </div>
@@ -230,24 +230,24 @@ export default function AddEventDrawer({
                                             }}
                                             placeholder="Add notes..."
                                             rows={2}
-                                            className="flex-1 text-sm text-text-primary font-normal placeholder:text-text-secondary outline-none resize-none overflow-hidden bg-transparent border-none"
+                                            className="flex-1 text-sm 2xl:text-base text-text-primary font-normal placeholder:text-text-secondary outline-none resize-none overflow-hidden bg-transparent border-none"
                                         />
                                     </div>
                                 </div>
                             </div>
 
                             {/* Footer */}
-                            <div className="mt-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center gap-3 shrink-0 border-t border-gray-100">
+                            <div className="mt-auto px-4 sm:px-6 2xl:px-7 py-4 sm:py-5 2xl:py-6 flex items-center gap-3 shrink-0 border-t border-gray-100">
                                 <button
                                     type="button"
                                     onClick={handleClose}
-                                    className="flex-1 py-2.5 rounded-md border cursor-pointer border-gray-200 text-sm font-normal text-gray-500 bg-white transition-colors hover:bg-gray-50"
+                                    className="flex-1 py-2.5 2xl:py-3 rounded-md border cursor-pointer border-gray-200 text-sm 2xl:text-base font-normal text-gray-500 bg-white transition-colors hover:bg-gray-50"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 py-2.5 rounded-md cursor-pointer bg-linear-to-t from-primary to-primary/80 text-text-primary text-sm font-normal hover:opacity-90 transition-opacity"
+                                    className="flex-1 py-2.5 2xl:py-3 rounded-md cursor-pointer bg-linear-to-t from-primary to-primary/80 text-text-primary text-sm 2xl:text-base font-normal hover:opacity-90 transition-opacity"
                                 >
                                     Add Event
                                 </button>

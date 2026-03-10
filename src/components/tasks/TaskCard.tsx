@@ -94,7 +94,7 @@ export default function TaskCard({ card, onCardClick, onDeleteClick }: CardProps
             {/* Title */}
             {card.title && (
                 <div className="mb-3">
-                    <p className="text-sm 2xl:text-base font-medium text-text-primary">{card.title}</p>
+                    <p className="text-base 2xl:text-lg font-medium text-text-primary">{card.title}</p>
                 </div>
             )}
 
@@ -107,7 +107,7 @@ export default function TaskCard({ card, onCardClick, onDeleteClick }: CardProps
 
             {/* Description */}
             {card.description && (
-                <p className="text-xs 2xl:text-sm text-text-secondary mb-3 2xl:mb-4 leading-relaxed line-clamp-2">{card.description}</p>
+                <p className="text-sm 2xl:text-base text-text-secondary mb-3 2xl:mb-4 leading-relaxed line-clamp-2">{card.description}</p>
             )}
 
             {/* Footer: dates */}

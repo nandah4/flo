@@ -184,7 +184,7 @@ export default function Timer() {
                         <button
                             key={m}
                             onClick={() => switchMode(m)}
-                            className={`px-3 py-1.5 rounded-md cursor-pointer text-xs sm:text-sm font-normal transition-all ${mode === m ? "bg-primary/20 text-secondary" : "text-text-secondary hover:text-text-primary"}`}
+                            className={`px-3 py-1.5 2xl:px-4 2xl:py-2 rounded-md cursor-pointer text-xs sm:text-sm 2xl:text-base font-normal transition-all ${mode === m ? "bg-primary/20 text-secondary" : "text-text-secondary hover:text-text-primary"}`}
                         >
                             {MODE_CONFIG[m].label}
                         </button>
@@ -194,14 +194,16 @@ export default function Timer() {
                 {/* Clock */}
                 {(() => {
                     const circleSize = zen ? 340 : isMobile ? 220 : 280;
+                    const is2xl = !isMobile && !zen && typeof window !== 'undefined' && window.innerWidth >= 1536;
+                    const finalSize = is2xl ? 320 : circleSize;
                     return (
-                        <div className="relative flex items-center justify-center" style={{ width: circleSize, height: circleSize }}>
-                            <CircularProgress progress={progress} accent={accent} size={circleSize} />
+                        <div className="relative flex items-center justify-center" style={{ width: finalSize, height: finalSize }}>
+                            <CircularProgress progress={progress} accent={accent} size={finalSize} />
                             <div className="flex flex-col items-center gap-1 z-10">
-                                <span className={`font-semibold tracking-tight tabular-nums text-text-primary ${zen ? "text-6xl" : isMobile ? "text-4xl" : "text-5xl"}`}>
+                                <span className={`font-semibold tracking-tight tabular-nums text-text-primary ${zen ? "text-6xl" : isMobile ? "text-4xl" : "text-5xl 2xl:text-6xl"}`}>
                                     {formatTime(timeLeft)}
                                 </span>
-                                <span className={`text-xs sm:text-sm text-text-secondary font-normal`}>
+                                <span className={`text-xs sm:text-sm 2xl:text-base text-text-secondary font-normal`}>
                                     {MODE_CONFIG[mode].label}
                                 </span>
                             </div>
@@ -213,20 +215,20 @@ export default function Timer() {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={resetTimer}
-                        className="w-10 h-10 cursor-pointer hover:border hover:border-gray-300 rounded-full bg-bg-app hover:bg-bg-app-hover flex items-center justify-center text-text-secondary transition-colors"
+                        className="w-10 h-10 2xl:w-12 2xl:h-12 cursor-pointer hover:border hover:border-gray-300 rounded-full bg-bg-app hover:bg-bg-app-hover flex items-center justify-center text-text-secondary transition-colors"
                     >
                         <RotateCcw size={16} />
                     </button>
                     <button
                         onClick={() => setIsRunning((r) => !r)}
-                        className="w-14 h-14 cursor-pointer rounded-full flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95"
+                        className="w-14 h-14 2xl:w-16 2xl:h-16 cursor-pointer rounded-full flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95"
                         style={{ backgroundColor: accent }}
                     >
                         {isRunning ? <Pause size={22} fill="white" /> : <Play size={22} fill="white" />}
                     </button>
                     <button
                         onClick={skip}
-                        className="w-10 h-10 hover:border hover:border-gray-300 cursor-pointer rounded-full bg-bg-app hover:bg-bg-app-hover flex items-center justify-center text-text-secondary transition-colors"
+                        className="w-10 h-10 2xl:w-12 2xl:h-12 hover:border hover:border-gray-300 cursor-pointer rounded-full bg-bg-app hover:bg-bg-app-hover flex items-center justify-center text-text-secondary transition-colors"
                     >
                         <SkipForward size={16} />
                     </button>
@@ -235,7 +237,7 @@ export default function Timer() {
                 {/* Session count */}
                 <div className="flex items-center w-full sm:justify-center gap-2 text-text-secondary">
                     <TimerIcon size={16} />
-                    <span className="text-xs font-normal ">{sessionCount} sessions completed today</span>
+                    <span className="text-xs 2xl:text-sm font-normal ">{sessionCount} sessions completed today</span>
                 </div>
             </div>
         );
@@ -246,7 +248,7 @@ export default function Timer() {
             <div className="min-h-screen bg-bg-app font-sans pb-6">
                 {/* Header */}
                 <header className="px-4 md:pr-10 md:pl-0 py-5 md:py-6 flex items-center gap-3">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-text-primary">Focus Timer </h2>
+                    <h2 className="text-2xl md:text-3xl 2xl:text-4xl font-medium text-text-primary">Focus Timer </h2>
                 </header>
 
                 <div className="px-4 md:pr-10 md:pl-0 grid grid-cols-1 lg:grid-cols-5 gap-4">
@@ -255,13 +257,13 @@ export default function Timer() {
                     <div className="lg:col-span-3 flex flex-col gap-4">
 
                         {/* Timer card */}
-                        <div className="bg-white rounded-xl  border-gray-200 p-6 flex flex-col items-center gap-4 relative min-h-[440px] justify-center">
+                        <div className="bg-white rounded-xl  border-gray-200 p-6 2xl:p-8 flex flex-col items-center gap-4 relative min-h-[440px] 2xl:min-h-[520px] justify-center">
                             <TimerPanel />
 
                             {/* Zen Mode button — bottom-right */}
                             <button
                                 onClick={() => setZenMode(true)}
-                                className="absolute bottom-4 right-4 flex items-center gap-2.5 text-sm text-text-primary hover:text-gray-600 hover:bg-gray-100 px-2.5 py-1.5 rounded-lg transition-colors"
+                                className="absolute bottom-4 right-4 flex items-center gap-2.5 text-sm 2xl:text-base text-text-primary hover:text-gray-600 hover:bg-gray-100 px-2.5 py-1.5 rounded-lg transition-colors"
                             >
                                 <Maximize2 size={16} />
                                 Zen Mode
@@ -272,7 +274,7 @@ export default function Timer() {
                         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                             <button
                                 onClick={() => setSettingsOpen(!settingsOpen)}
-                                className="w-full flex items-center justify-between px-5 py-4 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                                className="w-full flex items-center justify-between px-5 py-4 2xl:py-5 text-sm 2xl:text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                             >
                                 <span className="flex items-center gap-2 text-text-primary">
                                     <Coffee size={16} />
@@ -297,7 +299,7 @@ export default function Timer() {
                                                 { key: "long", label: "Long Break", icon: <Coffee size={15} />, color: "text-sky-500" },
                                             ] as const).map(({ key, label, icon, color }) => (
                                                 <div key={key} className="flex flex-col gap-2.5">
-                                                    <label className={`flex items-center gap-1.5 text-xs font-normal ${color}`}>
+                                                    <label className={`flex items-center gap-1.5 text-xs 2xl:text-sm font-normal ${color}`}>
                                                         {icon} {label}
                                                     </label>
                                                     <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 bg-gray-50">
@@ -311,7 +313,7 @@ export default function Timer() {
                                                             <Minus size={13} />
                                                         </button>
 
-                                                        <span className="flex-1 text-center text-sm font-semibold tabular-nums text-gray-800">
+                                                        <span className="flex-1 text-center text-sm 2xl:text-base font-semibold tabular-nums text-gray-800">
                                                             {settings[key]}m
                                                         </span>
 
@@ -329,7 +331,7 @@ export default function Timer() {
                                             ))}
                                         </div>
                                         <div className="px-5 pb-4">
-                                            <p className="text-xs text-text-secondary">Changes to the active mode reset the timer. Long break after every 4 sessions.</p>
+                                            <p className="text-xs 2xl:text-sm text-text-secondary">Changes to the active mode reset the timer. Long break after every 4 sessions.</p>
                                         </div>
                                     </motion.div>
                                 )}
@@ -343,8 +345,8 @@ export default function Timer() {
                         {/* Task panel */}
                         <div className="bg-white rounded-lg border border-gray-200 flex flex-col overflow-hidden flex-1">
                             {/* Panel header */}
-                            <div className="flex items-center justify-between px-4 py-3.5">
-                                <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            <div className="flex items-center justify-between px-4 py-3.5 2xl:py-4">
+                                <div className="flex items-center gap-2 text-sm 2xl:text-base font-medium text-gray-700">
                                     <ListTodo size={18} className="text-text-primary" />
                                     Task Queue
                                 </div>
@@ -375,7 +377,7 @@ export default function Timer() {
                                                     if (e.key === "Escape") setAddingTask(false);
                                                 }}
                                                 placeholder="New task name..."
-                                                className="flex-1 font-normal text-sm text-text-primary placeholder:text-text-secondary outline-none bg-transparent"
+                                                className="flex-1 font-normal text-sm 2xl:text-base text-text-primary placeholder:text-text-secondary outline-none bg-transparent"
                                             />
                                             <button onClick={addTask} className="text-xs text-text-primary font-medium hover:opacity-80">Add</button>
                                             <button onClick={() => setAddingTask(false)} className="text-text-secondary hover:text-gray-500"><X size={16} /></button>
@@ -415,14 +417,14 @@ export default function Timer() {
 
                                             {/* Title */}
                                             <div className="flex-1 min-w-0">
-                                                <p className={`text-xs sm:text-sm font-normal leading-snug ${task.done ? "line-through text-gray-500" : "text-text-secondary"}`}>
+                                                <p className={`text-xs sm:text-sm 2xl:text-base font-normal leading-snug ${task.done ? "line-through text-gray-500" : "text-text-secondary"}`}>
                                                     {task.title}
                                                 </p>
                                             </div>
 
                                             {/* Active indicator */}
                                             {activeTaskId === task.id && (
-                                                <span className="text-xs font-normal text-secondary bg-primary/20 px-2.5 py-1.5 rounded-md shrink-0">Active</span>
+                                                <span className="text-xs 2xl:text-sm font-normal text-secondary bg-primary/20 px-2.5 py-1.5 rounded-md shrink-0">Active</span>
                                             )}
 
                                             {/* Reorder buttons */}
@@ -439,7 +441,7 @@ export default function Timer() {
 
                         {/* Notes panel */}
                         <div className="bg-white rounded-lg border border-gray-200 flex flex-col">
-                            <div className="flex items-center gap-2 px-4 py-3.5 text-sm font-medium text-gray-700">
+                            <div className="flex items-center gap-2 px-4 py-3.5 2xl:py-4 text-sm 2xl:text-base font-medium text-gray-700">
                                 <StickyNote size={16} className="text-text-primary" />
                                 Session Notes
                             </div>
@@ -448,7 +450,7 @@ export default function Timer() {
                                 onChange={(e) => setNotes(e.target.value)}
                                 placeholder="Jot down thoughts, blockers, or focus intent for this session..."
                                 rows={5}
-                                className="flex-1 px-4 py-3 text-sm text-text-secondary placeholder:text-text-secondary outline-none resize-none"
+                                className="flex-1 px-4 py-3 text-sm 2xl:text-base text-text-secondary placeholder:text-text-secondary outline-none resize-none"
                             />
                         </div>
                     </div>
@@ -496,7 +498,7 @@ export default function Timer() {
                                 initial={{ y: -8, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ delay: 0.15 }}
-                                className="text-text-secondary text-sm font-normal mb-8 relative z-10"
+                                className="text-text-secondary text-sm 2xl:text-base font-normal mb-8 relative z-10"
                             >
                                 Focusing on: <span className="text-text-secondary">{activeTask.title}</span>
                             </motion.p>
@@ -521,7 +523,7 @@ export default function Timer() {
                                 <span className="text-7xl font-semibold text-text-secondary tabular-nums tracking-tight">
                                     {formatTime(timeLeft)}
                                 </span>
-                                <span className="text-text-secondary text-sm font-normal">
+                                <span className="text-text-secondary text-sm 2xl:text-base font-normal">
                                     {MODE_CONFIG[mode].label}
                                 </span>
                             </div>
@@ -556,7 +558,7 @@ export default function Timer() {
                                 <button
                                     key={m}
                                     onClick={() => switchMode(m)}
-                                    className={`px-4 py-2.5 rounded-lg cursor-pointer text-xs sm:text-sm font-normal! transition-all ${mode === m ? "bg-primary/20 text-secondary" : "text-gray-400 hover:text-gray-700"}`}
+                                    className={`px-4 py-2.5 rounded-lg cursor-pointer text-xs 2xl:text-base sm:text-sm font-normal! transition-all ${mode === m ? "bg-primary/20 text-secondary" : "text-gray-400 hover:text-gray-700"}`}
                                 >
                                     {MODE_CONFIG[m].label}
                                 </button>

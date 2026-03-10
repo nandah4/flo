@@ -152,23 +152,23 @@ export default function Planning() {
 
                     {/* ── Header ── */}
                     <header className="px-4 md:pr-10 md:pl-0 pt-5 md:pt-6 flex items-center justify-between gap-3">
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-text-primary">Planning</h2>
+                        <h2 className="text-2xl md:text-3xl 2xl:text-4xl font-medium text-text-primary">Planning</h2>
                     </header>
 
                     <div className="px-4 md:pr-10 md:pl-0 pb-8 flex flex-col gap-5">
 
                         {/* ── Legend ── */}
                         <div className="flex items-end justify-between">
-                            <div className="flex gap-4"><div className="flex items-center gap-1.5 text-xs text-text-secondary">
+                            <div className="flex gap-4"><div className="flex items-center gap-1.5 text-xs 2xl:text-sm text-text-secondary">
                                 <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: "#3A9AFF" }} />
                                 Task (from Tasks)
                             </div>
-                                <div className="flex items-center gap-1.5 text-xs text-text-secondary">
+                                <div className="flex items-center gap-1.5 text-xs 2xl:text-sm text-text-secondary">
                                     <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: "#FF8C00" }} />
                                     Event
                                 </div></div>
 
-                            <button className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm text-text-secondary hover:border-secondary cursor-pointer transition-colors shrink-0">
+                            <button className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3.5 py-2.5 2xl:px-4 2xl:py-3 text-sm 2xl:text-base text-text-secondary hover:border-secondary cursor-pointer transition-colors shrink-0">
                                 <img src={googleCalendarIcon} alt="Google Calendar Icon" className="w-4 h-4" />
                                 <span className="hidden sm:inline">Sync Google Calendar</span>
                             </button>
@@ -224,10 +224,10 @@ export default function Planning() {
                                                     key={d.toISOString()}
                                                     className={`py-3 text-center border-r border-gray-100 last:border-r-0 ${isToday ? "bg-primary/5" : ""}`}
                                                 >
-                                                    <p className={`text-xl font-medium ${isToday ? "text-secondary" : "text-text-primary"}`}>
+                                                    <p className={`text-xl 2xl:text-2xl font-medium ${isToday ? "text-secondary" : "text-text-primary"}`}>
                                                         {d.getDate()}
                                                     </p>
-                                                    <p className={`text-[10px] font-medium uppercase ${isToday ? "text-secondary" : "text-text-secondary"}`}>
+                                                    <p className={`text-[10px] 2xl:text-xs font-medium uppercase ${isToday ? "text-secondary" : "text-text-secondary"}`}>
                                                         {DAY_SHORTS[d.getDay()]}
                                                     </p>
                                                 </div>
@@ -249,7 +249,7 @@ export default function Planning() {
                                                         gridTemplateColumns: "56px repeat(5, 1fr)",
                                                     }}
                                                 >
-                                                    <div className="px-2 pt-1 text-[10px] text-text-secondary font-medium border-r border-gray-100 whitespace-nowrap">
+                                                    <div className="px-2 pt-1 text-[10px] 2xl:text-xs text-text-secondary font-medium border-r border-gray-100 whitespace-nowrap">
                                                         {fmtHour(h)}
                                                     </div>
                                                     {weekDates.map((d, di) => (
@@ -281,10 +281,10 @@ export default function Planning() {
                             </div>
 
                             {/* Right sidebar — hidden on mobile (controls are above calendar) */}
-                            <div className="hidden lg:flex w-64 shrink-0 flex-col gap-4">
+                            <div className="hidden lg:flex w-64 2xl:w-80 shrink-0 flex-col gap-4">
                                 {/* Toolbar */}
                                 <div className="flex items-center justify-between gap-3">
-                                    <h3 className="text-base font-medium text-text-primary">{headerLabel}</h3>
+                                    <h3 className="text-base 2xl:text-lg font-medium text-text-primary">{headerLabel}</h3>
                                     <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-1">
                                         <button
                                             onClick={() => setWeekOffset(w => w - 1)}
@@ -304,7 +304,7 @@ export default function Planning() {
                                 {/* Add Event */}
                                 <button
                                     onClick={() => setDrawerOpen(true)}
-                                    className="w-full flex items-center justify-center gap-2 bg-linear-to-t from-primary to-primary/75 text-text-primary rounded-lg py-3 text-sm font-normal hover:opacity-90 transition-opacity cursor-pointer"
+                                    className="w-full flex items-center justify-center gap-2 bg-linear-to-t from-primary to-primary/75 text-text-primary rounded-lg py-3 2xl:py-3.5 text-sm 2xl:text-base font-normal hover:opacity-90 transition-opacity cursor-pointer"
                                 >
                                     <Plus size={15} />
                                     Add Event
@@ -313,8 +313,8 @@ export default function Planning() {
                                 {/* Upcoming Tasks */}
                                 <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-xs">
                                     <div className="px-4 py-3 flex items-center justify-between">
-                                        <h4 className="text-sm font-medium text-text-primary">Upcoming Tasks</h4>
-                                        <span className="text-xs text-text-secondary bg-bg-app px-1.5 py-0.5 rounded-md">
+                                        <h4 className="text-sm 2xl:text-base font-medium text-text-primary">Upcoming Tasks</h4>
+                                        <span className="text-xs 2xl:text-sm text-text-secondary bg-bg-app px-1.5 py-0.5 rounded-md">
                                             {UPCOMING_TASKS.length}
                                         </span>
                                     </div>
@@ -328,17 +328,17 @@ export default function Planning() {
                                             return (
                                                 <div key={t.id} className="px-4 py-3 hover:bg-bg-app transition-colors cursor-pointer">
                                                     <div className="flex items-start justify-between gap-2">
-                                                        <p className="text-sm text-text-primary font-normal leading-tight flex-1">{t.title}</p>
-                                                        <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded shrink-0 ${priorityColor}`}>
+                                                        <p className="text-sm 2xl:text-base text-text-primary font-normal leading-tight flex-1">{t.title}</p>
+                                                        <span className={`text-[11px] 2xl:text-xs font-medium px-1.5 py-0.5 rounded shrink-0 ${priorityColor}`}>
                                                             {t.priorityLabel}
                                                         </span>
                                                     </div>
                                                     <div className="flex items-center gap-2 mt-1.5">
-                                                        <div className="flex items-center gap-1 text-[11px] text-text-secondary">
+                                                        <div className="flex items-center gap-1 text-[11px] 2xl:text-xs text-text-secondary">
                                                             <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: t.colColor }} />
                                                             {t.col}
                                                         </div>
-                                                        <div className="flex items-center gap-1 text-[11px] text-text-secondary">
+                                                        <div className="flex items-center gap-1 text-[11px] 2xl:text-xs text-text-secondary">
                                                             <Flag size={11} />
                                                             {t.due || "No Date"}
                                                         </div>
@@ -352,8 +352,8 @@ export default function Planning() {
                                 {/* Upcoming Events */}
                                 <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-xs">
                                     <div className="px-4 py-3 flex items-center justify-between">
-                                        <h4 className="text-sm font-medium text-text-primary">Upcoming Events</h4>
-                                        <span className="text-xs text-text-secondary bg-bg-app px-1.5 py-0.5 rounded-md">
+                                        <h4 className="text-sm 2xl:text-base font-medium text-text-primary">Upcoming Events</h4>
+                                        <span className="text-xs 2xl:text-sm text-text-secondary bg-bg-app px-1.5 py-0.5 rounded-md">
                                             {UPCOMING_EVENTS.length}
                                         </span>
                                     </div>
@@ -365,8 +365,8 @@ export default function Planning() {
                                                     style={{ backgroundColor: ev.color }}
                                                 />
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="text-sm text-text-primary font-normal leading-tight truncate">{ev.title}</p>
-                                                    <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-text-secondary">
+                                                    <p className="text-sm 2xl:text-base text-text-primary font-normal leading-tight truncate">{ev.title}</p>
+                                                    <div className="flex items-center gap-1.5 mt-0.5 text-[11px] 2xl:text-xs text-text-secondary">
                                                         <span>{ev.day}</span>
                                                         <span>·</span>
                                                         <span>{ev.time}</span>

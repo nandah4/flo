@@ -104,7 +104,7 @@ export default function Tasks() {
             <div className="min-h-screen bg-bg-app font-sans pb-5">
                 {/* Page header */}
                 <header className="px-4 md:pr-10 md:pl-0 py-5 md:py-6 flex items-center justify-between gap-3">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-medium text-text-primary">Tasks</h2>
+                    <h2 className="text-2xl md:text-3xl 2xl:text-4xl font-medium text-text-primary">Tasks</h2>
                 </header>
 
                 <div className="px-4 md:pr-10 md:pl-0 pb-2">
