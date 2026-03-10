@@ -66,17 +66,17 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -12, scale: 0.97 }}
                         transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                        className="fixed top-[12vh] left-1/2 -translate-x-1/2 z-50 w-full max-w-[580px] px-4"
+                        className="fixed top-[12vh] left-1/2 -translate-x-1/2 z-50 w-full max-w-[580px] 2xl:max-w-[720px] px-4"
                     >
                         {/* Input bar */}
-                        <div className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3.5 shadow-2xl border border-gray-200/60">
+                        <div className="flex items-center gap-3 2xl:gap-4 bg-white rounded-2xl px-4 2xl:px-5 py-3.5 2xl:py-4 shadow-2xl border border-gray-200/60">
                             <Search size={18} className="text-gray-400 shrink-0" />
                             <input
                                 ref={inputRef}
                                 value={query}
                                 onChange={e => setQuery(e.target.value)}
                                 placeholder="Search notes, tasks, timers..."
-                                className="flex-1 text-sm text-text-primary placeholder:text-gray-400 outline-none bg-transparent"
+                                className="flex-1 text-sm 2xl:text-base text-text-primary placeholder:text-gray-400 outline-none bg-transparent"
                             />
                             {query && (
                                 <button onClick={() => setQuery("")} className="text-gray-400 hover:text-gray-600 transition-colors">
@@ -95,7 +95,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                             {/* Section label */}
                             <div className="flex items-center gap-2 px-4 pt-4 pb-2">
                                 <Clock size={13} className="text-gray-400" />
-                                <span className="text-[12px] font-semibold text-text-primary uppercase">
+                                <span className="text-[12px] 2xl:text-sm font-semibold text-text-primary uppercase">
                                     {query ? "Results" : "Recent searches"}
                                 </span>
                             </div>
@@ -109,7 +109,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                     {filtered.map((item, i) => (
                                         <li key={i}>
                                             <button
-                                                className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 group transition-colors"
+                                                className="w-full flex items-center gap-3 2xl:gap-4 px-4 2xl:px-5 py-3 2xl:py-3.5 text-left hover:bg-gray-50 group transition-colors"
                                                 onClick={onClose}
                                             >
                                                 {/* Category icon + badge */}
@@ -119,10 +119,10 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                                 </span>
 
                                                 {/* Query text */}
-                                                <span className="flex-1 text-sm text-text-primary truncate">{item.query}</span>
+                                                <span className="flex-1 text-sm 2xl:text-base text-text-primary truncate">{item.query}</span>
 
                                                 {/* Category pill */}
-                                                <span className="flex items-center gap-1.5 text-[11px] font-normal text-gray-400 bg-bg-app px-2 py-1 rounded-md shrink-0">
+                                                <span className="flex items-center gap-1.5 text-[11px] 2xl:text-xs font-normal text-gray-400 bg-bg-app px-2 py-1 rounded-md shrink-0">
                                                     {CATEGORY_ICON[item.category]}
                                                     {item.category}
                                                 </span>

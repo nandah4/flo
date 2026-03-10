@@ -80,7 +80,7 @@ export default function NotificationPanel({ isOpen, onClose, sidebarCollapsed }:
     const filteredItems = getFilteredNotifications();
 
     // Desktop positioning logic based on sidebar collapse state
-    const leftPosition = sidebarCollapsed ? "sm:left-[95px]" : "sm:left-[290px]";
+    const leftPosition = sidebarCollapsed ? "sm:left-[95px] 2xl:left-[110px]" : "sm:left-[290px] 2xl:left-[356px]";
 
     return (
         <>
@@ -97,11 +97,11 @@ export default function NotificationPanel({ isOpen, onClose, sidebarCollapsed }:
           /* Mobile constraints - centered */
           top-5 left-1/2 -translate-x-1/2  w-[90%] max-w-md h-[72vh] rounded-lg
           /* Desktop constraints */
-          sm:translate-x-0 sm:translate-y-0 sm:bottom-auto sm:top-6 sm:w-[420px] sm:h-[600px] sm:max-h-[85vh] transition-all duration-300 ${leftPosition}`}
+          sm:translate-x-0 sm:translate-y-0 sm:bottom-auto sm:top-6 2xl:top-8 sm:w-[420px] sm:h-[600px] sm:max-h-[85vh] 2xl:w-[520px] 2xl:h-[700px] transition-all duration-300 ${leftPosition}`}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 pt-5 pb-3">
-                    <h2 className="text-base sm:text-lg font-medium text-text-primary">Notifications</h2>
+                    <h2 className="text-base sm:text-lg 2xl:text-xl font-medium text-text-primary">Notifications</h2>
                     <button
                         onClick={onClose}
                         className="p-1.5 rounded-lg text-text-secondary hover:bg-bg-app hover:text-text-primary transition-colors"
@@ -117,7 +117,7 @@ export default function NotificationPanel({ isOpen, onClose, sidebarCollapsed }:
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
-                                className={`relative px-3 py-2 text-xs sm:text-sm font-medium rounded transition-all ${activeTab === tab
+                                className={`relative px-3 py-2 2xl:px-4 2xl:py-2.5 text-xs sm:text-sm 2xl:text-base font-medium rounded transition-all ${activeTab === tab
                                     ? "bg-bg-app text-text-primary"
                                     : "text-text-secondary hover:text-text-primary"
                                     }`}
@@ -134,7 +134,7 @@ export default function NotificationPanel({ isOpen, onClose, sidebarCollapsed }:
 
                     <button
                         onClick={handleMarkAllAsRead}
-                        className="text-xs sm:text-sm font-normal text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1"
+                        className="text-xs sm:text-sm 2xl:text-base font-normal text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1"
                     >
                         <Check size={18} />
                         Mark all as read
@@ -161,7 +161,7 @@ export default function NotificationPanel({ isOpen, onClose, sidebarCollapsed }:
                                 <button
                                     key={notification.id}
                                     onClick={() => !notification.read && handleToggleRead(notification.id)}
-                                    className={`flex items-start gap-3 w-full text-left p-3 rounded-xl transition-colors cursor-pointer ${!notification.read ? "bg-white hover:bg-bg-app" : "bg-white hover:bg-gray-50/50"
+                                    className={`flex items-start gap-3 2xl:gap-4 w-full text-left p-3 2xl:p-4 rounded-xl transition-colors cursor-pointer ${!notification.read ? "bg-white hover:bg-bg-app" : "bg-white hover:bg-gray-50/50"
                                         }`}
                                 >
                                     {/* Icon */}
@@ -174,10 +174,10 @@ export default function NotificationPanel({ isOpen, onClose, sidebarCollapsed }:
 
                                     {/* Content */}
                                     <div className="flex-1 min-w-0">
-                                        <p className={`text-xs sm:text-sm mb-1 leading-snug line-clamp-2 ${!notification.read ? "text-text-primary font-medium" : "text-text-secondary font-normal"}`}>
+                                        <p className={`text-xs sm:text-sm 2xl:text-base mb-1 leading-snug line-clamp-2 ${!notification.read ? "text-text-primary font-medium" : "text-text-secondary font-normal"}`}>
                                             {notification.title}: {notification.message}
                                         </p>
-                                        <span className="text-xs font-medium text-text-secondary flex items-center gap-1.5 mt-2">
+                                        <span className="text-xs 2xl:text-sm font-medium text-text-secondary flex items-center gap-1.5 mt-2">
                                             <Timer size={14} />{formatTime(notification.date)}
                                         </span>
                                     </div>

@@ -345,8 +345,8 @@ const Dashboard = () => {
 
                                         {/* Metadata */}
                                         <div className="flex items-center gap-2 shrink-0">
-                                            <span className="hidden md:flex items-center gap-1 text-xs text-text-secondary font-normal">
-                                                <Calendar size={13} />
+                                            <span className="hidden md:flex items-center gap-1 text-xs sm:text-sm text-text-secondary font-normal">
+                                                <Calendar size={15} />
                                                 {new Date(note.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}
                                                 {note.timestamp.includes(',') ? `, ${note.timestamp.split(',')[1].trim()}` : ''}
                                             </span>
@@ -389,7 +389,7 @@ const Dashboard = () => {
                                         initial={{ opacity: 0, x: -8 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: 0.22 + i * 0.04 }}
-                                        className="flex items-center gap-3 px-3 py-3 2xl:p-3.5 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-bg-app transition-all group cursor-pointer"
+                                        className="flex items-center gap-3 px-3 py-3 2xl:p-3.5 2xl:gap-4 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-bg-app transition-all group cursor-pointer"
                                     >
                                         {/* Title */}
                                         <p className="flex-1 text-sm 2xl:text-base  font-normal text-text-primary line-clamp-1 leading-snug">
@@ -397,7 +397,7 @@ const Dashboard = () => {
                                         </p>
 
                                         {/* Meta */}
-                                        <div className="flex items-center gap-2 shrink-0">
+                                        <div className="flex items-center gap-2 2xl:gap-3 shrink-0">
                                             <span className={`text-xs 2xl:text-base font-normal px-2.5 py-1 rounded-md ${STATUS_STYLE[task.status]}`}>
                                                 {task.status}
                                             </span>
@@ -405,7 +405,7 @@ const Dashboard = () => {
                                                 <Flag size={8} className="inline mr-1" />
                                                 {task.priority || "Low"}
                                             </span>
-                                            <span className="hidden md:flex items-center gap-1 text-xs 2xl:text-base text-text-secondary font-normal">
+                                            <span className="hidden md:flex items-center gap-1 text-xs 2xl:text-sm text-text-secondary font-normal">
                                                 <Calendar size={13} />
                                                 {task.date}
                                             </span>
@@ -449,10 +449,10 @@ const Dashboard = () => {
                                             className="overflow-hidden"
                                         >
                                             <div className="mt-3">
-                                                <p className="text-sm 2xl:text-base font-medium text-text-primary mb-1">
+                                                <p className="text-sm lg:text-base 2xl:text-lg font-medium text-text-primary mb-1">
                                                     How to Earn XP
                                                 </p>
-                                                <p className="text-xs 2xl:text-sm text-text-secondary leading-relaxed">
+                                                <p className="text-xs lg:text-sm 2xl:text-base text-text-secondary leading-relaxed">
                                                     Complete any activity in Flow — write a note, create a task, plan a schedule, or run a focus session —
                                                     and earn <span className="font-medium text-text-primary">10 XP per activity each day</span>.
                                                 </p>
