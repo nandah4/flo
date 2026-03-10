@@ -167,7 +167,7 @@ export default function AddTaskDrawer({
                                                                 setForm((p) => ({ ...p, priority: p.priority === opt.value ? "" : opt.value }));
                                                                 setOpenMeta(null);
                                                             }}
-                                                            className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border transition-all ${form.priority === opt.value
+                                                            className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-xs 2xl:text-sm font-normal border transition-all ${form.priority === opt.value
                                                                 ? `${opt.bg} ${opt.color} border-current`
                                                                 : "bg-white border-gray-200 text-text-secondary hover:border-gray-300"
                                                                 }`}
@@ -180,7 +180,7 @@ export default function AddTaskDrawer({
                                                 <button
                                                     type="button"
                                                     onClick={() => setOpenMeta("priority")}
-                                                    className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border transition-all ${form.priority
+                                                    className={`px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-xs 2xl:text-sm font-normal border transition-all ${form.priority
                                                         ? `${PRIORITY_OPTIONS.find(o => o.value === form.priority)?.bg} ${PRIORITY_OPTIONS.find(o => o.value === form.priority)?.color} border-current`
                                                         : "bg-white border-gray-200 text-text-secondary hover:border-gray-300"
                                                         }`}
@@ -205,7 +205,7 @@ export default function AddTaskDrawer({
                                                             key={col.id}
                                                             type="button"
                                                             onClick={() => { setForm((p) => ({ ...p, columnId: col.id })); setOpenMeta(null); }}
-                                                            className={`flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border transition-all ${form.columnId === col.id
+                                                            className={`flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-xs 2xl:text-sm font-normal border transition-all ${form.columnId === col.id
                                                                 ? "border-gray-400 text-gray-800 bg-white"
                                                                 : "bg-white border-gray-200 text-text-secondary hover:border-gray-300"
                                                                 }`}
@@ -219,7 +219,7 @@ export default function AddTaskDrawer({
                                                 <button
                                                     type="button"
                                                     onClick={() => setOpenMeta("status")}
-                                                    className="flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-sm 2xl:text-base font-normal border bg-white border-gray-200 text-text-secondary hover:border-gray-300 transition-all"
+                                                    className="flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-xs 2xl:text-sm font-normal border bg-white border-gray-200 text-text-secondary hover:border-gray-300 transition-all"
                                                 >
                                                     {(() => {
                                                         const col = columns.find(c => c.id === form.columnId);
@@ -246,13 +246,13 @@ export default function AddTaskDrawer({
                                                 type="date"
                                                 value={form.startDate}
                                                 onChange={(e) => setForm((p) => ({ ...p, startDate: e.target.value }))}
-                                                className="w-full sm:flex-1 text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="w-full sm:flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.startTime}
                                                 onChange={(e) => setForm((p) => ({ ...p, startTime: e.target.value }))}
-                                                className="text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>
@@ -272,13 +272,13 @@ export default function AddTaskDrawer({
                                                     if (raw) { const [, mm, dd] = raw.split("-"); setForm((p) => ({ ...p, date: `${mm}/${dd}` })); }
                                                     else setForm((p) => ({ ...p, date: "" }));
                                                 }}
-                                                className="w-full sm:flex-1 text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="w-full sm:flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.time}
                                                 onChange={set("time")}
-                                                className="text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>

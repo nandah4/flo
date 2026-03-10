@@ -178,13 +178,13 @@ export default function AddEventDrawer({
                                                 type="date"
                                                 value={form.startDate}
                                                 onChange={set("startDate")}
-                                                className="flex-1 text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.startTime}
                                                 onChange={set("startTime")}
-                                                className="text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>
@@ -200,13 +200,13 @@ export default function AddEventDrawer({
                                                 type="date"
                                                 value={form.endDate}
                                                 onChange={set("endDate")}
-                                                className="flex-1 text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="flex-1 text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                             <input
                                                 type="time"
                                                 value={form.endTime}
                                                 onChange={set("endTime")}
-                                                className="text-sm 2xl:text-base text-text-secondary bg-transparent outline-none border-none cursor-pointer"
+                                                className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
                                         </div>
                                     </div>
