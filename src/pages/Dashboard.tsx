@@ -128,10 +128,10 @@ const Dashboard = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         {/* Left: Title + description */}
                         <div>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-text-primary">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-medium text-text-primary">
                                 Dashboard
                             </h2>
-                            <p className="text-sm text-text-secondary mt-0.5">
+                            <p className="text-sm lg:text-base 2xl:text-lg text-text-secondary mt-0.5 lg:mt-1 2xl:mt-1.5">
                                 Track your progress, tasks and learning journey
                             </p>
                         </div>
@@ -158,22 +158,19 @@ const Dashboard = () => {
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.05 }}
-                        className="bg-white rounded-lg border border-gray-200 p-4"
+                        className="bg-white rounded-lg border border-gray-200 p-4 2xl:p-5"
                     >
                         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
 
                             <img
                                 src={lvl.img}
                                 alt={lvl.title}
-                                className="w-16 h-16 object-cover"
+                                className="w-16 h-16 2xl:w-20 2xl:h-20 object-cover"
                             />
-
-
-
 
                             {/* Stats pills */}
                             <div>
-                                <p className="text-base text-text-primary font-normal mb-1.5"><span className='font-medium'>Wandi Der</span> Profile Stats</p>
+                                <p className="text-base 2xl:text-lg text-text-primary font-normal mb-1.5"><span className='font-medium'>Wandi Der</span> Profile Stats</p>
 
                                 <div className="flex flex-wrap gap-2 items-center">
 
@@ -190,8 +187,8 @@ const Dashboard = () => {
                                                     : ' text-text-primary'}`}
                                         >
                                             {pill.icon}
-                                            <span className={pill.dark ? 'text-white text-xs' : 'text-text-secondary text-xs'}>{pill.label}</span>
-                                            <span className="font-medium text-[13px]">{pill.value}</span>
+                                            <span className={pill.dark ? 'text-white text-xs 2xl:text-sm' : 'text-text-secondary text-xs 2xl:text-sm'}>{pill.label}</span>
+                                            <span className="font-medium text-[13px] 2xl:text-base">{pill.value}</span>
                                         </div>
                                     ))}
 
@@ -199,19 +196,19 @@ const Dashboard = () => {
                                     <div className="relative group">
                                         <div className="flex items-center gap-2.5 px-3 py-1.5 rounded text-sm font-normal text-text-primary cursor-default">
                                             <Flame size={12} className="text-red-500 fill-red-500" />
-                                            <span className="text-text-secondary text-xs">Streak</span>
-                                            <span className="font-medium text-[13px]">{streak} Days</span>
+                                            <span className="text-text-secondary text-xs 2xl:text-sm">Streak</span>
+                                            <span className="font-medium text-[13px] 2xl:text-base">{streak} Days</span>
                                         </div>
 
                                         {/* Tooltip */}
                                         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 pointer-events-none
                                             opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
                                             <div className="bg-text-primary text-white rounded-xl px-3.5 py-3 shadow-lg">
-                                                <p className="text-xs font-medium mb-1 flex items-center gap-1.5">
+                                                <p className="text-xs 2xl:text-sm font-medium mb-1 flex items-center gap-1.5">
                                                     <Flame size={11} className="text-red-400 fill-red-400 shrink-0" />
                                                     How to maintain your streak
                                                 </p>
-                                                <p className="text-[11px] text-white/70 leading-relaxed">
+                                                <p className="text-[11px] 2x:text-xs text-white/70 leading-relaxed">
                                                     Complete at least one activity in Flo every day — write a note, finish a task, plan a schedule, or run a focus session — to keep your streak alive.
                                                 </p>
                                             </div>
@@ -245,11 +242,11 @@ const Dashboard = () => {
                                 className={`flex flex-col gap-5 p-4 rounded-xl border hover:bg-primary/10 transition-all duration-300 bg-white border-gray-200`}
                             >
                                 <div className="flex items-center justify-between">
-                                    <span className="text-sm font-normal text-text-primary">{s.label}</span>
+                                    <span className="text-sm 2xl:text-lg font-normal text-text-primary">{s.label}</span>
                                     <span>{s.icon}</span>
                                 </div>
-                                <span className={`text-4xl font-medium `}>{s.value}</span>
-                                <span className="text-xs text-text-secondary font-normal">{s.description}</span>
+                                <span className={`text-4xl 2xl:text-5xl font-medium `}>{s.value}</span>
+                                <span className="text-xs 2xl:text-sm text-text-secondary font-normal">{s.description}</span>
                             </motion.div>
                         ))}
                     </div>
@@ -271,7 +268,7 @@ const Dashboard = () => {
                                     >
                                         <div className="flex items-start flex-col sm:flex-row justify-between mb-4">
                                             <div>
-                                                <h3 className="text-base font-medium text-text-primary">Notes Activity</h3>
+                                                <h3 className="text-base  2xl:text-lg font-medium text-text-primary">Notes Activity</h3>
                                                 <p className="text-sm text-text-secondary mt-0.5">Notes created in the last 7 days</p>
                                             </div>
                                             <div className="flex items-center justify-between sm:justify-end mt-2.5 sm:mt-0 w-full gap-2">
@@ -321,7 +318,7 @@ const Dashboard = () => {
                         >
                             <div className="flex items-center justify-between mb-4">
                                 <div>
-                                    <h3 className="text-base font-medium text-text-primary">Recent Notes</h3>
+                                    <h3 className="text-base 2xl:text-lg font-medium text-text-primary">Recent Notes</h3>
                                     <p className="text-sm text-text-secondary mt-0.5">Your latest note activity</p>
                                 </div>
                                 <Link
@@ -374,7 +371,7 @@ const Dashboard = () => {
                         >
                             <div className="flex items-center justify-between mb-4">
                                 <div>
-                                    <h3 className="text-base font-medium text-text-primary">Recent Tasks</h3>
+                                    <h3 className="text-base  2xl:text-lg font-medium text-text-primary">Recent Tasks</h3>
                                     <p className="text-sm text-text-secondary mt-0.5">Your latest task activity</p>
                                 </div>
                                 <Link
@@ -395,7 +392,7 @@ const Dashboard = () => {
                                         className="flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-bg-app transition-all group cursor-pointer"
                                     >
                                         {/* Title */}
-                                        <p className="flex-1 text-sm font-normal text-text-primary line-clamp-1 leading-snug">
+                                        <p className="flex-1 text-sm  font-normal text-text-primary line-clamp-1 leading-snug">
                                             {task.title}
                                         </p>
 
@@ -430,7 +427,7 @@ const Dashboard = () => {
                             <div className="mb-4">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <h3 className="text-base font-medium text-text-primary">Level Roadmap</h3>
+                                        <h3 className="text-base 2xl:text-lg font-medium text-text-primary">Level Roadmap</h3>
                                         <p className="text-sm text-text-secondary mt-0.5">XP required per level</p>
                                     </div>
                                     <button
