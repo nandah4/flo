@@ -59,7 +59,7 @@ function NavRow({
   const inner = (
     <motion.div
       whileTap={{ scale: 0.98 }}
-      className={`w-full flex items-center hover:bg-bg-app gap-3 px-2.5 py-2.5 rounded-lg text-left transition-colors relative group ${isActive ? "bg-bg-app border border-gray-100" : ""
+      className={`w-full flex items-center hover:bg-bg-app gap-3 px-2.5 py-2.5 2xl:px-3 2xl:py-3 rounded-lg text-left transition-colors relative group ${isActive ? "bg-bg-app border border-gray-100" : ""
         }`}
     >
       <span className={`relative shrink-0 ${isActive ? "text-secondary" : "text-text-secondary"}`}>
@@ -76,7 +76,7 @@ function NavRow({
             animate={{ opacity: 1, width: "auto" }}
             exit={{ opacity: 0, width: 0 }}
             transition={{ duration: 0.2 }}
-            className={`flex-1 text-sm whitespace-nowrap overflow-hidden ${isActive ? "text-text-primary font-medium" : "text-text-secondary"
+            className={`flex-1 text-sm 2xl:text-base whitespace-nowrap overflow-hidden ${isActive ? "text-text-primary font-medium" : "text-text-secondary"
               }`}
           >
             {item.label}
@@ -179,12 +179,13 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const location = useLocation();
 
-  const sidebarWidth = collapsed ? 64 : 260;
+  const is2xl = typeof window !== 'undefined' && window.innerWidth >= 1536;
+  const sidebarWidth = collapsed ? (is2xl ? 80 : 64) : (is2xl ? 320 : 260);
 
   return (
     <>
       {/* Desktop sidebar (sm and up) */}
-      <div className="hidden sm:flex h-screen bg-bg-app p-6 font-sans shrink-0">
+      <div className="hidden sm:flex h-screen bg-bg-app p-6 2xl:p-8 font-sans shrink-0">
         <motion.aside
           animate={{ width: sidebarWidth }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -206,7 +207,7 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
               <AnimatePresence>
                 {collapsed ? (
                   <div className="flex flex-col items-center justify-center gap-y-3">
-                    <img src={floLogo} alt="Flo" className="w-8 h-8 object-contain" />
+                    <img src={floLogo} alt="Flo" className="w-8 h-8 2xl:w-10 2xl:h-10 object-contain" />
                     <button
                       onClick={() => setCollapsed((p) => !p)}
                       className="p-1.5 rounded-lg text-text-secondary hover:text-gray-600 hover:bg-gray-100 transition-colors"
@@ -216,8 +217,8 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
                   </div>
                 ) : (
                   <div className="flex gap-3 items-center">
-                    <img src={floLogo} alt="Flo" className="h-8 object-contain" />
-                    <h2 className="text-xl font-normal text-text-secondary">Flo.</h2>
+                    <img src={floLogo} alt="Flo" className="h-8 2xl:h-10 object-contain" />
+                    <h2 className="text-xl 2xl:text-2xl font-normal text-text-secondary">Flo.</h2>
                   </div>
                 )}
               </AnimatePresence>
@@ -240,7 +241,7 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
 
             {/* Divider / Menu Label */}
             <div className={`mb-1 px-3 transition-opacity duration-200 ${collapsed ? "opacity-0" : "opacity-100"}`}>
-              <span className="text-sm font-medium text-text-primary">
+              <span className="text-sm 2xl:text-base font-medium text-text-primary">
                 Menu
               </span>
             </div>
@@ -260,7 +261,7 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
             {/* Notespace section */}
             {!collapsed && (
               <>
-                <p className="px-2.5 mb-1 text-sm font-medium text-text-primary select-none">
+                <p className="px-2.5 mb-1 text-sm 2xl:text-base font-medium text-text-primary select-none">
                   Notespace
                 </p>
               </>
@@ -296,8 +297,8 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
                         transition={{ duration: 0.2 }}
                         className="flex-1 flex items-center justify-between overflow-hidden"
                       >
-                        <span className="text-sm text-text-secondary whitespace-nowrap">{name}</span>
-                        <span className="text-[11px] text-gray-400 shrink-0">{count}</span>
+                        <span className="text-sm 2xl:text-base text-text-secondary whitespace-nowrap">{name}</span>
+                        <span className="text-[11px] 2xl:text-xs text-gray-400 shrink-0">{count}</span>
                       </motion.span>
                     )}
                   </AnimatePresence>
@@ -332,8 +333,8 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
                     transition={{ duration: 0.2 }}
                     className="flex-1 text-left overflow-hidden"
                   >
-                    <p className="text-sm font-medium text-gray-800 whitespace-nowrap">Wandi Der</p>
-                    <p className="text-xs text-gray-400 whitespace-nowrap">wandider@gmail.com</p>
+                    <p className="text-sm 2xl:text-base font-medium text-gray-800 whitespace-nowrap">Wandi Der</p>
+                    <p className="text-xs 2xl:text-sm text-gray-400 whitespace-nowrap">wandider@gmail.com</p>
                   </motion.div>
                 )}
               </AnimatePresence>
