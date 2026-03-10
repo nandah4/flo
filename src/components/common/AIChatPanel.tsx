@@ -48,7 +48,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
             />
 
             {/* Panel — same sizing as Add Task drawer: mr-2 my-2, right-side */}
-            <div className="fixed z-60 bg-bg-app shadow-2xl flex flex-col mr-2 my-2 md:top-0 md:bottom-0 md:right-0 md:left-auto md:w-[470px] md:rounded-xl max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[90vh] overflow-hidden">
+            <div className="fixed z-60 bg-bg-app shadow-2xl flex flex-col mr-2 my-2 md:top-0 md:bottom-0 md:right-0 md:left-auto md:w-[470px] 2xl:w-[580px] md:rounded-xl max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[90vh] overflow-hidden">
 
                 {/* Close button */}
                 <div className="flex justify-end px-5 pt-5">
@@ -64,33 +64,33 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
                 <div className="flex-1 flex flex-col overflow-y-auto">
 
                     {/* Hero section */}
-                    <div className="flex flex-col items-center gap-3 px-6 pt-2 pb-6">
+                    <div className="flex flex-col items-center gap-4 px-6 pt-2 pb-6">
                         {/* Logo */}
-                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center">
+                        <div className="w-16 h-16 2xl:w-20 2xl:h-20 rounded-2xl flex items-center justify-center">
                             <img src={iconAIAssistant} alt="Flo AI" className="w-full h-full object-contain" />
                         </div>
 
                         {/* Greeting */}
                         <div className="text-center">
-                            <h2 className="text-xl font-semibold text-text-primary">Hi, Wandi Der 👋</h2>
-                            <p className="text-lg font-medium text-text-primary mt-0.5">How can I help you today?</p>
+                            <h2 className="text-xl 2xl:text-2xl font-medium text-text-primary">Hi, Wandi Der 👋</h2>
+                            <p className="text-lg 2xl:text-xl font-medium text-text-primary mt-0.5">How can I help you today?</p>
                         </div>
 
                         {/* Description */}
-                        <p className="text-sm text-text-secondary text-center max-w-[300px] leading-relaxed">
+                        <p className="text-sm 2xl:text-base text-text-secondary text-center max-w-[300px] 2xl:max-w-[380px] leading-relaxed">
                             I’m here to help you think clearly, review your tasks, and improve your notes — so you can stay focused and organized.
                         </p>
                     </div>
 
                     {/* What I can do */}
                     <div className="px-5 pb-5">
-                        <p className="text-sm font-medium text-text-primary mb-3">What I can do</p>
+                        <p className="text-sm 2xl:text-base font-medium text-text-primary mb-3">What I can do</p>
                         <div className="grid grid-cols-2 gap-2">
                             {SUGGESTIONS.map((s, i) => (
                                 <button
                                     key={i}
                                     onClick={() => setInput(s.label)}
-                                    className="flex items-center gap-2.5 px-3.5 py-3 rounded-lg bg-white border border-gray-200 text-left text-xs font-normal text-text-secondary hover:border-primary/40 hover:bg-primary/5 hover:text-text-primary transition-all group"
+                                    className="flex items-center gap-2.5 px-3.5 py-3 2xl:py-3.5 rounded-lg bg-white border border-gray-200 text-left text-xs 2xl:text-sm font-normal text-text-secondary hover:border-primary/40 hover:bg-primary/5 hover:text-text-primary transition-all group"
                                 >
                                     <span className="text-secondary group-hover:scale-110 transition-transform">{s.icon}</span>
                                     {s.label}
@@ -101,17 +101,17 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* Bottom section — fixed to bottom */}
-                <div className="px-5 pb-5 flex flex-col gap-3 border-t border-gray-100 pt-4 bg-bg-app">
+                <div className="px-5 pb-5 flex flex-col gap-4 border-t border-gray-100 pt-4 bg-bg-app">
 
                     {/* Input */}
-                    <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3.5 py-3 focus-within:border-secondary/80 focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                    <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3.5 py-3 2xl:py-3.5 focus-within:border-secondary/80 focus-within:ring-2 focus-within:ring-primary/10 transition-all">
                         <Search size={16} className="text-gray-400 shrink-0" />
                         <input
                             value={input}
                             onChange={e => setInput(e.target.value)}
                             onKeyDown={handleKeyDown}
                             placeholder="Ask Flo AI anything..."
-                            className="flex-1 text-sm text-text-primary placeholder:text-text-secondary outline-none bg-transparent"
+                            className="flex-1 text-sm 2xl:text-base text-text-primary placeholder:text-text-secondary outline-none bg-transparent"
                         />
                         <button className="text-gray-400 hover:text-secondary transition-colors shrink-0">
                             <Mic size={16} />
@@ -120,7 +120,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
 
                     {/* Context sources */}
                     <div>
-                        <p className="text-xs font-medium text-text-secondary mb-2">Add context from</p>
+                        <p className="text-xs lg:text-sm 2xl:text-base font-medium text-text-primary mb-2">Add context from</p>
                         <div className="flex items-center gap-2 flex-wrap">
                             {CONTEXT_SOURCES.map(src => {
                                 const isActive = activeContext.includes(src.label);
@@ -128,7 +128,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
                                     <button
                                         key={src.label}
                                         onClick={() => toggleContext(src.label)}
-                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${isActive
+                                        className={`flex items-center gap-1.5 px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-lg text-xs 2xl:text-sm font-medium border transition-all ${isActive
                                             ? 'bg-primary/10 border-primary/30 text-secondary'
                                             : 'bg-white border-gray-200 text-text-secondary hover:border-gray-300'
                                             }`}
@@ -144,7 +144,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
                                 );
                             })}
 
-                            <button className="flex items-center gap-1 text-xs text-text-primary hover:text-text-secondary transition-colors ml-auto">
+                            <button className="flex items-center gap-1 text-xs 2xl:text-sm text-text-primary hover:text-text-secondary transition-colors ml-auto">
                                 More <ChevronRight size={12} />
                             </button>
                         </div>

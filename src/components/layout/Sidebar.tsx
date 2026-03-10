@@ -59,7 +59,7 @@ function NavRow({
   const inner = (
     <motion.div
       whileTap={{ scale: 0.98 }}
-      className={`w-full flex items-center hover:bg-bg-app gap-3 px-2.5 py-2.5 2xl:px-3 2xl:py-3 rounded-lg text-left transition-colors relative group ${isActive ? "bg-bg-app border border-gray-100" : ""
+      className={`w-full flex items-center ${collapsed ? 'justify-center' : 'justify-start'} hover:bg-bg-app gap-3 px-2.5 py-2.5 2xl:px-3 2xl:py-3 rounded-lg text-left transition-colors relative group ${isActive ? "bg-bg-app border border-gray-100" : ""
         }`}
     >
       <span className={`relative shrink-0 ${isActive ? "text-secondary" : "text-text-secondary"}`}>
@@ -274,7 +274,7 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
                 return acc;
               }, {} as Record<string, number>)
             ).map(([name, count], index) => {
-              // Assign a color based on some predefined list or index
+              // Assign a color
               const colors = ["#3A9AFF", "#10b981", "#FF8C00", "#8b5cf6", "#f43f5e"];
               const color = colors[index % colors.length];
 
@@ -282,7 +282,7 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
                 <Link
                   key={name}
                   to="/notes"
-                  className="group w-full flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-bg-app transition-colors"
+                  className={`group w-full flex items-center ${collapsed ? 'justify-center' : 'justify-start'} gap-3 px-2.5 py-2 rounded-lg hover:bg-bg-app transition-colors`}
                 >
                   <span
                     className="w-2 h-2 rounded-full shrink-0"

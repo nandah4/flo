@@ -69,7 +69,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                         className="fixed top-[12vh] left-1/2 -translate-x-1/2 z-50 w-full max-w-[580px] 2xl:max-w-[720px] px-4"
                     >
                         {/* Input bar */}
-                        <div className="flex items-center gap-3 2xl:gap-4 bg-white rounded-2xl px-4 2xl:px-5 py-3.5 2xl:py-4 shadow-2xl border border-gray-200/60">
+                        <div className="flex items-center gap-3 2xl:gap-4 bg-white rounded-xl px-4 2xl:px-5 py-3.5 2xl:py-4 shadow-2xl border border-gray-200/60">
                             <Search size={18} className="text-gray-400 shrink-0" />
                             <input
                                 ref={inputRef}
@@ -91,11 +91,10 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                         </div>
 
                         {/* Gap + History/Results */}
-                        <div className="mt-3 bg-white rounded-2xl shadow-2xl border border-gray-200/60 overflow-hidden">
+                        <div className="mt-3 bg-white rounded-lg shadow-2xl border border-gray-200/60 overflow-hidden">
                             {/* Section label */}
                             <div className="flex items-center gap-2 px-4 pt-4 pb-2">
-                                <Clock size={13} className="text-gray-400" />
-                                <span className="text-[12px] 2xl:text-sm font-semibold text-text-primary uppercase">
+                                <span className="text-xs lg:text-sm 2xl:text-base font-medium text-text-primary uppercase">
                                     {query ? "Results" : "Recent searches"}
                                 </span>
                             </div>
@@ -122,12 +121,12 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                                 <span className="flex-1 text-sm 2xl:text-base text-text-primary truncate">{item.query}</span>
 
                                                 {/* Category pill */}
-                                                <span className="flex items-center gap-1.5 text-[11px] 2xl:text-xs font-normal text-gray-400 bg-bg-app px-2 py-1 rounded-md shrink-0">
+                                                <span className="flex items-center gap-1.5 text-xs 2xl:text-sm font-normal text-text-secondary bg-bg-app px-3 py-1.5 rounded shrink-0">
                                                     {CATEGORY_ICON[item.category]}
                                                     {item.category}
                                                 </span>
 
-                                                <ArrowRight size={14} className="text-gray-300 group-hover:text-secondary transition-colors shrink-0" />
+                                                <ArrowRight size={14} className="text-text-secondary group-hover:text-secondary transition-colors shrink-0" />
                                             </button>
                                         </li>
                                     ))}

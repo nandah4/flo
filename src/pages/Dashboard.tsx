@@ -181,13 +181,13 @@ const Dashboard = () => {
                                     ].map((pill) => (
                                         <div
                                             key={pill.label}
-                                            className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-sm font-normal
+                                            className={`flex text-secondary items-center gap-2.5 px-3 py-1.5 rounded text-sm font-normal
                                             ${pill.dark
-                                                    ? 'bg-secondary text-white border-transparent'
+                                                    ? 'bg-primary/20 border-transparent'
                                                     : ' text-text-primary'}`}
                                         >
                                             {pill.icon}
-                                            <span className={pill.dark ? 'text-white text-xs 2xl:text-sm' : 'text-text-secondary text-xs 2xl:text-sm'}>{pill.label}</span>
+                                            <span className={pill.dark ? 'text-secondary text-xs 2xl:text-sm' : 'text-text-secondary text-xs 2xl:text-sm'}>{pill.label}</span>
                                             <span className="font-medium text-[13px] 2xl:text-base">{pill.value}</span>
                                         </div>
                                     ))}
@@ -376,7 +376,7 @@ const Dashboard = () => {
                                 </div>
                                 <Link
                                     to="/tasks"
-                                    className="flex items-center gap-1.5 text-sm font-normal text-text-secondary hover:text-text-primary transition-colors"
+                                    className="flex items-center gap-1.5 text-sm 2xl:text-base font-normal text-text-secondary hover:text-text-primary transition-colors"
                                 >
                                     View All <ArrowRight size={14} />
                                 </Link>
