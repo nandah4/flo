@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Flag, Target, Calendar } from "lucide-react";
+import { X, Flag, Target, Calendar, Image } from "lucide-react";
 import type { Column, TaskCard, NewTaskForm } from "./types";
 import { PRIORITY_OPTIONS } from "./types";
 
@@ -28,6 +28,8 @@ export default function AddTaskDrawer({
         startDate: "", startTime: "", date: "", time: "",
     });
     const [openMeta, setOpenMeta] = useState<"priority" | "status" | null>(null);
+    const [imageFiles, setImageFiles] = useState<{ name: string; url: string }[]>([]);
+    const imageInputRef = useRef<HTMLInputElement>(null);
 
     // Sync form with editingCard or defaultColumnId when opened
     useEffect(() => {
@@ -68,6 +70,7 @@ export default function AddTaskDrawer({
             date: defaultDate, time: "",
         });
         setOpenMeta(null);
+        setImageFiles([]);
     }
 
     function handleClose() { reset(); onClose(); }
@@ -280,6 +283,58 @@ export default function AddTaskDrawer({
                                                 onChange={set("time")}
                                                 className="text-xs 2xl:text-sm text-text-secondary bg-transparent outline-none border-none cursor-pointer"
                                             />
+                                        </div>
+                                    </div>
+
+                                    {/* Image Upload */}
+                                    <div className="flex items-start gap-2 px-2">
+                                        <div className="flex items-center w-28 gap-3 shrink-0 text-sm 2xl:text-base font-medium text-text-secondary pt-0.5">
+                                            <Image size={16} />
+                                            <span>Images</span>
+                                        </div>
+                                        <div className="flex-1">
+                                            <input
+                                                ref={imageInputRef}
+                                                type="file"
+                                                className="hidden"
+                                                accept="image/*"
+                                                multiple
+                                                onChange={(e) => {
+                                                    const files = Array.from(e.target.files ?? []);
+                                                    const mapped = files.map((f) => ({
+                                                        name: f.name,
+                                                        url: URL.createObjectURL(f),
+                                                    }));
+                                                    setImageFiles((prev) => [...prev, ...mapped]);
+                                                    if (imageInputRef.current) imageInputRef.current.value = "";
+                                                }}
+                                            />
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                {imageFiles.map((img, idx) => (
+                                                    <div key={idx} className="relative group w-14 h-14 2xl:w-16 2xl:h-16 rounded-md overflow-hidden border border-gray-200 shrink-0">
+                                                        <img
+                                                            src={img.url}
+                                                            alt={img.name}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setImageFiles((prev) => prev.filter((_, i) => i !== idx))}
+                                                            className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        >
+                                                            <X size={14} className="text-white" />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => imageInputRef.current?.click()}
+                                                    className="flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-xs 2xl:text-sm font-normal border border-gray-200 bg-white text-text-secondary hover:border-gray-300 transition-all"
+                                                >
+                                                    <Image size={12} />
+                                                    {imageFiles.length > 0 ? "Add more" : "Upload"}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 
