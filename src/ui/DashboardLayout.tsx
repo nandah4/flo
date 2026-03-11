@@ -12,7 +12,7 @@ function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
         <div className="flex h-screen bg-bg-app overflow-hidden selection:bg-primary/30 relative">
             <Sidebar onSearchOpen={() => setSearchOpen(true)} />
-            <main className="flex-1 h-full overflow-y-auto w-full pb-24 sm:pb-0">
+            <main className="flex-1 h-full overflow-y-auto overflow-x-hidden w-full pb-24 sm:pb-0">
                 {children}
             </main>
             <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />

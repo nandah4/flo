@@ -48,20 +48,26 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ isOpen, onClose }) => {
             />
 
             {/* Panel — same sizing as Add Task drawer: mr-2 my-2, right-side */}
-            <div className="fixed z-60 bg-bg-app shadow-2xl flex flex-col mr-2 my-2 md:top-0 md:bottom-0 md:right-0 md:left-auto md:w-[470px] 2xl:w-[580px] md:rounded-xl max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[80vh] overflow-hidden">
+            <div className="fixed z-60 bg-bg-app shadow-2xl flex flex-col md:mr-2 md:my-2 md:top-0 md:bottom-0 md:right-0 md:left-auto md:w-[470px] 2xl:w-[580px] md:rounded-xl max-md:inset-x-4 max-md:top-1/2 max-md:-translate-y-1/2 max-md:rounded-xl max-md:max-h-[80vh] overflow-hidden">
 
                 {/* Close button */}
-                <div className="flex justify-end px-5 pt-5">
+                {/* <div className="flex justify-end px-5 pt-5">
                     <button
                         onClick={onClose}
                         className="w-8 h-8 rounded-lg flex items-center justify-center text-text-secondary hover:text-gray-700 hover:bg-gray-100 transition-colors"
                     >
                         <X size={18} />
                     </button>
-                </div>
+                </div> */}
+                <button
+                    onClick={onClose}
+                    className="w-8 h-8 absolute top-3 right-3 rounded-lg flex items-center justify-center text-text-secondary hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                    <X size={18} />
+                </button>
 
                 {/* Scrollable body */}
-                <div className="flex-1 flex flex-col overflow-y-auto">
+                <div className="flex-1 flex flex-col overflow-y-auto pt-8">
 
                     {/* Hero section */}
                     <div className="flex flex-col items-center gap-4 px-6 pt-2 pb-6">
